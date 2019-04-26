@@ -1,21 +1,4 @@
-<div class="item" title="Grid">
-  <i class="mdi mdi-grid"></i>
+<div class="item" [title]="item.title" *ngFor="let item of toolbarItems" (click)="onToolbarItemClick(item)">
+  <i class="mdi" [ngClass]="item.icon"></i>
 </div>
-<div class="item" title="Background Image">
-  <i class="mdi mdi-image"></i>
-</div>
-<div class="item" title="Tokens">
-  <i class="mdi mdi-chess-knight"></i>
-</div>
-<div class="item" title="Movement">
-  <i class="mdi mdi-cursor-move"></i>
-</div>
-<div class="item" title="Painting">
-  <i class="mdi mdi-brush"></i>
-</div>
-<div class="item" title="Conditions">
-  <i class="mdi mdi-flask"></i>
-</div>
-<div class="item" title="Measure Spell Effects">
-  <i class="mdi mdi-ruler"></i>
-</div>
+<input #file type="file" style="display: none" (change)="onBackgroundImageChange()">
