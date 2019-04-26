@@ -1,4 +1,7 @@
 import { AfterViewInit, Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState } from '@bm/store/state';
+import { SetBackgroundImage } from '@bm/store/map/actions';
 
 interface ToolbarItem {
   title: string;
@@ -24,7 +27,7 @@ export class ToolbarComponent implements AfterViewInit {
 
   @ViewChild('file') inputRef: ElementRef<HTMLInputElement>;
 
-  constructor(private elRef: ElementRef) { }
+  constructor(private elRef: ElementRef, private store: Store<AppState>) { }
 
   @HostListener('window:resize') onResize() { this.reposition(); }
 
@@ -43,9 +46,10 @@ export class ToolbarComponent implements AfterViewInit {
   }
 
   onBackgroundImageChange() {
-    const image = this.inputRef.nativeElement.files[0];
-    const url = URL.createObjectURL(image);
-    console.log(url);
+    const file = this.inputRef.nativeElement.files[0];
+    createImageBitmap(file).then(image => {
+      this.store.dispatch(new SetBackgroundImage(image));
+    });
   }
 
   onToolbarItemClick(item: ToolbarItem) {
