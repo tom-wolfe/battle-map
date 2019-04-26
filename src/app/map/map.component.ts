@@ -64,7 +64,7 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   renderGrid() {
-    this.context.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+    this.context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
 
     const startX = this.boundCoordinate(this.gridOffset.x + this.panOffset.x + this.map.gridSize);
     const startY = this.boundCoordinate(this.gridOffset.y + this.panOffset.y + this.map.gridSize);
