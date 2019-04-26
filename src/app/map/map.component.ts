@@ -8,7 +8,7 @@ import { Component, ViewChild, ElementRef, OnChanges, OnInit, HostListener } fro
 export class MapComponent implements OnInit, OnChanges {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
-  gridSize = 64;
+  gridSize = 80;
   gridOffset = {
     x: 0.5,
     y: 0.5
@@ -39,15 +39,16 @@ export class MapComponent implements OnInit, OnChanges {
 
   renderGrid() {
     this.context.lineWidth = 1;
-    this.context.strokeStyle = 'black';
+    this.context.strokeStyle = 'rgba(255, 255, 255, 0.1)';
     const grid = new Path2D();
     for (let x = this.gridOffset.x + this.gridSize; x <= this.canvas.width; x += this.gridSize) {
-      for (let y = this.gridOffset.y + this.gridSize; y <= this.canvas.height; y += this.gridSize) {
-        grid.moveTo(x, 0);
-        grid.lineTo(x, this.canvas.height);
-        grid.moveTo(0, y);
-        grid.lineTo(this.canvas.width, y);
-      }
+      grid.moveTo(x, 0);
+      grid.lineTo(x, this.canvas.height);
+    }
+
+    for (let y = this.gridOffset.y + this.gridSize; y <= this.canvas.height; y += this.gridSize) {
+      grid.moveTo(0, y);
+      grid.lineTo(this.canvas.width, y);
     }
     this.context.stroke(grid);
   }
