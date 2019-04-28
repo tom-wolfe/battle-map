@@ -60,14 +60,17 @@ export class MapComponent implements OnInit, OnChanges {
 
   renderBackground() {
     if (!this.map.background) { return; }
-    this.context.drawImage(this.map.background, 0, 0);
+    this.context.drawImage(this.map.background, this.offsetX(0), this.offsetY(0));
   }
+
+  offsetX(x: number) { return x + this.gridOffset.x + this.panOffset.x; }
+  offsetY(y: number) { return y + this.gridOffset.y + this.panOffset.y; }
 
   renderGrid() {
     this.context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
 
-    const startX = this.boundCoordinate(this.gridOffset.x + this.panOffset.x + this.map.gridSize);
-    const startY = this.boundCoordinate(this.gridOffset.y + this.panOffset.y + this.map.gridSize);
+    const startX = this.boundCoordinate(this.offsetX(this.map.gridSize));
+    const startY = this.boundCoordinate(this.offsetY(this.map.gridSize));
 
     const grid = new Path2D();
     for (let x = startX; x <= this.canvas.width; x += this.map.gridSize) {

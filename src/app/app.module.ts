@@ -8,12 +8,14 @@ import { MapComponent } from './map';
 import { MenuComponent } from './menu';
 import { reducers } from './store/reducer';
 import { ToolbarComponent } from './toolbar';
+import { ToolOptionsComponent } from './tool-options';
 
 @NgModule({
   declarations: [
     AppComponent,
     MenuComponent,
     ToolbarComponent,
+    ToolOptionsComponent,
     MapComponent,
   ],
   imports: [

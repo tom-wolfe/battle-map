@@ -1,4 +1,6 @@
-<div class="item" [title]="item.title" *ngFor="let item of toolbarItems" (click)="onToolbarItemClick(item)">
-  <i class="mdi" [ngClass]="item.icon"></i>
+<div class="items">
+  <div class="item" [title]="item.title" *ngFor="let item of toolbarItems" (click)="onToolbarItemClick(item)">
+    <i class="mdi" [ngClass]="item.icon"></i>
+  </div>
 </div>
 <input #file type="file" style="display: none" (change)="onBackgroundImageChange()">
