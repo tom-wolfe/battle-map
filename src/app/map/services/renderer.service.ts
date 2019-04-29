@@ -10,10 +10,9 @@ export class MapRenderer {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   grid: GridSettings;
-  tempOffset: Point = { x: 0, y: 0 };
   panOffset: Point;
-
   scaleFactor: number;
+  tempOffset: Point = { x: 0, y: 0 };
 
   constructor(map: Map) {
     map.state.subscribe(this.onMapStateChanged.bind(this));
