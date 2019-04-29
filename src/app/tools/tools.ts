@@ -24,6 +24,6 @@ export class Tools {
       new EffectTool(),
       new PaintTool(),
       new DistanceTool()
-    ]
+    ];
   }
 }
