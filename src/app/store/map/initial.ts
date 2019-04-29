@@ -1,6 +1,7 @@
 import { MapState } from './state';
 
 export const initialMapState: MapState = {
+  activeTool: undefined,
   canvas: undefined,
   context: undefined,
   gridSize: 80,

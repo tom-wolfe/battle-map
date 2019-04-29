@@ -19,6 +19,12 @@ export class SetCanvas implements Action {
   constructor(public canvas: HTMLCanvasElement) { }
 }
 
+export class SetActiveTool implements Action {
+  public static readonly TYPE = '[Map] Set Active Tool';
+  readonly type = SetActiveTool.TYPE;
+  constructor(public toolId: number) { }
+}
+
 export class ZoomIn implements Action {
   public static readonly TYPE = '[Map] Zoom In';
   readonly type = ZoomIn.TYPE;
@@ -35,5 +41,6 @@ export type MapActions =
   Pan |
   SetBackgroundImage |
   SetCanvas |
+  SetActiveTool |
   ZoomIn |
   ZoomOut;

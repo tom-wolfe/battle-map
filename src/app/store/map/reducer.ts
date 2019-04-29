@@ -17,6 +17,9 @@ export function mapReducer(state: MapState = initialMapState, action: Actions.Ma
     case Actions.SetCanvas.TYPE: {
       return { ...state, canvas: action.canvas, context: action.canvas.getContext('2d') };
     }
+    case Actions.SetActiveTool.TYPE: {
+      return { ...state, activeTool: action.toolId };
+    }
     case Actions.Pan.TYPE: {
       const x = state.gridOffset.x + action.offset.x;
       const y = state.gridOffset.y + action.offset.y;

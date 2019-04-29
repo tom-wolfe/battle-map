@@ -1,5 +1,5 @@
 <div class="tools">
-  <div class="tool" [title]="tool.title" *ngFor="let tool of tools" (click)="onToolClick(tool)">
+  <div class="tool" [ngClass]="tool.id === activeTool ? 'active' : ''" [title]="tool.title" *ngFor="let tool of tools" (click)="onToolClick(tool)">
     <i class="mdi" [ngClass]="tool.icon"></i>
   </div>
 </div>
