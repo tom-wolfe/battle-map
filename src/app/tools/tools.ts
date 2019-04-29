@@ -26,7 +26,7 @@ export class Tools {
   constructor(store: Store<AppState>) {
     this.tools = [
       new GridTool(),
-      new BackgroundImageTool(store),
+      new BackgroundImageTool(),
       new TokenTool(),
       new MoveTool(),
       new EffectTool(),

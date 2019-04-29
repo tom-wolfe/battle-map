@@ -1,18 +1,16 @@
+import { Component } from '@angular/core';
 import { SetBackgroundImage } from '@bm/store/map';
 import { AppState } from '@bm/store/state';
 import { Store } from '@ngrx/store';
 
-import { Tool } from './tool';
-
-export class BackgroundImageTool implements Tool {
-  id = 2;
-  title = 'Background Image';
-  icon = 'mdi-image';
-  settingsComponent = undefined;
-
+@Component({
+  selector: 'bm-background-settings',
+  templateUrl: './background-settings.component.html'
+})
+export class BackgroundSettingsComponent {
   constructor(private store: Store<AppState>) { }
 
-  execute() {
+  onLoadImageClick() {
     const input = document.createElement('input');
     input.type = 'file';
     input.style.display = 'none';
