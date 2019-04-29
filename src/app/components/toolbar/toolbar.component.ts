@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
-import { activeTool, SetActiveTool } from '@bm/store/map';
+import { SetActiveTool } from '@bm/store/map';
 import { AppState } from '@bm/store/state';
 import { Tool, Tools } from '@bm/tools';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'bm-toolbar',
@@ -10,12 +10,12 @@ import { select, Store } from '@ngrx/store';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements AfterViewInit {
-  activeTool: number;
+  activeTool: Tool;
   tools: Tool[];
 
   constructor(private elRef: ElementRef, tools: Tools, private store: Store<AppState>) {
     this.tools = tools.tools;
-    store.pipe(select(activeTool)).subscribe(t => this.activeTool = t);
+    tools.activeTool.subscribe(t=> this.activeTool = t);
   }
 
   @HostListener('window:resize') onResize() { this.reposition(); }

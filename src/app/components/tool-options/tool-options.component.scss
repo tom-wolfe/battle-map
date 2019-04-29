@@ -3,4 +3,14 @@
 :host {
   display: block;
   background-color: $bg-toolbar;
+  min-height: 40px;
+  line-height: 40px;
+  padding-left: 1rem;
+  font-size: 0.8rem;
+}
+
+.tool-name {
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-right: 0.5rem;
 }

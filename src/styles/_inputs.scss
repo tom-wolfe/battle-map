@@ -1,0 +1,25 @@
+label {
+  font-weight: bold;
+  padding: 0 0.5rem;
+}
+
+.group {
+  display: inline-block;
+  .suffix {
+    padding-left: 0.25rem;
+  }
+  padding-right: 0.5rem;
+}
+
+input {
+  color: $text-body;
+  line-height: 1.5rem;
+  padding-left: 0.5rem;
+  background-color: $bg-body;
+  border: 1px solid black;
+  border-radius: 4px;
+}
+
+input[type=number] {
+  width: 70px;
+}

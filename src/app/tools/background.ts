@@ -22,7 +22,7 @@ export class BackgroundImageTool implements Tool {
   }
 
   private onBackgroundImageChange(e: Event) {
-    const file = (e.srcElement as HTMLInputElement).files[0];
+    const file = (e.target as HTMLInputElement).files[0];
     createImageBitmap(file).then(image => {
       this.store.dispatch(new SetBackgroundImage(image));
     });

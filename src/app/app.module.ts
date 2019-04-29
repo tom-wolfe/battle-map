@@ -6,7 +6,8 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppComponent } from './app.component';
 import * as Components from './components';
 import { reducers } from './store/reducer';
-import { Tools } from './tools';
+import { GridSettingsComponent, Tools } from './tools';
+import { ComponentFactory } from './utils';
 
 @NgModule({
   declarations: [
@@ -15,13 +16,15 @@ import { Tools } from './tools';
     Components.ToolbarComponent,
     Components.ToolOptionsComponent,
     Components.MapComponent,
+    GridSettingsComponent 
   ],
   imports: [
     BrowserModule,
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument(),
   ],
-  providers: [Tools],
-  bootstrap: [AppComponent]
+  providers: [ComponentFactory, Tools],
+  bootstrap: [AppComponent],
+  entryComponents: [GridSettingsComponent]
 })
 export class AppModule { }

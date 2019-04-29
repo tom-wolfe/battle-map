@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
+import { activeTool } from '@bm/store/map';
 import { AppState } from '@bm/store/state';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { Subject } from 'rxjs';
 
 import { BackgroundImageTool } from './background';
 import { DistanceTool } from './distance';
@@ -15,6 +17,11 @@ import { Tool } from './tool';
 export class Tools {
   tools: Tool[] = [];
 
+  private readonly _activeToolId = new Subject<number>();
+  public readonly activeToolId = this._activeToolId.asObservable();
+  private readonly _activeTool = new Subject<Tool>();
+  public readonly activeTool = this._activeTool.asObservable();
+
   constructor(store: Store<AppState>) {
     this.tools = [
       new GridTool(),
@@ -25,5 +32,12 @@ export class Tools {
       new PaintTool(),
       new DistanceTool()
     ];
+    store.pipe(select(activeTool)).subscribe(this.onActiveToolIdChange.bind(this));
+  }
+
+  private onActiveToolIdChange(id: number) {
+    const active = this.tools.find(t => t.id === id);
+    this._activeToolId.next(id);
+    this._activeTool.next(active);
   }
 }

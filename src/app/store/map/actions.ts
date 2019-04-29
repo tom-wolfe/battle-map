@@ -7,6 +7,12 @@ export class Pan implements Action {
   constructor(public offset: Point) { }
 }
 
+export class SetActiveTool implements Action {
+  public static readonly TYPE = '[Map] Set Active Tool';
+  readonly type = SetActiveTool.TYPE;
+  constructor(public toolId: number) { }
+}
+
 export class SetBackgroundImage implements Action {
   public static readonly TYPE = '[Map] Set Background Image';
   readonly type = SetBackgroundImage.TYPE;
@@ -19,10 +25,16 @@ export class SetCanvas implements Action {
   constructor(public canvas: HTMLCanvasElement) { }
 }
 
-export class SetActiveTool implements Action {
-  public static readonly TYPE = '[Map] Set Active Tool';
-  readonly type = SetActiveTool.TYPE;
-  constructor(public toolId: number) { }
+export class SetGridOffset implements Action {
+  public static readonly TYPE = '[Map] Set Grid Offset';
+  readonly type = SetGridOffset.TYPE;
+  constructor(public offset: Point) { }
+}
+
+export class SetGridSize implements Action {
+  public static readonly TYPE = '[Map] Set Grid Size';
+  readonly type = SetGridSize.TYPE;
+  constructor(public size: number) { }
 }
 
 export class ZoomIn implements Action {
@@ -39,8 +51,10 @@ export class ZoomOut implements Action {
 
 export type MapActions =
   Pan |
+  SetActiveTool |
   SetBackgroundImage |
   SetCanvas |
-  SetActiveTool |
+  SetGridOffset |
+  SetGridSize |
   ZoomIn |
   ZoomOut;

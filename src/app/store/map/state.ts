@@ -5,7 +5,8 @@ export interface MapState {
   context: CanvasRenderingContext2D;
   activeTool: number;
   gridSize: number;
-  scaleFactor: number;
   gridOffset: Point;
+  panOffset: Point;
+  scaleFactor: number;
   background: ImageBitmap;
 }
