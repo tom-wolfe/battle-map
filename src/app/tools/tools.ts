@@ -12,6 +12,7 @@ import { MoveTool } from './move';
 import { PaintTool } from './paint';
 import { TokenTool } from './token';
 import { Tool } from './tool';
+import { ZoomTool } from './zoom';
 
 @Injectable()
 export class Tools {
@@ -30,7 +31,8 @@ export class Tools {
       new MoveTool(),
       new EffectTool(),
       new PaintTool(),
-      new DistanceTool()
+      new DistanceTool(),
+      new ZoomTool()
     ];
     store.pipe(select(activeTool)).subscribe(this.onActiveToolIdChange.bind(this));
   }

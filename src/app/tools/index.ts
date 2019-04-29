@@ -7,3 +7,4 @@ export * from './paint';
 export * from './token';
 export * from './tool';
 export * from './tools';
+export * from './zoom';

@@ -6,7 +6,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AppComponent } from './app.component';
 import * as Components from './components';
 import { reducers } from './store/reducer';
-import { GridSettingsComponent, Tools } from './tools';
+import { GridSettingsComponent, Tools, ZoomSettingsComponent } from './tools';
 import { ComponentFactory } from './utils';
 
 @NgModule({
@@ -16,7 +16,8 @@ import { ComponentFactory } from './utils';
     Components.ToolbarComponent,
     Components.ToolOptionsComponent,
     Components.MapComponent,
-    GridSettingsComponent 
+    GridSettingsComponent,
+    ZoomSettingsComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +26,6 @@ import { ComponentFactory } from './utils';
   ],
   providers: [ComponentFactory, Tools],
   bootstrap: [AppComponent],
-  entryComponents: [GridSettingsComponent]
+  entryComponents: [GridSettingsComponent, ZoomSettingsComponent]
 })
 export class AppModule { }
