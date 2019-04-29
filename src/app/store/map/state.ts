@@ -4,9 +4,11 @@ export interface MapState {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   activeTool: number;
-  gridSize: number;
-  gridOffset: Point;
+  grid: {
+    size: number;
+    offset: Point;
+  };
   panOffset: Point;
   scaleFactor: number;
-  background: ImageBitmap;
+  backgroundImage: ImageBitmap;
 }

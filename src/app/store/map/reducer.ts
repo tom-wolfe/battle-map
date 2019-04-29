@@ -10,21 +10,21 @@ export function mapReducer(state: MapState = initialMapState, action: Actions.Ma
       return { ...state, activeTool: action.toolId };
     }
     case Actions.SetBackgroundImage.TYPE: {
-      const background = action.background;
+      const backgroundImage = action.background;
       const panOffset = {
-        x: state.canvas.width / 2 - background.width / 2,
-        y: state.canvas.height / 2 - background.height / 2
+        x: state.canvas.width / 2 - backgroundImage.width / 2,
+        y: state.canvas.height / 2 - backgroundImage.height / 2
       };
-      return { ...state, background, panOffset, scaleFactor: 1 };
+      return { ...state, backgroundImage, panOffset, scaleFactor: 1 };
     }
     case Actions.SetCanvas.TYPE: {
       return { ...state, canvas: action.canvas, context: action.canvas.getContext('2d') };
     }
     case Actions.SetGridOffset.TYPE: {
-      return { ...state, gridOffset: action.offset };
+      return { ...state, grid: { ...state.grid, offset: action.offset } };
     }
     case Actions.SetGridSize.TYPE: {
-      return { ...state, gridSize: action.size };
+      return { ...state, grid: { ...state.grid, size: action.size } };
     }
     case Actions.Pan.TYPE: {
       const x = state.panOffset.x + action.offset.x;

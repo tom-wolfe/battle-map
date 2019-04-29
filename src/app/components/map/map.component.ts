@@ -58,7 +58,7 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   renderBackground() {
-    const bg = this.map.background;
+    const bg = this.map.backgroundImage;
     if (!bg) { return; }
     this.map.context.drawImage(bg, this.offsetX(0), this.offsetY(0), this.scale(bg.width), this.scale(bg.height));
   }
@@ -66,10 +66,10 @@ export class MapComponent implements OnInit, OnChanges {
   renderGrid() {
     this.map.context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
 
-    const gridSize = this.scale(this.map.gridSize);
+    const gridSize = this.scale(this.map.grid.size);
 
-    const startX = this.boundCoordinate(this.offsetX(this.scale(this.map.gridOffset.x) + gridSize));
-    const startY = this.boundCoordinate(this.offsetY(this.scale(this.map.gridOffset.y) + gridSize));
+    const startX = this.boundCoordinate(this.offsetX(this.scale(this.map.grid.offset.x) + gridSize));
+    const startY = this.boundCoordinate(this.offsetY(this.scale(this.map.grid.offset.y) + gridSize));
 
     const grid = new Path2D();
     for (let x = startX; x <= this.map.canvas.width; x += gridSize) {
@@ -88,7 +88,7 @@ export class MapComponent implements OnInit, OnChanges {
   private scale(n: number) { return n * this.map.scaleFactor; }
 
   private boundCoordinate(ord: number) {
-    const gridSize = this.scale(this.map.gridSize);
+    const gridSize = this.scale(this.map.grid.size);
     if (ord > gridSize || ord < 0) {
       ord -= Math.ceil(ord / gridSize) * gridSize;
     }
