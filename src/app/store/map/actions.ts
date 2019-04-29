@@ -6,5 +6,19 @@ export class SetBackgroundImage implements Action {
   constructor(public background: ImageBitmap) { }
 }
 
+export class ZoomIn implements Action {
+  public static readonly TYPE = '[Map] Zoom In';
+  readonly type = ZoomIn.TYPE;
+  constructor() { }
+}
+
+export class ZoomOut implements Action {
+  public static readonly TYPE = '[Map] Zoom Out';
+  readonly type = ZoomOut.TYPE;
+  constructor() { }
+}
+
 export type MapActions =
-  SetBackgroundImage;
+  SetBackgroundImage |
+  ZoomIn | 
+  ZoomOut;

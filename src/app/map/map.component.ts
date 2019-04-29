@@ -1,7 +1,7 @@
-import { Component, ViewChild, ElementRef, OnChanges, OnInit, HostListener } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { AppState, MapState } from '@bm/store/state';
-import * as Map from '@bm/store/map/selectors';
+import { Component, ElementRef, HostListener, OnChanges, OnInit, ViewChild } from '@angular/core';
+import * as Map from '@bm/store/map';
+import { AppState } from '@bm/store/state';
+import { select, Store } from '@ngrx/store';
 
 @Component({
   selector: 'bm-map',
@@ -11,7 +11,7 @@ import * as Map from '@bm/store/map/selectors';
 export class MapComponent implements OnInit, OnChanges {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
-  map: MapState;
+  map: Map.MapState;
   panOffset = { x: 0, y: 0 };
   gridOffset = { x: 0.5, y: 0.5 };
 
@@ -47,7 +47,11 @@ export class MapComponent implements OnInit, OnChanges {
     this.gridOffset.y += this.panOffset.y;
   }
 
-  onMapChange(map: MapState) {
+  @HostListener('wheel', ['$event']) onwheel(e: WheelEvent) {
+    this.store.dispatch(e.deltaY > 0 ? new Map.ZoomOut() : new Map.ZoomIn());
+  }
+
+  onMapChange(map: Map.MapState) {
     this.map = map;
     this.render();
   }
@@ -59,8 +63,9 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   renderBackground() {
-    if (!this.map.background) { return; }
-    this.context.drawImage(this.map.background, this.offsetX(0), this.offsetY(0));
+    const bg = this.map.background;
+    if (!bg) { return; }
+    this.context.drawImage(bg, this.offsetX(0), this.offsetY(0), bg.width * this.map.scaleFactor, bg.height * this.map.scaleFactor);
   }
 
   offsetX(x: number) { return x + this.gridOffset.x + this.panOffset.x; }
@@ -69,15 +74,17 @@ export class MapComponent implements OnInit, OnChanges {
   renderGrid() {
     this.context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
 
-    const startX = this.boundCoordinate(this.offsetX(this.map.gridSize));
-    const startY = this.boundCoordinate(this.offsetY(this.map.gridSize));
+    const gridSize = this.map.gridSize * this.map.scaleFactor;
+
+    const startX = this.boundCoordinate(this.offsetX(gridSize));
+    const startY = this.boundCoordinate(this.offsetY(gridSize));
 
     const grid = new Path2D();
-    for (let x = startX; x <= this.canvas.width; x += this.map.gridSize) {
+    for (let x = startX; x <= this.canvas.width; x += gridSize) {
       grid.moveTo(x, 0);
       grid.lineTo(x, this.canvas.height);
     }
-    for (let y = startY; y <= this.canvas.height; y += this.map.gridSize) {
+    for (let y = startY; y <= this.canvas.height; y += gridSize) {
       grid.moveTo(0, y);
       grid.lineTo(this.canvas.width, y);
     }
@@ -85,8 +92,9 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   private boundCoordinate(ord: number) {
-    if (ord > this.map.gridSize || ord < 0) {
-      ord -= Math.ceil(ord / this.map.gridSize) * this.map.gridSize;
+    const gridSize = this.map.gridSize * this.map.scaleFactor;
+    if (ord > gridSize || ord < 0) {
+      ord -= Math.ceil(ord / gridSize) * gridSize;
     }
     return ord
   }
