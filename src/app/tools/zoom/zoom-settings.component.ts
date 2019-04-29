@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ZoomIn, ZoomOut } from '@bm/store/map';
+import { ZoomIn, ZoomOut, FitToScreen } from '@bm/store/map';
 import { Store } from '@ngrx/store';
 import { AppState } from '@bm/store/state';
 
@@ -7,18 +7,10 @@ import { AppState } from '@bm/store/state';
   selector: 'bm-zoom-settings',
   templateUrl: './zoom-settings.component.html'
 })
-export class ZoomSettingsComponent {
-  // gridSize: number;
-  
-  constructor(private store: Store<AppState>) {
-    // this.store.pipe(select(scaleFactor)).subscribe(s => this.scaleFactor = s);
-  }
-
-  // onScaleFactorChange(e: Event) {
-  //   const input = e.target as HTMLInputElement;
-  //   this.store.dispatch(new SetScaleFactor(Number(input.value)));
-  // }
+export class ZoomSettingsComponent { 
+  constructor(private store: Store<AppState>) { }
 
   onZoomInClick() { this.store.dispatch(new ZoomIn()); }
   onZoomOutClick() { this.store.dispatch(new ZoomOut()); }
+  onFitToScreenClick() { this.store.dispatch(new FitToScreen()); }
 }

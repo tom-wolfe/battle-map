@@ -3,18 +3,23 @@ import { initialMapState } from './initial';
 import { MapState } from './state';
 
 const ZOOM_SF_INCREMENT = 0.1;
+const FIT_PADDING = 20;
 
 export function mapReducer(state: MapState = initialMapState, action: Actions.MapActions): MapState {
   switch (action.type) {
+    case Actions.FitToScreen.TYPE: {
+      const wsf = (state.canvas.width - FIT_PADDING) / state.backgroundImage.width;
+      const hsf = (state.canvas.height - FIT_PADDING) / state.backgroundImage.height;
+      const scaleFactor = Math.min(wsf, hsf);
+      const panOffset = centerImage(state, state.backgroundImage, scaleFactor);
+      return { ...state, scaleFactor, panOffset };
+    }
     case Actions.SetActiveTool.TYPE: {
       return { ...state, activeTool: action.toolId };
     }
     case Actions.SetBackgroundImage.TYPE: {
       const backgroundImage = action.background;
-      const panOffset = {
-        x: state.canvas.width / 2 - backgroundImage.width / 2,
-        y: state.canvas.height / 2 - backgroundImage.height / 2
-      };
+      const panOffset = centerImage(state, backgroundImage, state.scaleFactor);
       return { ...state, backgroundImage, panOffset, scaleFactor: 1 };
     }
     case Actions.SetCanvas.TYPE: {
@@ -39,4 +44,11 @@ export function mapReducer(state: MapState = initialMapState, action: Actions.Ma
     }
     default: return state;
   }
+}
+
+function centerImage(state: MapState, image: ImageBitmap, scaleFactor: number) {
+  return {
+    x: state.canvas.width / 2 - image.width * scaleFactor / 2,
+    y: state.canvas.height / 2 - image.height * scaleFactor / 2
+  };
 }

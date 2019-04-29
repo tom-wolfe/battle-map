@@ -1,6 +1,12 @@
 import { Action } from '@ngrx/store';
 import { Point } from '@bm/models';
 
+export class FitToScreen implements Action {
+  public static readonly TYPE = '[Map] Fit To Screen';
+  readonly type = FitToScreen.TYPE;
+  constructor() { }
+}
+
 export class Pan implements Action {
   public static readonly TYPE = '[Map] Pan';
   readonly type = Pan.TYPE;
@@ -50,6 +56,7 @@ export class ZoomOut implements Action {
 }
 
 export type MapActions =
+  FitToScreen |
   Pan |
   SetActiveTool |
   SetBackgroundImage |
