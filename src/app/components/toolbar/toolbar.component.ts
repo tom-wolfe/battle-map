@@ -15,7 +15,7 @@ export class ToolbarComponent implements AfterViewInit {
 
   constructor(private elRef: ElementRef, tools: Tools, private store: Store<AppState>) {
     this.tools = tools.tools;
-    tools.activeTool.subscribe(t=> this.activeTool = t);
+    tools.activeTool.subscribe(t => this.activeTool = t);
   }
 
   @HostListener('window:resize') onResize() { this.reposition(); }

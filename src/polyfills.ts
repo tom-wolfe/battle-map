@@ -68,7 +68,7 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 */
 if (!('createImageBitmap' in window)) {
   // tslint:disable-next-line:only-arrow-functions
-  (window as any).createImageBitmap = async function (blob) {
+  (window as any).createImageBitmap = async function(blob) {
     return new Promise((resolve, reject) => {
       const img = document.createElement('img');
       img.addEventListener('load', function() {
@@ -76,5 +76,5 @@ if (!('createImageBitmap' in window)) {
       });
       img.src = URL.createObjectURL(blob);
     });
-  }
+  };
 }

@@ -5,5 +5,5 @@ export interface SaveData {
   grid: {
     size: number;
     offset: Point;
-  }
+  };
 }

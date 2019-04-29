@@ -18,10 +18,10 @@ import { ZoomTool } from './zoom';
 export class Tools {
   tools: Tool[] = [];
 
-  private readonly _activeToolId = new Subject<number>();
-  public readonly activeToolId = this._activeToolId.asObservable();
-  private readonly _activeTool = new Subject<Tool>();
-  public readonly activeTool = this._activeTool.asObservable();
+  private readonly activeToolId$ = new Subject<number>();
+  public readonly activeToolId = this.activeToolId$.asObservable();
+  private readonly activeTool$ = new Subject<Tool>();
+  public readonly activeTool = this.activeTool$.asObservable();
 
   constructor(store: Store<AppState>) {
     this.tools = [
@@ -39,7 +39,7 @@ export class Tools {
 
   private onActiveToolIdChange(id: number) {
     const active = this.tools.find(t => t.id === id);
-    this._activeToolId.next(id);
-    this._activeTool.next(active);
+    this.activeToolId$.next(id);
+    this.activeTool$.next(active);
   }
 }

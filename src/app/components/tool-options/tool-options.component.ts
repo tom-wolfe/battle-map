@@ -7,7 +7,7 @@ import { Tool, Tools } from '@bm/tools';
   styleUrls: ['./tool-options.component.scss']
 })
 export class ToolOptionsComponent implements AfterViewInit {
-  toolName: string; 
+  toolName: string;
 
   @ViewChild('toolHost', { read: ViewContainerRef }) toolHost: ViewContainerRef;
 
@@ -22,7 +22,7 @@ export class ToolOptionsComponent implements AfterViewInit {
     this.toolName = undefined;
     if (!tool || !tool.settingsComponent) { return; }
     this.toolName = tool.title;
-    let componentFactory = this.factoryResolver.resolveComponentFactory(tool.settingsComponent);
+    const componentFactory = this.factoryResolver.resolveComponentFactory(tool.settingsComponent);
     this.toolHost.createComponent(componentFactory);
   }
 }
