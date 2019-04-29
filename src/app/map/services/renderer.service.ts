@@ -13,6 +13,7 @@ export class MapRenderer {
   panOffset: Point;
   scaleFactor: number;
   tempOffset: Point = { x: 0, y: 0 };
+  tempScale = 1;
 
   constructor(map: Map) {
     map.state.subscribe(this.onMapStateChanged.bind(this));
@@ -20,6 +21,11 @@ export class MapRenderer {
 
   public setTempOffset(offset: Point) {
     this.tempOffset = offset;
+    this.render();
+  }
+
+  public setTempScale(scale: number) {
+    this.tempScale = scale;
     this.render();
   }
 
@@ -57,7 +63,7 @@ export class MapRenderer {
 
   private offsetX(x: number) { return x + this.tempOffset.x + this.panOffset.x; }
   private offsetY(y: number) { return y + this.tempOffset.y + this.panOffset.y; }
-  private scale(n: number) { return n * this.scaleFactor; }
+  private scale(n: number) { return n * (this.tempScale * this.scaleFactor); }
 
   private boundCoordinate(ord: number) {
     const gridSize = this.scale(this.grid.size);

@@ -43,6 +43,12 @@ export class SetGridSize implements Action {
   constructor(public size: number) { }
 }
 
+export class SetZoom implements Action {
+  public static readonly TYPE = '[Map] Set Zoom';
+  readonly type = SetZoom.TYPE;
+  constructor(public scale: number, public relative: boolean) { }
+}
+
 export class ZoomIn implements Action {
   public static readonly TYPE = '[Map] Zoom In';
   readonly type = ZoomIn.TYPE;
@@ -63,5 +69,6 @@ export type MapActions =
   SetCanvas |
   SetGridOffset |
   SetGridSize |
+  SetZoom |
   ZoomIn |
   ZoomOut;

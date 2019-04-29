@@ -31,6 +31,9 @@ export function mapReducer(state: MapState = initialMapState, action: Actions.Ma
     case Actions.SetGridSize.TYPE: {
       return { ...state, grid: { ...state.grid, size: action.size } };
     }
+    case Actions.SetZoom.TYPE: {
+      return { ...state, scaleFactor: action.relative ? state.scaleFactor * action.scale : action.scale };
+    }
     case Actions.Pan.TYPE: {
       const x = state.panOffset.x + action.offset.x;
       const y = state.panOffset.y + action.offset.y;
