@@ -50,13 +50,7 @@ export class MapNavigationDirective implements OnInit {
     this.renderer.setTempScale(1);
   }
 
-  @HostListener('pinchout', ['$event']) pinchOut(e: any) {
-    this.store.dispatch(new ZoomIn());
-  }
-
   @HostListener('wheel', ['$event']) onWheel(e: WheelEvent) {
-    console.log('wheel');
     this.store.dispatch(e.deltaY > 0 ? new ZoomOut() : new ZoomIn());
   }
-
 }
