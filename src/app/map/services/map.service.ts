@@ -2,9 +2,8 @@ import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { AppState } from '@bm/store/state';
 import * as MapStore from '@bm/store/map';
-import { Subject, BehaviorSubject } from 'rxjs';
+import { Subject } from 'rxjs';
 import { MapState } from '@bm/store/map';
-import { Point } from '@bm/models';
 
 @Injectable()
 export class Map {

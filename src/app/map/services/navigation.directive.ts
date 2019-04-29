@@ -31,9 +31,8 @@ export class MapNavigationDirective implements OnInit {
   }
 
   @HostListener('panend', ['$event']) onPanEnd(e: any) {
-    const offset = { ...this.renderer.tempOffset };
+    this.store.dispatch(new Pan(this.renderer.tempOffset));
     this.renderer.setTempOffset({ x: 0, y: 0 });
-    this.store.dispatch(new Pan(offset));
   }
 
   @HostListener('wheel', ['$event']) onWheel(e: WheelEvent) {

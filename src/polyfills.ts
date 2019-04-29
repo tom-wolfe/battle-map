@@ -61,3 +61,20 @@ import 'zone.js/dist/zone';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+
+
+/* Safari and Edge polyfill for createImageBitmap
+* https://developer.mozilla.org/en-US/docs/Web/API/WindowOrWorkerGlobalScope/createImageBitmap
+*/
+if (!('createImageBitmap' in window)) {
+  // tslint:disable-next-line:only-arrow-functions
+  (window as any).createImageBitmap = async function (blob) {
+    return new Promise((resolve, reject) => {
+      const img = document.createElement('img');
+      img.addEventListener('load', function() {
+        resolve(this);
+      });
+      img.src = URL.createObjectURL(blob);
+    });
+  }
+}
