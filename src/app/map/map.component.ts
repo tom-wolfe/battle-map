@@ -52,7 +52,6 @@ export class MapComponent implements OnInit, OnChanges {
   }
 
   render() {
-    console.log('render');
     this.map.context.clearRect(0, 0, this.map.canvas.width, this.map.canvas.height);
     this.renderBackground();
     this.renderGrid();
