@@ -1,6 +1,6 @@
 import { AppState } from '../state';
 import { createSelector } from '@ngrx/store';
 
-export const state = (state: AppState) => state.map;
+export const state = (s: AppState) => s.map;
 
-export const backgroundImage = createSelector(state, state => state.background);
+export const backgroundImage = createSelector(state, s => s.background);

@@ -92,6 +92,6 @@ export class MapComponent implements OnInit, OnChanges {
     if (ord > gridSize || ord < 0) {
       ord -= Math.ceil(ord / gridSize) * gridSize;
     }
-    return ord
+    return ord;
   }
 }
