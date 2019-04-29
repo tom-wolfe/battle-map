@@ -5,6 +5,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppComponent } from './app.component';
 import * as Components from './components';
+import { MapModule } from './map/';
 import { reducers } from './store/reducer';
 import { ToolsModule } from './tools';
 
@@ -14,13 +15,13 @@ import { ToolsModule } from './tools';
     Components.MenuComponent,
     Components.ToolbarComponent,
     Components.ToolOptionsComponent,
-    Components.MapComponent,
   ],
   imports: [
     BrowserModule,
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument(),
-    ToolsModule
+    ToolsModule,
+    MapModule
   ],
   providers: [],
   bootstrap: [AppComponent]
