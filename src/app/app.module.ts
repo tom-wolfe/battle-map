@@ -4,26 +4,24 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 import { AppComponent } from './app.component';
-import { MapComponent } from './map';
-import { MenuComponent } from './menu';
+import * as Components from './components';
 import { reducers } from './store/reducer';
-import { ToolbarComponent } from './toolbar';
-import { ToolOptionsComponent } from './tool-options';
+import { Tools } from './tools';
 
 @NgModule({
   declarations: [
     AppComponent,
-    MenuComponent,
-    ToolbarComponent,
-    ToolOptionsComponent,
-    MapComponent,
+    Components.MenuComponent,
+    Components.ToolbarComponent,
+    Components.ToolOptionsComponent,
+    Components.MapComponent,
   ],
   imports: [
     BrowserModule,
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument(),
   ],
-  providers: [],
+  providers: [Tools],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
