@@ -45,6 +45,10 @@ export class MapNavigationDirective implements OnInit {
     this.renderer.setTempScale(e.scale);
   }
 
+  @HostListener('pinchmove', ['$event']) onPinchMove(e: any) {
+    this.renderer.setTempOffset({ x: e.deltaX, y: e.deltaY });
+  }
+
   @HostListener('pinchend', ['$event']) onPinchEnd(e: any) {
     this.store.dispatch(new SetZoom(e.scale, true));
     this.renderer.setTempScale(1);

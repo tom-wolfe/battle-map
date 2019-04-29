@@ -7,7 +7,7 @@ import { AppState } from '@bm/store/state';
   selector: 'bm-zoom-settings',
   templateUrl: './zoom-settings.component.html'
 })
-export class ZoomSettingsComponent { 
+export class ZoomSettingsComponent {
   constructor(private store: Store<AppState>) { }
 
   onZoomInClick() { this.store.dispatch(new ZoomIn()); }
