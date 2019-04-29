@@ -1,6 +1,6 @@
 @import "variables";
 
-$border-radius: 8px;
+$border-radius: $radius-large;
 
 :host {
   display: block;

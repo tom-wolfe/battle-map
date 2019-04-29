@@ -17,7 +17,7 @@ input {
   padding-left: 0.5rem;
   background-color: $bg-body;
   border: 1px solid black;
-  border-radius: 4px;
+  border-radius: $radius-small;
 }
 
 input[type=number] {

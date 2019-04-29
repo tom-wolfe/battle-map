@@ -1,0 +1,23 @@
+button {
+  border: none;
+  cursor: pointer;
+  background: $bg-toolbar-active;
+  color: $text-body;
+  line-height: 1.5rem;
+  border-radius: $radius-small;
+
+  &:hover {
+    background-color: $bg-toolbar-hover;
+    color: $text-hover;
+  }
+}
+
+.button-group {
+  display: inline-block;
+  button {
+    margin-right: 0.5rem;
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+}
