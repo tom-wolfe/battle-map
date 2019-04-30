@@ -34,12 +34,12 @@ export class MapNavigationDirective implements OnInit {
   }
 
   @HostListener('panmove', ['$event']) onPanMove(e: any) {
-    this.renderer.setTempOffset({ x: e.deltaX, y: e.deltaY });
+    this.renderer.setTempPan({ x: e.deltaX, y: e.deltaY });
   }
 
   @HostListener('panend', ['$event']) onPanEnd(e: any) {
-    this.store.dispatch(new Pan(this.renderer.tempOffset));
-    this.renderer.setTempOffset({ x: 0, y: 0 });
+    this.store.dispatch(new Pan(this.renderer.tempPan));
+    this.renderer.setTempPan({ x: 0, y: 0 });
   }
 
   @HostListener('pinch', ['$event']) onPinch(e: any) {
@@ -47,7 +47,7 @@ export class MapNavigationDirective implements OnInit {
   }
 
   @HostListener('pinchmove', ['$event']) onPinchMove(e: any) {
-    this.renderer.setTempOffset({ x: e.deltaX, y: e.deltaY });
+    this.renderer.setTempPan({ x: e.deltaX, y: e.deltaY });
   }
 
   @HostListener('pinchend', ['$event']) onPinchEnd(e: any) {

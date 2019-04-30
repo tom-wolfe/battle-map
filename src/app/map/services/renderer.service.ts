@@ -12,15 +12,15 @@ export class MapRenderer {
   grid: GridSettings;
   pan: Point;
   scale: number;
-  tempOffset: Point = { x: 0, y: 0 };
+  tempPan: Point = { x: 0, y: 0 };
   tempScale = 1;
 
   constructor(map: Map) {
     map.state.subscribe(this.onMapStateChanged.bind(this));
   }
 
-  public setTempOffset(offset: Point) {
-    this.tempOffset = offset;
+  public setTempPan(offset: Point) {
+    this.tempPan = offset;
     this.render();
   }
 
@@ -38,7 +38,7 @@ export class MapRenderer {
   private renderBackground() {
     const bg = this.backgroundImage;
     if (!bg) { return; }
-    this.context.drawImage(bg, this.offsetX(0), this.offsetY(0), this.scaleN(bg.width), this.scaleN(bg.height));
+    this.context.drawImage(bg, this.panX(0), this.panY(0), this.scaleN(bg.width), this.scaleN(bg.height));
   }
 
   private renderGrid() {
@@ -46,8 +46,8 @@ export class MapRenderer {
 
     const gridSize = this.scaleN(this.grid.size);
 
-    const startX = this.boundCoordinate(this.offsetX(this.scaleN(this.grid.offset.x) + gridSize));
-    const startY = this.boundCoordinate(this.offsetY(this.scaleN(this.grid.offset.y) + gridSize));
+    const startX = this.boundCoordinate(this.panX(this.scaleN(this.grid.offset.x) + gridSize));
+    const startY = this.boundCoordinate(this.panY(this.scaleN(this.grid.offset.y) + gridSize));
 
     const grid = new Path2D();
     for (let x = startX; x <= this.canvas.width; x += gridSize) {
@@ -61,8 +61,8 @@ export class MapRenderer {
     this.context.stroke(grid);
   }
 
-  private offsetX(x: number) { return x + this.tempOffset.x + this.pan.x; }
-  private offsetY(y: number) { return y + this.tempOffset.y + this.pan.y; }
+  private panX(x: number) { return x + this.tempPan.x + this.pan.x; }
+  private panY(y: number) { return y + this.tempPan.y + this.pan.y; }
   private scaleN(n: number) { return n * (this.tempScale * this.scale); }
 
   private boundCoordinate(ord: number) {
