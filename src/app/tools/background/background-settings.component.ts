@@ -19,8 +19,6 @@ export class BackgroundSettingsComponent {
 
   private onBackgroundImageChange(e: Event) {
     const file = (e.target as HTMLInputElement).files[0];
-    createImageBitmap(file).then(image => {
-      this.map.setBackground(image);
-    });
+    createImageBitmap(file).then(image => this.map.setBackground(image));
   }
 }

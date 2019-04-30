@@ -13,11 +13,11 @@ export class GridSettingsComponent {
     this.map.grid.subscribe(g => this.grid = g);
   }
 
-  onGridSizeChange(e: Event) {
+  onSizeChange(e: Event) {
     this.map.setGridSize(Number((e.target as HTMLInputElement).value));
   }
 
-  onGridOffsetChange(x: string, y: string) {
+  onOffsetChange(x: string, y: string) {
     this.map.setGridOffset({ x: Number(x), y: Number(y) });
   }
 }
