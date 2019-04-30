@@ -14,7 +14,7 @@ const TOOLS = [
   Tools.BackgroundSettingsComponent,
   Tools.GridSettingsComponent,
   Tools.ZoomSettingsComponent,
-]
+];
 
 @NgModule({
   declarations: [...COMPONENTS, ...TOOLS],

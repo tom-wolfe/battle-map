@@ -7,7 +7,7 @@ import { GridSettings } from '@bm/store/map';
   templateUrl: './grid-settings.component.html'
 })
 export class GridSettingsComponent {
-  grid: GridSettings
+  grid: GridSettings;
 
   constructor(private map: Map) {
     this.map.grid.subscribe(g => this.grid = g);
