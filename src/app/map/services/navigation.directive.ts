@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { Map } from './map.service';
 import { MapRenderer } from './renderer.service';
 import * as Hammer from 'hammerjs';
+import { Point } from '@bm/models';
 
 @Directive({
   selector: '[bmMapNavigation]',
@@ -55,6 +56,11 @@ export class MapNavigationDirective implements OnInit {
   }
 
   @HostListener('wheel', ['$event']) onWheel(e: WheelEvent) {
-    this.store.dispatch(e.deltaY > 0 ? new ZoomOut() : new ZoomIn());
+    const pOffset = this.elRef.nativeElement.getBoundingClientRect();
+    const origin: Point = { 
+      x: e.clientX - pOffset.left,
+      y: e.clientY - pOffset.top
+    };
+    this.store.dispatch(e.deltaY > 0 ? new ZoomOut(origin) : new ZoomIn(origin));
   }
 }

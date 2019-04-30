@@ -52,13 +52,13 @@ export class SetZoom implements Action {
 export class ZoomIn implements Action {
   public static readonly TYPE = '[Map] Zoom In';
   readonly type = ZoomIn.TYPE;
-  constructor() { }
+  constructor(public origin: Point) { }
 }
 
 export class ZoomOut implements Action {
   public static readonly TYPE = '[Map] Zoom Out';
   readonly type = ZoomOut.TYPE;
-  constructor() { }
+  constructor(public origin: Point) { }
 }
 
 export type MapActions =

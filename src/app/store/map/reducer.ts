@@ -1,6 +1,7 @@
 import * as Actions from './actions';
 import { initialMapState } from './initial';
 import { MapState } from './state';
+import { Point } from '@bm/models';
 
 const ZOOM_SF_INCREMENT = 0.1;
 const FIT_PADDING = 20;
@@ -40,10 +41,14 @@ export function mapReducer(state: MapState = initialMapState, action: Actions.Ma
       return { ...state, panOffset: { x, y } };
     }
     case Actions.ZoomIn.TYPE: {
-      return { ...state, scaleFactor: Math.min(2.0, state.scaleFactor + ZOOM_SF_INCREMENT) };
+      const scaleFactor = Math.min(2.0, state.scaleFactor + ZOOM_SF_INCREMENT);
+      const panOffset = scalePoint(state, action.origin, scaleFactor);
+      return { ...state, scaleFactor, panOffset };
     }
     case Actions.ZoomOut.TYPE: {
-      return { ...state, scaleFactor: Math.max(0.2, state.scaleFactor - ZOOM_SF_INCREMENT) };
+      const scaleFactor = Math.max(0.2, state.scaleFactor - ZOOM_SF_INCREMENT);
+      const panOffset = scalePoint(state, action.origin, scaleFactor);
+      return { ...state, scaleFactor, panOffset };
     }
     default: return state;
   }
@@ -54,4 +59,20 @@ function centerImage(state: MapState, image: ImageBitmap, scaleFactor: number) {
     x: state.canvas.width / 2 - image.width * scaleFactor / 2,
     y: state.canvas.height / 2 - image.height * scaleFactor / 2
   };
+}
+
+function scalePoint(state: MapState, origin: Point, scale: number): Point {
+  const canvasOrigin: Point = {
+    x: origin.x - state.panOffset.x,
+    y: origin.y - state.panOffset.y
+  };
+  const projectedCanvasOrigin: Point = {
+    x: canvasOrigin.x / state.scaleFactor * scale,
+    y: canvasOrigin.y / state.scaleFactor * scale
+  }
+  const panOffset = {
+    x: state.panOffset.x - (projectedCanvasOrigin.x - canvasOrigin.x),
+    y: state.panOffset.y - (projectedCanvasOrigin.y - canvasOrigin.y),
+  };
+  return panOffset;
 }
