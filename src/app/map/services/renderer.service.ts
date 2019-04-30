@@ -9,7 +9,7 @@ import { MapNavigator } from './navigator.service';
 export class MapRenderer {
   canvas: HTMLCanvasElement;
   backgroundImage: ImageBitmap;
-  context: CanvasRenderingContext2D
+  context: CanvasRenderingContext2D;
   grid: GridSettings;
   pan: Point;
   scale: number;
