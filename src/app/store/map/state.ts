@@ -5,12 +5,16 @@ export interface MapState {
   context: CanvasRenderingContext2D;
   activeTool: number;
   grid: GridSettings;
-  pan: Point;
-  scale: number;
+  navigation: NavigationSettings;  
   backgroundImage: ImageBitmap;
 }
 
 export interface GridSettings {
   size: number;
   offset: Point;
+}
+
+export interface NavigationSettings {
+  pan: Point;
+  scale: number;
 }

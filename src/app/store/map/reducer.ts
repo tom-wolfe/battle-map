@@ -1,6 +1,6 @@
 import * as Actions from './actions';
 import { initialMapState } from './initial';
-import { MapState } from './state';
+import { MapState, NavigationSettings } from './state';
 import { Point } from '@bm/models';
 
 const ZOOM_SF_INCREMENT = 0.1;
@@ -13,15 +13,15 @@ export function mapReducer(state: MapState = initialMapState, action: Actions.Ma
       const hsf = (state.canvas.height - FIT_PADDING) / state.backgroundImage.height;
       const scale = Math.min(wsf, hsf);
       const pan = centerImage(state, state.backgroundImage, scale);
-      return { ...state, scale, pan };
+      return { ...state, navigation: { ...state.navigation, scale, pan } };
     }
     case Actions.SetActiveTool.TYPE: {
       return { ...state, activeTool: action.toolId };
     }
     case Actions.SetBackgroundImage.TYPE: {
       const backgroundImage = action.background;
-      const pan = centerImage(state, backgroundImage, state.scale);
-      return { ...state, backgroundImage, pan, scale: 1 };
+      const pan = centerImage(state, backgroundImage, state.navigation.scale);
+      return { ...state, backgroundImage, navigation: { ...state.navigation, pan, scale: 1 } };
     }
     case Actions.SetCanvas.TYPE: {
       return { ...state, canvas: action.canvas, context: action.canvas.getContext('2d') };
@@ -33,24 +33,24 @@ export function mapReducer(state: MapState = initialMapState, action: Actions.Ma
       return { ...state, grid: { ...state.grid, size: action.size } };
     }
     case Actions.Zoom.TYPE: {
-      const scale = state.scale * action.scale;
-      const pan = scalePoint(state, action.origin, scale);
-      return { ...state, scale, pan };
+      const scale = state.navigation.scale * action.scale;
+      const pan = scalePoint(state.navigation, action.origin, scale);
+      return { ...state, navigation: { ...state.navigation, scale, pan } };
     }
     case Actions.Pan.TYPE: {
-      const x = state.pan.x + action.offset.x;
-      const y = state.pan.y + action.offset.y;
-      return { ...state, pan: { x, y } };
+      const x = state.navigation.pan.x + action.offset.x;
+      const y = state.navigation.pan.y + action.offset.y;
+      return { ...state, navigation: { ...state.navigation, pan: { x, y } } };
     }
     case Actions.ZoomIn.TYPE: {
-      const scale = Math.min(2.0, state.scale + ZOOM_SF_INCREMENT);
-      const pan = scalePoint(state, action.origin || canvasCenter(state), scale);
-      return { ...state, scale, pan };
+      const scale = Math.min(2.0, state.navigation.scale + ZOOM_SF_INCREMENT);
+      const pan = scalePoint(state.navigation, action.origin || canvasCenter(state), scale);
+      return { ...state, navigation: { ...state.navigation, scale, pan } };
     }
     case Actions.ZoomOut.TYPE: {
-      const scale = Math.max(0.2, state.scale - ZOOM_SF_INCREMENT);
-      const pan = scalePoint(state, action.origin || canvasCenter(state), scale);
-      return { ...state, scale, pan };
+      const scale = Math.max(0.2, state.navigation.scale - ZOOM_SF_INCREMENT);
+      const pan = scalePoint(state.navigation, action.origin || canvasCenter(state), scale);
+      return { ...state, navigation: { ...state.navigation, scale, pan } };
     }
     default: return state;
   }
@@ -70,18 +70,18 @@ function centerImage(state: MapState, image: ImageBitmap, scale: number): Point 
   };
 }
 
-function scalePoint(state: MapState, origin: Point, scale: number): Point {
+function scalePoint(navigation: NavigationSettings, origin: Point, scale: number): Point {
   const canvasOrigin: Point = {
-    x: origin.x - state.pan.x,
-    y: origin.y - state.pan.y
+    x: origin.x - navigation.pan.x,
+    y: origin.y - navigation.pan.y
   };
   const projectedCanvasOrigin: Point = {
-    x: canvasOrigin.x / state.scale * scale,
-    y: canvasOrigin.y / state.scale * scale
+    x: canvasOrigin.x / navigation.scale * scale,
+    y: canvasOrigin.y / navigation.scale * scale
   };
   const pan = {
-    x: state.pan.x - (projectedCanvasOrigin.x - canvasOrigin.x),
-    y: state.pan.y - (projectedCanvasOrigin.y - canvasOrigin.y),
+    x: navigation.pan.x - (projectedCanvasOrigin.x - canvasOrigin.x),
+    y: navigation.pan.y - (projectedCanvasOrigin.y - canvasOrigin.y),
   };
   return pan;
 }
