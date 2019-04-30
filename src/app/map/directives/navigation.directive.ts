@@ -21,6 +21,7 @@ export class MapNavigationDirective implements OnInit {
   ngOnInit() { this.onResize(); }
 
   @HostListener('window:resize') onResize() {
+    // TODO: Remove dependency on renderer.
     const el = this.elRef.nativeElement;
     el.width = el.parentElement.clientWidth;
     el.height = el.parentElement.clientHeight;
