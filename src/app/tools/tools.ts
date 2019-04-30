@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { activeTool } from '@bm/store/map';
+import { activeTool, SetActiveTool } from '@bm/store/map';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -23,7 +23,7 @@ export class Tools {
   private readonly activeTool$ = new Subject<Tool>();
   public readonly activeTool = this.activeTool$.asObservable();
 
-  constructor(store: Store<AppState>) {
+  constructor(private store: Store<AppState>) {
     this.tools = [
       new GridTool(),
       new BackgroundImageTool(),
@@ -35,6 +35,10 @@ export class Tools {
       new ZoomTool()
     ];
     store.pipe(select(activeTool)).subscribe(this.onActiveToolIdChange.bind(this));
+  }
+
+  setTool(tool: Tool) {
+    this.store.dispatch(new SetActiveTool(tool.id));
   }
 
   private onActiveToolIdChange(id: number) {

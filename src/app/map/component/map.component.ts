@@ -1,7 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import * as Map from '@bm/store/map';
-import { AppState } from '@bm/store/state';
-import { Store } from '@ngrx/store';
+import { Map } from '@bm/map/services';
 
 @Component({
   selector: 'bm-map',
@@ -10,10 +8,6 @@ import { Store } from '@ngrx/store';
 })
 export class MapComponent implements OnInit {
   @ViewChild('canvas') canvasEl: ElementRef<HTMLCanvasElement>;
-
-  constructor(private store: Store<AppState>) { }
-
-  ngOnInit() {
-    this.store.dispatch(new Map.SetCanvas(this.canvasEl.nativeElement));
-  }
+  constructor(private map: Map) { }
+  ngOnInit() { this.map.setCanvas(this.canvasEl.nativeElement); }
 }

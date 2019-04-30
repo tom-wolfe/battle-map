@@ -1,8 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
-import { SetActiveTool } from '@bm/store/map';
-import { AppState } from '@bm/store/state';
 import { Tool, Tools } from '@bm/tools';
-import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'bm-toolbar',
@@ -11,10 +8,8 @@ import { Store } from '@ngrx/store';
 })
 export class ToolbarComponent implements AfterViewInit {
   activeTool: Tool;
-  tools: Tool[];
 
-  constructor(private elRef: ElementRef, tools: Tools, private store: Store<AppState>) {
-    this.tools = tools.tools;
+  constructor(private elRef: ElementRef, private tools: Tools) {
     tools.activeTool.subscribe(t => this.activeTool = t);
   }
 
@@ -31,6 +26,6 @@ export class ToolbarComponent implements AfterViewInit {
   }
 
   onToolClick(tool: Tool) {
-    this.store.dispatch(new SetActiveTool(tool.id));
+    this.tools.setTool(tool);
   }
 }

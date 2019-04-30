@@ -1,15 +1,15 @@
 <label>Size</label>
 <div class="group">
-  <input type="number" min="10" max="200" [value]="gridSize" (change)="onGridSizeChange($event)">
+  <input type="number" min="10" max="200" [value]="grid.size" (change)="onGridSizeChange($event)">
   <span class="suffix">px</span>
 </div>
 
 <label>Offset</label>
 <div class="group">
-  <input type="number" min="0" max="200" [value]="gridOffset.x" (change)="onGridOffsetChange($event.target.value, gridOffset.y)">
+  <input type="number" min="0" max="200" [value]="grid.offset.x" (change)="onGridOffsetChange($event.target.value, gridOffset.y)">
   <span class="suffix">x</span>
 </div>
 <div class="group">
-  <input type="number" min="0" max="200" [value]="gridOffset.y" (change)="onGridOffsetChange(gridOffset.x, $event.target.value)">
+  <input type="number" min="0" max="200" [value]="grid.offset.y" (change)="onGridOffsetChange(gridOffset.x, $event.target.value)">
   <span class="suffix">y</span>
 </div>
