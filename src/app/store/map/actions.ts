@@ -1,12 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Point } from '@bm/models';
 
-export class Pan implements Action {
-  public static readonly TYPE = '[Map] Pan';
-  readonly type = Pan.TYPE;
-  constructor(public offset: Point) { }
-}
-
 export class SetActiveTool implements Action {
   public static readonly TYPE = '[Map] Set Active Tool';
   readonly type = SetActiveTool.TYPE;
@@ -49,33 +43,11 @@ export class SetScale implements Action {
   constructor(public scale: number) { }
 }
 
-export class Zoom implements Action {
-  public static readonly TYPE = '[Map] Zoom';
-  readonly type = Zoom.TYPE;
-  constructor(public scale: number, public origin: Point) { }
-}
-
-export class ZoomIn implements Action {
-  public static readonly TYPE = '[Map] Zoom In';
-  readonly type = ZoomIn.TYPE;
-  constructor(public origin: Point) { }
-}
-
-export class ZoomOut implements Action {
-  public static readonly TYPE = '[Map] Zoom Out';
-  readonly type = ZoomOut.TYPE;
-  constructor(public origin: Point) { }
-}
-
 export type MapActions =
-  Pan |
   SetActiveTool |
   SetBackground |
   SetCanvas |
   SetGridOffset |
   SetGridSize |
   SetPan |
-  SetScale |
-  Zoom |
-  ZoomIn |
-  ZoomOut;
+  SetScale;

@@ -5,8 +5,10 @@ import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Navigation } from '@bm/store/map';
 
 const FIT_PADDING = 20;
+const ZOOM_SF_INCREMENT = 0.1;
 
 @Injectable()
 export class MapNavigator {
@@ -32,10 +34,37 @@ export class MapNavigator {
   livePan(offset: Point) { this.tempPan.next(offset); }
   liveZoom(scale: number) { this.tempScale.next(scale); }
   endPan() { this.panTo(this.tempPan.value); }
-  panTo(offset: Point) { this.store.dispatch(new MapStore.Pan(offset)); this.tempPan.next({ x: 0, y: 0 }); }
-  zoomTo(scale: number, origin: Point) { this.store.dispatch(new MapStore.Zoom(scale, origin)); this.tempScale.next(1); }
-  zoomIn(origin?: Point) { this.store.dispatch(new MapStore.ZoomIn(origin)); this.tempScale.next(1); }
-  zoomOut(origin?: Point) { this.store.dispatch(new MapStore.ZoomOut(origin)); this.tempScale.next(1); }
+
+  panTo(offset: Point) {
+    const absolute: Point = {
+      x: this.pan$.value.x + offset.x,
+      y: this.pan$.value.y + offset.y,
+    };
+    this.store.dispatch(new MapStore.SetPan(absolute));
+    this.tempPan.next({ x: 0, y: 0 });
+  }
+
+  zoom(scale: number, origin: Point) {
+    const pan = this.scalePoint(origin, scale);
+    this.store.dispatch(new MapStore.SetScale(scale));
+    this.store.dispatch(new MapStore.SetPan(pan));
+    this.tempScale.next(1);
+  }
+
+  zoomTo(scale: number, origin: Point) {
+    const newScale = this.scale$.value * scale;
+    this.zoom(newScale, origin);
+  }
+
+  zoomIn(origin?: Point) {
+    const newScale = Math.min(2.0, this.scale$.value + ZOOM_SF_INCREMENT);
+    this.zoom(newScale, origin);
+  }
+
+  zoomOut(origin?: Point) {
+    const newScale = Math.max(0.1, this.scale$.value - ZOOM_SF_INCREMENT);
+    this.zoom(newScale, origin);
+  }
 
   fitToScreen() {
     const xScale = (this.canvas.width - FIT_PADDING) / this.background.width;
@@ -52,5 +81,21 @@ export class MapNavigator {
       x: this.canvas.width / 2 - image.width * scale / 2,
       y: this.canvas.height / 2 - image.height * scale / 2
     };
+  }
+
+  scalePoint(origin: Point, scale: number): Point {
+    const canvasOrigin: Point = {
+      x: origin.x - this.pan$.value.x,
+      y: origin.y - this.pan$.value.y
+    };
+    const projectedCanvasOrigin: Point = {
+      x: canvasOrigin.x / this.scale$.value * scale,
+      y: canvasOrigin.y / this.scale$.value * scale
+    };
+    const pan = {
+      x: this.pan$.value.x - (projectedCanvasOrigin.x - canvasOrigin.x),
+      y: this.pan$.value.y - (projectedCanvasOrigin.y - canvasOrigin.y),
+    };
+    return pan;
   }
 }
