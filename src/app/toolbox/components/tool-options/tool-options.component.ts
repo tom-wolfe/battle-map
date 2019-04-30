@@ -1,5 +1,6 @@
-import { Component, ComponentFactoryResolver, ViewContainerRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
-import { Tool, Toolbox } from '@bm/toolbox';
+import { AfterViewInit, Component, ComponentFactoryResolver, ViewChild, ViewContainerRef } from '@angular/core';
+import { Toolbox } from '@bm/toolbox/toolbox';
+import { Tool } from '@bm/toolbox/tools';
 
 @Component({
   selector: 'bm-tool-options',

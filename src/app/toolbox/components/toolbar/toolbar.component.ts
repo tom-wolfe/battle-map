@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
-import { Tool, Toolbox } from '@bm/toolbox';
+import { Toolbox } from '@bm/toolbox/toolbox';
+import { Tool } from '@bm/toolbox/tools';
 
 @Component({
   selector: 'bm-toolbar',

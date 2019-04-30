@@ -12,9 +12,7 @@ import { ToolboxModule } from './toolbox';
 @NgModule({
   declarations: [
     AppComponent,
-    Components.MenuComponent,
-    Components.ToolbarComponent,
-    Components.ToolOptionsComponent,
+    Components.MenuComponent
   ],
   imports: [
     BrowserModule,
