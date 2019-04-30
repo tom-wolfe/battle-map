@@ -1,4 +1,4 @@
-import { Type } from '@angular/core';
+import { Injector, Type } from '@angular/core';
 
 export interface Tool {
   id: number;
@@ -9,9 +9,9 @@ export interface Tool {
 }
 
 export interface ToolHandlerConstructor {
-  new(): ToolHandler; // TODO: Add required params.
+  new(injector: Injector): ToolHandler;
 }
 
 export interface ToolHandler {
-  // TODO: Populate with events.
+  destroy(): void;
 }

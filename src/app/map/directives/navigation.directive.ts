@@ -1,9 +1,6 @@
 import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
-import { Map, MapRenderer } from '@bm/map/services';
+import { MapNavigator, MapRenderer } from '@bm/map/services';
 import { Point } from '@bm/models';
-import { Pan, Zoom, ZoomIn, ZoomOut } from '@bm/store/map';
-import { AppState } from '@bm/store/state';
-import { Store } from '@ngrx/store';
 import * as Hammer from 'hammerjs';
 
 @Directive({
@@ -13,10 +10,9 @@ export class MapNavigationDirective implements OnInit {
   hammer: Hammer.HammerManager;
 
   constructor(
-    public elRef: ElementRef<HTMLCanvasElement>,
-    public map: Map,
-    private renderer: MapRenderer,
-    private store: Store<AppState>
+    private elRef: ElementRef<HTMLCanvasElement>,
+    private navigator: MapNavigator,
+    private renderer: MapRenderer
   ) {
     this.hammer = new Hammer(this.elRef.nativeElement);
     this.hammer.get('pinch').set({ enable: true });
@@ -36,7 +32,7 @@ export class MapNavigationDirective implements OnInit {
   }
 
   @HostListener('panend', ['$event']) onPanEnd(e: any) {
-    this.store.dispatch(new Pan(this.renderer.tempPan));
+    this.navigator.pan(this.renderer.tempPan);
     this.renderer.setTempPan({ x: 0, y: 0 });
   }
 
@@ -49,7 +45,7 @@ export class MapNavigationDirective implements OnInit {
   }
 
   @HostListener('pinchend', ['$event']) onPinchEnd(e: any) {
-    this.store.dispatch(new Zoom(e.scale, e.center));
+    this.navigator.zoom(e.scale, e.center);
     this.renderer.setTempScale(1);
   }
 
@@ -59,6 +55,6 @@ export class MapNavigationDirective implements OnInit {
       x: e.clientX - pOffset.left,
       y: e.clientY - pOffset.top
     };
-    this.store.dispatch(e.deltaY > 0 ? new ZoomOut(origin) : new ZoomIn(origin));
+    e.deltaY > 0 ? this.navigator.zoomOut(origin) : this.navigator.zoomIn(origin);
   }
 }

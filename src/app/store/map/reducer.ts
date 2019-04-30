@@ -44,19 +44,26 @@ export function mapReducer(state: MapState = initialMapState, action: Actions.Ma
     }
     case Actions.ZoomIn.TYPE: {
       const scale = Math.min(2.0, state.scale + ZOOM_SF_INCREMENT);
-      const pan = scalePoint(state, action.origin, scale);
+      const pan = scalePoint(state, action.origin || canvasCenter(state), scale);
       return { ...state, scale, pan };
     }
     case Actions.ZoomOut.TYPE: {
       const scale = Math.max(0.2, state.scale - ZOOM_SF_INCREMENT);
-      const pan = scalePoint(state, action.origin, scale);
+      const pan = scalePoint(state, action.origin || canvasCenter(state), scale);
       return { ...state, scale, pan };
     }
     default: return state;
   }
 }
 
-function centerImage(state: MapState, image: ImageBitmap, scale: number) {
+function canvasCenter(state: MapState): Point {
+  return {
+    x: state.canvas.width / 2,
+    y: state.canvas.height / 2
+  };
+}
+
+function centerImage(state: MapState, image: ImageBitmap, scale: number): Point {
   return {
     x: state.canvas.width / 2 - image.width * scale / 2,
     y: state.canvas.height / 2 - image.height * scale / 2

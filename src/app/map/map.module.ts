@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { MapComponent } from './component/map.component';
 import * as Services from './services';
 import * as Directives from './directives';
+import { ToolboxModule } from '@bm/toolbox';
 
 const COMPONENTS = [
   MapComponent
@@ -15,6 +16,7 @@ const DIRECTIVES = [
 
 const SERVICES = [
   Services.Map,
+  Services.MapNavigator,
   Services.MapRenderer
 ];
 
@@ -23,7 +25,7 @@ const SERVICES = [
     ...COMPONENTS,
     ...DIRECTIVES
   ],
-  imports: [CommonModule],
+  imports: [CommonModule, ToolboxModule],
   exports: [...COMPONENTS],
   providers: [...SERVICES],
   entryComponents: [...COMPONENTS]

@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
-import { Map } from '@bm/map/services';
+import { MapNavigator } from '@bm/map/services';
 
 @Component({
   selector: 'bm-zoom-settings',
   templateUrl: './zoom-settings.component.html'
 })
 export class ZoomSettingsComponent {
-  constructor(private map: Map) { }
-  onZoomInClick() { this.map.zoomIn(); }
-  onZoomOutClick() { this.map.zoomOut(); }
-  onFitToScreenClick() { this.map.fitToScreen(); }
+  constructor(private navigator: MapNavigator) { }
+  onZoomInClick() { this.navigator.zoomIn(); }
+  onZoomOutClick() { this.navigator.zoomOut(); }
+  onFitToScreenClick() { this.navigator.fitToScreen(); }
 }

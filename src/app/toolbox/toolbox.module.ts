@@ -4,10 +4,15 @@ import { NgModule } from '@angular/core';
 import { Toolbox } from './toolbox';
 import * as Tools from './tools';
 import * as Components from './components';
+import * as Directives from './directives';
 
 const COMPONENTS = [
   Components.ToolbarComponent,
   Components.ToolOptionsComponent
+];
+
+const DIRECTIVES = [
+  Directives.ToolDirective
 ];
 
 const TOOLS = [
@@ -17,10 +22,10 @@ const TOOLS = [
 ];
 
 @NgModule({
-  declarations: [...COMPONENTS, ...TOOLS],
+  declarations: [...COMPONENTS, ...TOOLS, ...DIRECTIVES],
   imports: [CommonModule],
   providers: [Toolbox],
-  exports: [...COMPONENTS],
+  exports: [...COMPONENTS, ...DIRECTIVES],
   entryComponents: [...TOOLS]
 })
 export class ToolboxModule { }
