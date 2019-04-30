@@ -6,7 +6,7 @@ export interface MapState {
   activeTool: number;
   grid: GridSettings;
   panOffset: Point;
-  scaleFactor: number;
+  scale: number;
   backgroundImage: ImageBitmap;
 }
 

@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
-import { Pan, ZoomIn, ZoomOut, SetZoom } from '@bm/store/map';
+import { Pan, ZoomIn, ZoomOut, Zoom } from '@bm/store/map';
 import { AppState } from '@bm/store/state';
 import { Store } from '@ngrx/store';
 
@@ -51,7 +51,7 @@ export class MapNavigationDirective implements OnInit {
   }
 
   @HostListener('pinchend', ['$event']) onPinchEnd(e: any) {
-    this.store.dispatch(new SetZoom(e.scale, true));
+    this.store.dispatch(new Zoom(e.scale, e.center));
     this.renderer.setTempScale(1);
   }
 

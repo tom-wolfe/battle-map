@@ -8,7 +8,7 @@ export const initialMapState: MapState = {
     size: 80,
     offset: { x: 0, y: 0 }
   },
-  scaleFactor: 1,
+  scale: 1,
   panOffset: { x: 0.5, y: 0.5 },
   backgroundImage: undefined
 };
