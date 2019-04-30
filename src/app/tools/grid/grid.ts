@@ -7,5 +7,4 @@ export class GridTool implements Tool {
   title = 'Grid';
   icon = 'mdi-grid';
   settingsComponent = GridSettingsComponent;
-  execute() { }
 }

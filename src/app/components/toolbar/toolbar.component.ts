@@ -32,6 +32,5 @@ export class ToolbarComponent implements AfterViewInit {
 
   onToolClick(tool: Tool) {
     this.store.dispatch(new SetActiveTool(tool.id));
-    tool.execute();
   }
 }

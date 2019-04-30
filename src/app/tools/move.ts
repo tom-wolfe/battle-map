@@ -5,5 +5,4 @@ export class MoveTool implements Tool {
   title = 'Move';
   icon = 'mdi-cursor-move';
   settingsComponent = undefined;
-  execute() { }
 }

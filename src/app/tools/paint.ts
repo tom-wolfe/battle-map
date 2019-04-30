@@ -5,5 +5,4 @@ export class PaintTool implements Tool {
   title = 'Paint';
   icon = 'mdi-brush';
   settingsComponent = undefined;
-  execute() { }
 }

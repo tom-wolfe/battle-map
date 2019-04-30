@@ -5,5 +5,4 @@ export interface Tool {
   title: string;
   icon: string;
   settingsComponent: Type<any>;
-  execute(): void;
 }

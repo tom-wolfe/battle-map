@@ -7,5 +7,4 @@ export class ZoomTool implements Tool {
   title = 'Zoom';
   icon = 'mdi-magnify';
   settingsComponent = ZoomSettingsComponent;
-  execute() { }
 }

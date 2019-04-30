@@ -7,5 +7,4 @@ export class BackgroundImageTool implements Tool {
   title = 'Background Image';
   icon = 'mdi-image';
   settingsComponent = BackgroundSettingsComponent;
-  execute() { }
 }

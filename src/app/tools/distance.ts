@@ -5,5 +5,4 @@ export class DistanceTool implements Tool {
   title = 'Distance';
   icon = 'mdi-ruler';
   settingsComponent = undefined;
-  execute() { }
 }

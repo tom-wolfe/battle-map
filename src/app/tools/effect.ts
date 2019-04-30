@@ -5,5 +5,4 @@ export class EffectTool implements Tool {
   title = 'Effect';
   icon = 'mdi-flask';
   settingsComponent = undefined;
-  execute() { }
 }
