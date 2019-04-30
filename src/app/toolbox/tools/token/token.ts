@@ -1,4 +1,4 @@
-import { Tool } from '@bm/tools/tool';
+import { Tool } from '@bm/toolbox/tools/tool';
 
 export class TokenTool implements Tool {
   id = 3;

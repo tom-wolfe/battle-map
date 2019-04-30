@@ -7,7 +7,7 @@ import { AppComponent } from './app.component';
 import * as Components from './components';
 import { MapModule } from './map/';
 import { reducers } from './store/reducer';
-import { ToolsModule } from './tools';
+import { ToolboxModule } from './toolbox';
 
 @NgModule({
   declarations: [
@@ -20,7 +20,7 @@ import { ToolsModule } from './tools';
     BrowserModule,
     StoreModule.forRoot(reducers),
     StoreDevtoolsModule.instrument(),
-    ToolsModule,
+    ToolboxModule,
     MapModule
   ],
   providers: [],

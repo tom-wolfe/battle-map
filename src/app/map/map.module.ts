@@ -2,19 +2,20 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import { MapComponent } from './component/map.component';
-import { Map, MapRenderer, MapNavigationDirective } from './services';
+import * as Services from './services';
+import * as Directives from './directives';
 
 const COMPONENTS = [
   MapComponent
 ];
 
 const DIRECTIVES = [
-  MapNavigationDirective
+  Directives.MapNavigationDirective
 ];
 
 const SERVICES = [
-  Map,
-  MapRenderer
+  Services.Map,
+  Services.MapRenderer
 ];
 
 @NgModule({

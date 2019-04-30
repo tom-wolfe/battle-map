@@ -1,5 +1,5 @@
 import { Component, ComponentFactoryResolver, ViewContainerRef, ViewChild, OnInit, AfterViewInit } from '@angular/core';
-import { Tool, Tools } from '@bm/tools';
+import { Tool, Toolbox } from '@bm/toolbox';
 
 @Component({
   selector: 'bm-tool-options',
@@ -11,7 +11,7 @@ export class ToolOptionsComponent implements AfterViewInit {
 
   @ViewChild('toolHost', { read: ViewContainerRef }) toolHost: ViewContainerRef;
 
-  constructor(private factoryResolver: ComponentFactoryResolver, private tools: Tools) { }
+  constructor(private factoryResolver: ComponentFactoryResolver, private tools: Toolbox) { }
 
   ngAfterViewInit() {
     this.tools.activeTool.subscribe(this.onActiveToolChange.bind(this));

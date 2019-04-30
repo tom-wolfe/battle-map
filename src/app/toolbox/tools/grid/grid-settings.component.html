@@ -6,10 +6,10 @@
 
 <label>Offset</label>
 <div class="group">
-  <input type="number" min="-200" max="200" [value]="grid.offset.x" (change)="onOffsetChange($event.target.value, gridOffset.y)">
+  <input type="number" min="-200" max="200" [value]="grid.offset.x" (change)="onOffsetChange($event.target.value, grid.offset.y)">
   <span class="suffix">x</span>
 </div>
 <div class="group">
-  <input type="number" min="-200" max="200" [value]="grid.offset.y" (change)="onOffsetChange(gridOffset.x, $event.target.value)">
+  <input type="number" min="-200" max="200" [value]="grid.offset.y" (change)="onOffsetChange(grid.offset.x, $event.target.value)">
   <span class="suffix">y</span>
 </div>

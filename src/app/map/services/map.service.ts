@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Store, select } from '@ngrx/store';
-import { AppState } from '@bm/store/state';
-import * as MapStore from '@bm/store/map';
-import { Subject } from 'rxjs';
 import { Point } from '@bm/models';
+import * as MapStore from '@bm/store/map';
+import { AppState } from '@bm/store/state';
+import { select, Store } from '@ngrx/store';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable()
 export class Map {
   private readonly state$ = new Subject<MapStore.MapState>();
   public readonly state = this.state$.asObservable();
 
-  private readonly grid$ = new Subject<MapStore.GridSettings>();
+  private readonly grid$ = new BehaviorSubject<MapStore.GridSettings>(undefined);
   public readonly grid = this.grid$.asObservable();
 
   constructor(private store: Store<AppState>) {

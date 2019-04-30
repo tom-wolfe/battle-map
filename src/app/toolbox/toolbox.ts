@@ -4,40 +4,32 @@ import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 
-import { BackgroundImageTool } from './background';
-import { DistanceTool } from './distance';
-import { EffectTool } from './effect';
-import { GridTool } from './grid';
-import { MoveTool } from './move';
-import { PaintTool } from './paint';
-import { TokenTool } from './token';
-import { Tool } from './tool';
-import { ZoomTool } from './zoom';
+import * as Tools from './tools';
 
 @Injectable()
-export class Tools {
-  tools: Tool[] = [];
+export class Toolbox {
+  tools: Tools.Tool[] = [];
 
   private readonly activeToolId$ = new Subject<number>();
   public readonly activeToolId = this.activeToolId$.asObservable();
-  private readonly activeTool$ = new Subject<Tool>();
+  private readonly activeTool$ = new Subject<Tools.Tool>();
   public readonly activeTool = this.activeTool$.asObservable();
 
   constructor(private store: Store<AppState>) {
     this.tools = [
-      new GridTool(),
-      new BackgroundImageTool(),
-      new TokenTool(),
-      new MoveTool(),
-      new EffectTool(),
-      new PaintTool(),
-      new DistanceTool(),
-      new ZoomTool()
+      new Tools.GridTool(),
+      new Tools.BackgroundImageTool(),
+      new Tools.TokenTool(),
+      new Tools.MoveTool(),
+      new Tools.EffectTool(),
+      new Tools.PaintTool(),
+      new Tools.DistanceTool(),
+      new Tools.ZoomTool()
     ];
     store.pipe(select(activeTool)).subscribe(this.onActiveToolIdChange.bind(this));
   }
 
-  setTool(tool: Tool) {
+  setTool(tool: Tools.Tool) {
     this.store.dispatch(new SetActiveTool(tool.id));
   }
 

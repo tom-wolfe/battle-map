@@ -1,4 +1,4 @@
-import { Tool } from '@bm/tools/tool';
+import { Tool } from '@bm/toolbox/tools/tool';
 
 import { BackgroundSettingsComponent } from './background-settings.component';
 

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, HostListener } from '@angular/core';
-import { Tool, Tools } from '@bm/tools';
+import { Tool, Toolbox } from '@bm/toolbox';
 
 @Component({
   selector: 'bm-toolbar',
@@ -9,7 +9,7 @@ import { Tool, Tools } from '@bm/tools';
 export class ToolbarComponent implements AfterViewInit {
   activeTool: Tool;
 
-  constructor(private elRef: ElementRef, private tools: Tools) {
+  constructor(private elRef: ElementRef, private tools: Toolbox) {
     tools.activeTool.subscribe(t => this.activeTool = t);
   }
 

@@ -1,12 +1,10 @@
 import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
-import { Pan, ZoomIn, ZoomOut, Zoom } from '@bm/store/map';
+import { Map, MapRenderer } from '@bm/map/services';
+import { Point } from '@bm/models';
+import { Pan, Zoom, ZoomIn, ZoomOut } from '@bm/store/map';
 import { AppState } from '@bm/store/state';
 import { Store } from '@ngrx/store';
-
-import { Map } from './map.service';
-import { MapRenderer } from './renderer.service';
 import * as Hammer from 'hammerjs';
-import { Point } from '@bm/models';
 
 @Directive({
   selector: '[bmMapNavigation]',
