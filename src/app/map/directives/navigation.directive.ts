@@ -28,25 +28,23 @@ export class MapNavigationDirective implements OnInit {
   }
 
   @HostListener('panmove', ['$event']) onPanMove(e: any) {
-    this.renderer.setTempPan({ x: e.deltaX, y: e.deltaY });
-  }
-
-  @HostListener('panend', ['$event']) onPanEnd(e: any) {
-    this.navigator.pan(this.renderer.tempPan);
-    this.renderer.setTempPan({ x: 0, y: 0 });
-  }
-
-  @HostListener('pinch', ['$event']) onPinch(e: any) {
-    this.renderer.setTempScale(e.scale);
+    this.navigator.livePan({ x: e.deltaX, y: e.deltaY });
   }
 
   @HostListener('pinchmove', ['$event']) onPinchMove(e: any) {
-    this.renderer.setTempPan({ x: e.deltaX, y: e.deltaY });
+    this.navigator.livePan({ x: e.deltaX, y: e.deltaY });
+  }
+
+  @HostListener('panend', ['$event']) onPanEnd(e: any) {
+    this.navigator.endPan();
+  }
+
+  @HostListener('pinch', ['$event']) onPinch(e: any) {
+    this.navigator.liveZoom(e.scale);
   }
 
   @HostListener('pinchend', ['$event']) onPinchEnd(e: any) {
-    this.navigator.zoom(e.scale, e.center);
-    this.renderer.setTempScale(1);
+    this.navigator.zoomTo(e.scale, e.center);
   }
 
   @HostListener('wheel', ['$event']) onWheel(e: WheelEvent) {

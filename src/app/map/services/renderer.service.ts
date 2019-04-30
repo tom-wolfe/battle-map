@@ -3,33 +3,35 @@ import { Point } from '@bm/models';
 import { GridSettings, MapState } from '@bm/store/map';
 
 import { Map } from './map.service';
+import { MapNavigator } from './navigator.service';
 
 @Injectable()
 export class MapRenderer {
-  backgroundImage: ImageBitmap;
   canvas: HTMLCanvasElement;
-  context: CanvasRenderingContext2D;
+  backgroundImage: ImageBitmap;
+  context: CanvasRenderingContext2D
   grid: GridSettings;
   pan: Point;
   scale: number;
-  tempPan: Point = { x: 0, y: 0 };
-  tempScale = 1;
 
-  constructor(map: Map) {
-    map.state.subscribe(this.onMapStateChanged.bind(this));
+  constructor(map: Map, navigator: MapNavigator) {
+    map.context.subscribe(this.onContextChange.bind(this));
+    map.canvas.subscribe(this.onCanvasChange.bind(this));
+    map.backgroundImage.subscribe(this.onBackgroundChange.bind(this));
+    map.grid.subscribe(this.onGridChange.bind(this));
+    navigator.pan.subscribe(this.onPanChange.bind(this));
+    navigator.scale.subscribe(this.onScaleChange.bind(this));
   }
 
-  public setTempPan(offset: Point) {
-    this.tempPan = offset;
-    this.render();
-  }
-
-  public setTempScale(scale: number) {
-    this.tempScale = scale;
-    this.render();
-  }
+  private onContextChange(context: CanvasRenderingContext2D) { this.context = context; this.render(); }
+  private onCanvasChange(c: HTMLCanvasElement) { this.canvas = c; this.render(); }
+  private onGridChange(g: GridSettings) { this.grid = g; this.render(); }
+  private onPanChange(p: Point) { this.pan = p; this.render(); }
+  private onScaleChange(s: number) { this.scale = s; this.render(); }
+  private onBackgroundChange(b: ImageBitmap) { this.backgroundImage = b; this.render(); }
 
   render() {
+    if (!this.context) { return; }
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.renderBackground();
     this.renderGrid();
@@ -61,9 +63,9 @@ export class MapRenderer {
     this.context.stroke(grid);
   }
 
-  private panX(x: number) { return x + this.tempPan.x + this.pan.x; }
-  private panY(y: number) { return y + this.tempPan.y + this.pan.y; }
-  private scaleN(n: number) { return n * (this.tempScale * this.scale); }
+  private panX(x: number) { return x +  this.pan.x; }
+  private panY(y: number) { return y + this.pan.y; }
+  private scaleN(n: number) { return n * this.scale; }
 
   private boundCoordinate(ord: number) {
     const gridSize = this.scaleN(this.grid.size);
@@ -71,15 +73,5 @@ export class MapRenderer {
       ord -= Math.ceil(ord / gridSize) * gridSize;
     }
     return ord;
-  }
-
-  private onMapStateChanged(state: MapState) {
-    this.backgroundImage = state.backgroundImage;
-    this.canvas = state.canvas;
-    this.context = state.context;
-    this.grid = state.grid;
-    this.pan = state.pan;
-    this.scale = state.scale;
-    this.render();
   }
 }
