@@ -57,7 +57,7 @@ export class MapNavigationDirective implements OnInit {
 
   @HostListener('wheel', ['$event']) onWheel(e: WheelEvent) {
     const pOffset = this.elRef.nativeElement.getBoundingClientRect();
-    const origin: Point = { 
+    const origin: Point = {
       x: e.clientX - pOffset.left,
       y: e.clientY - pOffset.top
     };

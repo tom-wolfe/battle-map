@@ -71,7 +71,7 @@ function scalePoint(state: MapState, origin: Point, scale: number): Point {
   const projectedCanvasOrigin: Point = {
     x: canvasOrigin.x / state.scale * scale,
     y: canvasOrigin.y / state.scale * scale
-  }
+  };
   const pan = {
     x: state.pan.x - (projectedCanvasOrigin.x - canvasOrigin.x),
     y: state.pan.y - (projectedCanvasOrigin.y - canvasOrigin.y),
