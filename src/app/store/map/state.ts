@@ -6,7 +6,7 @@ export interface MapState {
   activeTool: number;
   grid: Grid;
   navigation: Navigation;
-  backgroundImage: ImageBitmap;
+  background: ImageBitmap;
 }
 
 export interface Grid {

@@ -7,7 +7,7 @@ import { MapNavigator } from './navigator.service';
 @Injectable()
 export class MapRenderer {
   canvas: HTMLCanvasElement;
-  backgroundImage: ImageBitmap;
+  background: ImageBitmap;
   context: CanvasRenderingContext2D;
   grid: Grid;
   navigation: Navigation;
@@ -15,7 +15,7 @@ export class MapRenderer {
   constructor(map: Map, navigator: MapNavigator) {
     map.context.subscribe(this.onContextChange.bind(this));
     map.canvas.subscribe(this.onCanvasChange.bind(this));
-    map.backgroundImage.subscribe(this.onBackgroundChange.bind(this));
+    map.background.subscribe(this.onBackgroundChange.bind(this));
     map.grid.subscribe(this.onGridChange.bind(this));
     navigator.navigation.subscribe(this.onNavigationChange.bind(this));
   }
@@ -24,7 +24,7 @@ export class MapRenderer {
   private onCanvasChange(c: HTMLCanvasElement) { this.canvas = c; this.render(); }
   private onGridChange(g: Grid) { this.grid = g; this.render(); }
   private onNavigationChange(n: Navigation) { this.navigation = n; this.render(); }
-  private onBackgroundChange(b: ImageBitmap) { this.backgroundImage = b; this.render(); }
+  private onBackgroundChange(b: ImageBitmap) { this.background = b; this.render(); }
 
   render() {
     if (!this.context) { return; }
@@ -34,7 +34,7 @@ export class MapRenderer {
   }
 
   private renderBackground() {
-    const bg = this.backgroundImage;
+    const bg = this.background;
     if (!bg) { return; }
     this.context.drawImage(bg, this.panX(0), this.panY(0), this.scaleN(bg.width), this.scaleN(bg.height));
   }

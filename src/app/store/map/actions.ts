@@ -1,12 +1,6 @@
 import { Action } from '@ngrx/store';
 import { Point } from '@bm/models';
 
-export class FitToScreen implements Action {
-  public static readonly TYPE = '[Map] Fit To Screen';
-  readonly type = FitToScreen.TYPE;
-  constructor() { }
-}
-
 export class Pan implements Action {
   public static readonly TYPE = '[Map] Pan';
   readonly type = Pan.TYPE;
@@ -19,9 +13,9 @@ export class SetActiveTool implements Action {
   constructor(public toolId: number) { }
 }
 
-export class SetBackgroundImage implements Action {
-  public static readonly TYPE = '[Map] Set Background Image';
-  readonly type = SetBackgroundImage.TYPE;
+export class SetBackground implements Action {
+  public static readonly TYPE = '[Map] Set Background';
+  readonly type = SetBackground.TYPE;
   constructor(public background: ImageBitmap) { }
 }
 
@@ -43,6 +37,18 @@ export class SetGridSize implements Action {
   constructor(public size: number) { }
 }
 
+export class SetPan implements Action {
+  public static readonly TYPE = '[Map] Set Pan';
+  readonly type = SetPan.TYPE;
+  constructor(public offset: Point) { }
+}
+
+export class SetScale implements Action {
+  public static readonly TYPE = '[Map] Set Scale';
+  readonly type = SetScale.TYPE;
+  constructor(public scale: number) { }
+}
+
 export class Zoom implements Action {
   public static readonly TYPE = '[Map] Zoom';
   readonly type = Zoom.TYPE;
@@ -62,13 +68,14 @@ export class ZoomOut implements Action {
 }
 
 export type MapActions =
-  FitToScreen |
   Pan |
   SetActiveTool |
-  SetBackgroundImage |
+  SetBackground |
   SetCanvas |
   SetGridOffset |
   SetGridSize |
+  SetPan |
+  SetScale |
   Zoom |
   ZoomIn |
   ZoomOut;

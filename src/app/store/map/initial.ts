@@ -2,7 +2,7 @@ import { MapState } from './state';
 
 export const initialMapState: MapState = {
   activeTool: undefined,
-  backgroundImage: undefined,
+  background: undefined,
   canvas: undefined,
   context: undefined,
   grid: {

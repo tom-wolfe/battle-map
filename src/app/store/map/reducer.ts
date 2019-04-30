@@ -4,24 +4,15 @@ import { MapState, Navigation } from './state';
 import { Point } from '@bm/models';
 
 const ZOOM_SF_INCREMENT = 0.1;
-const FIT_PADDING = 20;
+
 
 export function mapReducer(state: MapState = initialMapState, action: Actions.MapActions): MapState {
   switch (action.type) {
-    case Actions.FitToScreen.TYPE: {
-      const wsf = (state.canvas.width - FIT_PADDING) / state.backgroundImage.width;
-      const hsf = (state.canvas.height - FIT_PADDING) / state.backgroundImage.height;
-      const scale = Math.min(wsf, hsf);
-      const pan = centerImage(state, state.backgroundImage, scale);
-      return { ...state, navigation: { ...state.navigation, scale, pan } };
-    }
     case Actions.SetActiveTool.TYPE: {
       return { ...state, activeTool: action.toolId };
     }
-    case Actions.SetBackgroundImage.TYPE: {
-      const backgroundImage = action.background;
-      const pan = centerImage(state, backgroundImage, state.navigation.scale);
-      return { ...state, backgroundImage, navigation: { ...state.navigation, pan, scale: 1 } };
+    case Actions.SetBackground.TYPE: {
+      return { ...state, background: action.background };
     }
     case Actions.SetCanvas.TYPE: {
       return { ...state, canvas: action.canvas, context: action.canvas.getContext('2d') };
@@ -31,6 +22,12 @@ export function mapReducer(state: MapState = initialMapState, action: Actions.Ma
     }
     case Actions.SetGridSize.TYPE: {
       return { ...state, grid: { ...state.grid, size: action.size } };
+    }
+    case Actions.SetPan.TYPE: {
+      return { ...state, navigation: { ...state.navigation, pan: action.offset } };
+    }
+    case Actions.SetScale.TYPE: {
+      return { ...state, navigation: { ...state.navigation, scale: action.scale } };
     }
     case Actions.Zoom.TYPE: {
       const scale = state.navigation.scale * action.scale;

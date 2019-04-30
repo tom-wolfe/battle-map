@@ -6,8 +6,13 @@ import { select, Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+const FIT_PADDING = 20;
+
 @Injectable()
 export class MapNavigator {
+  private canvas: HTMLCanvasElement;
+  private background: ImageBitmap;
+
   private readonly tempPan = new BehaviorSubject<Point>({ x: 0, y: 0 });
   private readonly tempScale = new BehaviorSubject<number>(1);
   private readonly pan$ = new BehaviorSubject<Point>({ x: 0, y: 0 });
@@ -20,6 +25,8 @@ export class MapNavigator {
   constructor(private store: Store<AppState>) {
     this.store.pipe(select(MapStore.pan)).subscribe(p => this.pan$.next(p));
     this.store.pipe(select(MapStore.scale)).subscribe(s => this.scale$.next(s));
+    this.store.pipe(select(MapStore.canvas)).subscribe(c => this.canvas = c);
+    this.store.pipe(select(MapStore.background)).subscribe(b => this.background = b);
   }
 
   livePan(offset: Point) { this.tempPan.next(offset); }
@@ -29,5 +36,21 @@ export class MapNavigator {
   zoomTo(scale: number, origin: Point) { this.store.dispatch(new MapStore.Zoom(scale, origin)); this.tempScale.next(1); }
   zoomIn(origin?: Point) { this.store.dispatch(new MapStore.ZoomIn(origin)); this.tempScale.next(1); }
   zoomOut(origin?: Point) { this.store.dispatch(new MapStore.ZoomOut(origin)); this.tempScale.next(1); }
-  fitToScreen() { this.store.dispatch(new MapStore.FitToScreen()); }
+
+  fitToScreen() {
+    const xScale = (this.canvas.width - FIT_PADDING) / this.background.width;
+    const yScale = (this.canvas.height - FIT_PADDING) / this.background.height;
+    const scale = Math.min(xScale, yScale);
+    const offset = this.centerImage(this.background, scale);
+
+    this.store.dispatch(new MapStore.SetScale(scale));
+    this.store.dispatch(new MapStore.SetPan(offset));
+  }
+
+  centerImage(image: ImageBitmap, scale: number): Point {
+    return {
+      x: this.canvas.width / 2 - image.width * scale / 2,
+      y: this.canvas.height / 2 - image.height * scale / 2
+    };
+  }
 }
