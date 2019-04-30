@@ -12,16 +12,16 @@ export function mapReducer(state: MapState = initialMapState, action: Actions.Ma
       const wsf = (state.canvas.width - FIT_PADDING) / state.backgroundImage.width;
       const hsf = (state.canvas.height - FIT_PADDING) / state.backgroundImage.height;
       const scale = Math.min(wsf, hsf);
-      const panOffset = centerImage(state, state.backgroundImage, scale);
-      return { ...state, scale, panOffset };
+      const pan = centerImage(state, state.backgroundImage, scale);
+      return { ...state, scale, pan };
     }
     case Actions.SetActiveTool.TYPE: {
       return { ...state, activeTool: action.toolId };
     }
     case Actions.SetBackgroundImage.TYPE: {
       const backgroundImage = action.background;
-      const panOffset = centerImage(state, backgroundImage, state.scale);
-      return { ...state, backgroundImage, panOffset, scale: 1 };
+      const pan = centerImage(state, backgroundImage, state.scale);
+      return { ...state, backgroundImage, pan, scale: 1 };
     }
     case Actions.SetCanvas.TYPE: {
       return { ...state, canvas: action.canvas, context: action.canvas.getContext('2d') };
@@ -34,23 +34,23 @@ export function mapReducer(state: MapState = initialMapState, action: Actions.Ma
     }
     case Actions.Zoom.TYPE: {
       const scale = state.scale * action.scale;
-      const panOffset = scalePoint(state, action.origin, scale);
-      return { ...state, scale, panOffset };
+      const pan = scalePoint(state, action.origin, scale);
+      return { ...state, scale, pan };
     }
     case Actions.Pan.TYPE: {
-      const x = state.panOffset.x + action.offset.x;
-      const y = state.panOffset.y + action.offset.y;
-      return { ...state, panOffset: { x, y } };
+      const x = state.pan.x + action.offset.x;
+      const y = state.pan.y + action.offset.y;
+      return { ...state, pan: { x, y } };
     }
     case Actions.ZoomIn.TYPE: {
       const scale = Math.min(2.0, state.scale + ZOOM_SF_INCREMENT);
-      const panOffset = scalePoint(state, action.origin, scale);
-      return { ...state, scale, panOffset };
+      const pan = scalePoint(state, action.origin, scale);
+      return { ...state, scale, pan };
     }
     case Actions.ZoomOut.TYPE: {
       const scale = Math.max(0.2, state.scale - ZOOM_SF_INCREMENT);
-      const panOffset = scalePoint(state, action.origin, scale);
-      return { ...state, scale, panOffset };
+      const pan = scalePoint(state, action.origin, scale);
+      return { ...state, scale, pan };
     }
     default: return state;
   }
@@ -65,16 +65,16 @@ function centerImage(state: MapState, image: ImageBitmap, scale: number) {
 
 function scalePoint(state: MapState, origin: Point, scale: number): Point {
   const canvasOrigin: Point = {
-    x: origin.x - state.panOffset.x,
-    y: origin.y - state.panOffset.y
+    x: origin.x - state.pan.x,
+    y: origin.y - state.pan.y
   };
   const projectedCanvasOrigin: Point = {
     x: canvasOrigin.x / state.scale * scale,
     y: canvasOrigin.y / state.scale * scale
   }
-  const panOffset = {
-    x: state.panOffset.x - (projectedCanvasOrigin.x - canvasOrigin.x),
-    y: state.panOffset.y - (projectedCanvasOrigin.y - canvasOrigin.y),
+  const pan = {
+    x: state.pan.x - (projectedCanvasOrigin.x - canvasOrigin.x),
+    y: state.pan.y - (projectedCanvasOrigin.y - canvasOrigin.y),
   };
-  return panOffset;
+  return pan;
 }

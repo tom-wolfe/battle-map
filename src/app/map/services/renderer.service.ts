@@ -10,7 +10,7 @@ export class MapRenderer {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   grid: GridSettings;
-  panOffset: Point;
+  pan: Point;
   scale: number;
   tempOffset: Point = { x: 0, y: 0 };
   tempScale = 1;
@@ -61,8 +61,8 @@ export class MapRenderer {
     this.context.stroke(grid);
   }
 
-  private offsetX(x: number) { return x + this.tempOffset.x + this.panOffset.x; }
-  private offsetY(y: number) { return y + this.tempOffset.y + this.panOffset.y; }
+  private offsetX(x: number) { return x + this.tempOffset.x + this.pan.x; }
+  private offsetY(y: number) { return y + this.tempOffset.y + this.pan.y; }
   private scaleN(n: number) { return n * (this.tempScale * this.scale); }
 
   private boundCoordinate(ord: number) {
@@ -78,7 +78,7 @@ export class MapRenderer {
     this.canvas = state.canvas;
     this.context = state.context;
     this.grid = state.grid;
-    this.panOffset = state.panOffset;
+    this.pan = state.pan;
     this.scale = state.scale;
     this.render();
   }
