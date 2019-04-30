@@ -15,6 +15,7 @@ export class MapNavigator {
 
   public readonly pan = combineLatest(this.tempPan, this.pan$).pipe(map(([t, p]) => ({ x: p.x + t.x, y: p.y + t.y })));
   public readonly scale = combineLatest(this.tempScale, this.scale$).pipe(map(([t, s]) => s * t));
+  public readonly navigation = combineLatest(this.pan, this.scale).pipe(map(([pan, scale]) => ({ pan, scale } as MapStore.Navigation)));
 
   constructor(private store: Store<AppState>) {
     this.store.pipe(select(MapStore.pan)).subscribe(p => this.pan$.next(p));

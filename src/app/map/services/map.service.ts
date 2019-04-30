@@ -16,7 +16,7 @@ export class Map {
   private readonly backgroundImage$ = new BehaviorSubject<ImageBitmap>(undefined);
   public readonly backgroundImage = this.backgroundImage$.asObservable();
 
-  private readonly grid$ = new BehaviorSubject<MapStore.GridSettings>(undefined);
+  private readonly grid$ = new BehaviorSubject<MapStore.Grid>(undefined);
   public readonly grid = this.grid$.asObservable();
 
   constructor(private store: Store<AppState>) {

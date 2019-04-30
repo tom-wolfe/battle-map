@@ -4,17 +4,17 @@ export interface MapState {
   canvas: HTMLCanvasElement;
   context: CanvasRenderingContext2D;
   activeTool: number;
-  grid: GridSettings;
-  navigation: NavigationSettings;  
+  grid: Grid;
+  navigation: Navigation;
   backgroundImage: ImageBitmap;
 }
 
-export interface GridSettings {
+export interface Grid {
   size: number;
   offset: Point;
 }
 
-export interface NavigationSettings {
+export interface Navigation {
   pan: Point;
   scale: number;
 }

@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Point } from '@bm/models';
-import { GridSettings, MapState } from '@bm/store/map';
+import { Grid, Navigation } from '@bm/store/map';
 
 import { Map } from './map.service';
 import { MapNavigator } from './navigator.service';
@@ -10,24 +9,21 @@ export class MapRenderer {
   canvas: HTMLCanvasElement;
   backgroundImage: ImageBitmap;
   context: CanvasRenderingContext2D;
-  grid: GridSettings;
-  pan: Point;
-  scale: number;
+  grid: Grid;
+  navigation: Navigation;
 
   constructor(map: Map, navigator: MapNavigator) {
     map.context.subscribe(this.onContextChange.bind(this));
     map.canvas.subscribe(this.onCanvasChange.bind(this));
     map.backgroundImage.subscribe(this.onBackgroundChange.bind(this));
     map.grid.subscribe(this.onGridChange.bind(this));
-    navigator.pan.subscribe(this.onPanChange.bind(this));
-    navigator.scale.subscribe(this.onScaleChange.bind(this));
+    navigator.navigation.subscribe(this.onNavigationChange.bind(this));
   }
 
   private onContextChange(context: CanvasRenderingContext2D) { this.context = context; this.render(); }
   private onCanvasChange(c: HTMLCanvasElement) { this.canvas = c; this.render(); }
-  private onGridChange(g: GridSettings) { this.grid = g; this.render(); }
-  private onPanChange(p: Point) { this.pan = p; this.render(); }
-  private onScaleChange(s: number) { this.scale = s; this.render(); }
+  private onGridChange(g: Grid) { this.grid = g; this.render(); }
+  private onNavigationChange(n: Navigation) { this.navigation = n; this.render(); }
   private onBackgroundChange(b: ImageBitmap) { this.backgroundImage = b; this.render(); }
 
   render() {
@@ -63,9 +59,9 @@ export class MapRenderer {
     this.context.stroke(grid);
   }
 
-  private panX(x: number) { return x +  this.pan.x; }
-  private panY(y: number) { return y + this.pan.y; }
-  private scaleN(n: number) { return n * this.scale; }
+  private panX(x: number) { return x +  this.navigation.pan.x; }
+  private panY(y: number) { return y + this.navigation.pan.y; }
+  private scaleN(n: number) { return n * this.navigation.scale; }
 
   private boundCoordinate(ord: number) {
     const gridSize = this.scaleN(this.grid.size);

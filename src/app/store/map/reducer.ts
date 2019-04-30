@@ -1,6 +1,6 @@
 import * as Actions from './actions';
 import { initialMapState } from './initial';
-import { MapState, NavigationSettings } from './state';
+import { MapState, Navigation } from './state';
 import { Point } from '@bm/models';
 
 const ZOOM_SF_INCREMENT = 0.1;
@@ -70,7 +70,7 @@ function centerImage(state: MapState, image: ImageBitmap, scale: number): Point 
   };
 }
 
-function scalePoint(navigation: NavigationSettings, origin: Point, scale: number): Point {
+function scalePoint(navigation: Navigation, origin: Point, scale: number): Point {
   const canvasOrigin: Point = {
     x: origin.x - navigation.pan.x,
     y: origin.y - navigation.pan.y
