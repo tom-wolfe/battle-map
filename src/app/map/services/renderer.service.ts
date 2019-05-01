@@ -59,7 +59,7 @@ export class MapRenderer {
 
   private renderCreatures() {
     this.battlefield.creatures.forEach(creature => {
-      creature.location
+      // TODO: Render creature.
     });
   }
 
