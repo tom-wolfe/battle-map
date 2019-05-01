@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { MapController } from '@bm/map/services';
+import { MapCanvas } from '@bm/map/services';
 
 @Component({
   selector: 'bm-background-settings',
   templateUrl: './background-settings.component.html'
 })
 export class BackgroundSettingsComponent {
-  constructor(private controller: MapController) { }
+  constructor(private canvas: MapCanvas) { }
 
   onLoadImageClick() {
     const input = document.createElement('input');
@@ -19,6 +19,6 @@ export class BackgroundSettingsComponent {
 
   private onBackgroundChange(e: Event) {
     const file = (e.target as HTMLInputElement).files[0];
-    createImageBitmap(file).then(image => this.controller.setBackground(image));
+    createImageBitmap(file).then(image => this.canvas.setBackground(image));
   }
 }

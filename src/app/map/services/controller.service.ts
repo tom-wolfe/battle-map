@@ -8,7 +8,6 @@ import { map } from 'rxjs/operators';
 
 import { MapCanvas } from './canvas.service';
 
-const FIT_PADDING = 20;
 const ZOOM_SF_INCREMENT = 0.1;
 
 @Injectable()
@@ -25,11 +24,6 @@ export class MapController {
   public readonly scale$ = combineLatest(this.tempScale$, this.storeScale$).pipe(map(([t, s]) => this.scale = s * t));
 
   constructor(private store: Store<AppState>, private canvas: MapCanvas) { }
-
-  setBackground(image: ImageBitmap) {
-    this.canvas.setBackground(image);
-    this.fitToScreen();
-  }
 
   livePan(offset: Point) { this.tempPan$.next(offset); }
   liveZoom(scale: number) { this.tempScale$.next(scale); }
@@ -64,23 +58,6 @@ export class MapController {
   zoomOut(origin?: Point) {
     const newScale = Math.max(0.1, this.scale - ZOOM_SF_INCREMENT);
     this.zoom(newScale, origin);
-  }
-
-  fitToScreen() {
-    const xScale = (this.canvas.element.width - FIT_PADDING) / this.canvas.background.width;
-    const yScale = (this.canvas.element.height - FIT_PADDING) / this.canvas.background.height;
-    const scale = Math.min(xScale, yScale);
-    const offset = this.centerImage(this.canvas.background, scale);
-
-    this.store.dispatch(new Navigation.SetScale(scale));
-    this.store.dispatch(new Navigation.SetPan(offset));
-  }
-
-  private centerImage(image: ImageBitmap, scale: number): Point {
-    return {
-      x: this.canvas.element.width / 2 - image.width * scale / 2,
-      y: this.canvas.element.height / 2 - image.height * scale / 2
-    };
   }
 
   private scalePoint(origin: Point, scale: number): Point {
