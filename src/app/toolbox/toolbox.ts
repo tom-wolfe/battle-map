@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { activeTool, SetActiveTool } from '@bm/store/map';
+import * as ToolboxStore from '@bm/store/toolbox';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
@@ -26,11 +26,11 @@ export class Toolbox {
       new Tools.DistanceTool(),
       new Tools.ZoomTool()
     ];
-    store.pipe(select(activeTool)).subscribe(this.onActiveToolIdChange.bind(this));
+    store.pipe(select(ToolboxStore.activeTool)).subscribe(this.onActiveToolIdChange.bind(this));
   }
 
   setTool(tool: Tools.Tool) {
-    this.store.dispatch(new SetActiveTool(tool.id));
+    this.store.dispatch(new ToolboxStore.SetActiveTool(tool.id));
   }
 
   private onActiveToolIdChange(id: number) {

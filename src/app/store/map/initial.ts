@@ -1,7 +1,6 @@
 import { MapState } from './state';
 
-export const initialMapState: MapState = {
-  activeTool: undefined,
+export const initialState: MapState = {
   background: undefined,
   canvas: undefined,
   context: undefined

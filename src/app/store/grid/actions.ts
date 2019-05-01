@@ -13,6 +13,6 @@ export class SetSize implements Action {
   constructor(public size: number) { }
 }
 
-export type MapActions =
+export type GridActions =
   SetOffset |
   SetSize;
