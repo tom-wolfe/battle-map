@@ -19,7 +19,7 @@ export class Toolbox {
     this.tools = [
       new Tools.GridTool(),
       new Tools.BackgroundImageTool(),
-      new Tools.TokenTool(),
+      new Tools.CreatureTool(),
       new Tools.MoveTool(),
       new Tools.EffectTool(),
       new Tools.PaintTool(),
