@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Point } from '@bm/models';
-import * as MapStore from '@bm/store/map';
 import * as Navigation from '@bm/store/navigation';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
@@ -18,18 +17,14 @@ export class MapController {
   private readonly storeScale$ = this.store.pipe(select(Navigation.scale));
   private readonly tempPan$ = new BehaviorSubject<Point>({ x: 0, y: 0 });
   private readonly tempScale$ = new BehaviorSubject<number>(1);
-  
-  public background: ImageBitmap;
+
   public pan: Point;
   public scale: number;
 
-  public readonly background$ = this.store.pipe(select(MapStore.background));  
   public readonly pan$ = combineLatest(this.tempPan$, this.storePan$).pipe(map(([t, p]) => this.pan = { x: p.x + t.x, y: p.y + t.y }));
   public readonly scale$ = combineLatest(this.tempScale$, this.storeScale$).pipe(map(([t, s]) => this.scale = s * t));
 
-  constructor(private store: Store<AppState>, private canvas: MapCanvas) {
-    this.background$.subscribe(b => this.background = b);
-  }
+  constructor(private store: Store<AppState>, private canvas: MapCanvas) { }
 
   setBackground(image: ImageBitmap) {
     this.canvas.setBackground(image);
@@ -72,10 +67,10 @@ export class MapController {
   }
 
   fitToScreen() {
-    const xScale = (this.canvas.element.width - FIT_PADDING) / this.background.width;
-    const yScale = (this.canvas.element.height - FIT_PADDING) / this.background.height;
+    const xScale = (this.canvas.element.width - FIT_PADDING) / this.canvas.background.width;
+    const yScale = (this.canvas.element.height - FIT_PADDING) / this.canvas.background.height;
     const scale = Math.min(xScale, yScale);
-    const offset = this.centerImage(this.background, scale);
+    const offset = this.centerImage(this.canvas.background, scale);
 
     this.store.dispatch(new Navigation.SetScale(scale));
     this.store.dispatch(new Navigation.SetPan(offset));

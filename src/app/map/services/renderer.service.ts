@@ -9,9 +9,9 @@ import { MapGrid } from './grid.service';
 export class MapRenderer {
   constructor(private controller: MapController, private canvas: MapCanvas, private grid: MapGrid) {
     combineLatest(
-      controller.background$,
       controller.pan$,
       controller.scale$,
+      canvas.background$,
       canvas.element$,
       canvas.context$,
       grid.offset$,
@@ -27,7 +27,7 @@ export class MapRenderer {
   }
 
   private renderBackground() {
-    const bg = this.controller.background;
+    const bg = this.canvas.background;
     if (!bg) { return; }
     this.canvas.context.drawImage(bg, this.panX(0), this.panY(0), this.scaleN(bg.width), this.scaleN(bg.height));
   }
