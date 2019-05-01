@@ -3,28 +3,22 @@ import { Point } from '@bm/models';
 import * as MapStore from '@bm/store/map';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
-import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
+
 import { MapNavigator } from './navigator.service';
 
 @Injectable()
 export class Map {
-  private readonly canvas$ = new BehaviorSubject<HTMLCanvasElement>(undefined);
-  public readonly canvas = this.canvas$.asObservable();
-
-  private readonly context$ = new BehaviorSubject<CanvasRenderingContext2D>(undefined);
-  public readonly context = this.context$.asObservable();
-
-  private readonly background$ = new BehaviorSubject<ImageBitmap>(undefined);
-  public readonly background = this.background$.asObservable();
-
-  private readonly grid$ = new BehaviorSubject<MapStore.Grid>(undefined);
-  public readonly grid = this.grid$.asObservable();
+  public readonly canvas: Observable<HTMLCanvasElement>;
+  public readonly context: Observable<CanvasRenderingContext2D>;
+  public readonly background: Observable<ImageBitmap>;
+  public readonly grid: Observable<MapStore.Grid>;
 
   constructor(private store: Store<AppState>, private navigator: MapNavigator) {
-    this.store.pipe(select(MapStore.canvas)).subscribe(c => this.canvas$.next(c));
-    this.store.pipe(select(MapStore.context)).subscribe(c => this.context$.next(c));
-    this.store.pipe(select(MapStore.background)).subscribe(i => this.background$.next(i));
-    this.store.pipe(select(MapStore.grid)).subscribe(g => this.grid$.next(g));
+    this.canvas = this.store.pipe(select(MapStore.canvas));
+    this.context = this.store.pipe(select(MapStore.context));
+    this.background = this.store.pipe(select(MapStore.background));
+    this.grid = this.store.pipe(select(MapStore.grid));
   }
 
   setCanvas(canvas: HTMLCanvasElement) {

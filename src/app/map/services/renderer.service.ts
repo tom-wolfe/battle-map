@@ -13,8 +13,8 @@ export class MapRenderer {
   navigation: Navigation;
 
   constructor(map: Map, navigator: MapNavigator) {
-    map.context.subscribe(this.onContextChange.bind(this));
     map.canvas.subscribe(this.onCanvasChange.bind(this));
+    map.context.subscribe(this.onContextChange.bind(this));
     map.background.subscribe(this.onBackgroundChange.bind(this));
     map.grid.subscribe(this.onGridChange.bind(this));
     navigator.navigation.subscribe(this.onNavigationChange.bind(this));
