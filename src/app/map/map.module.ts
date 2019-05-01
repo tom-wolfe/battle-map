@@ -15,12 +15,11 @@ const DIRECTIVES = [
 ];
 
 const SERVICES = [
-  Services.Map,
   Services.MapCanvas,
+  Services.MapController,
   Services.MapCreatures,
   Services.MapGrid,
-  Services.MapNavigator,
-  Services.MapRenderer,
+  Services.MapRenderer
 ];
 
 @NgModule({

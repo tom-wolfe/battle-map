@@ -1,5 +1,5 @@
 import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
-import { MapNavigator, MapRenderer } from '@bm/map/services';
+import { MapRenderer, MapController } from '@bm/map/services';
 import { relativeMouse } from '@bm/utils';
 import * as Hammer from 'hammerjs';
 
@@ -12,7 +12,7 @@ export class MapNavigationDirective implements OnInit {
 
   constructor(
     elRef: ElementRef<HTMLCanvasElement>,
-    private navigator: MapNavigator,
+    private controller: MapController,
     private renderer: MapRenderer
   ) {
     this.el = elRef.nativeElement;
@@ -29,27 +29,27 @@ export class MapNavigationDirective implements OnInit {
   }
 
   @HostListener('panmove', ['$event']) onPanMove(e: any) {
-    this.navigator.livePan({ x: e.deltaX, y: e.deltaY });
+    this.controller.livePan({ x: e.deltaX, y: e.deltaY });
   }
 
   @HostListener('pinchmove', ['$event']) onPinchMove(e: any) {
-    this.navigator.livePan({ x: e.deltaX, y: e.deltaY });
+    this.controller.livePan({ x: e.deltaX, y: e.deltaY });
   }
 
   @HostListener('panend', ['$event']) onPanEnd(e: any) {
-    this.navigator.endPan();
+    this.controller.endPan();
   }
 
   @HostListener('pinch', ['$event']) onPinch(e: any) {
-    this.navigator.liveZoom(e.scale);
+    this.controller.liveZoom(e.scale);
   }
 
   @HostListener('pinchend', ['$event']) onPinchEnd(e: any) {
-    this.navigator.zoomTo(e.scale, e.center);
+    this.controller.zoomTo(e.scale, e.center);
   }
 
   @HostListener('wheel', ['$event']) onWheel(e: WheelEvent) {
     const origin = relativeMouse(e, this.el);
-    e.deltaY > 0 ? this.navigator.zoomOut(origin) : this.navigator.zoomIn(origin);
+    e.deltaY > 0 ? this.controller.zoomOut(origin) : this.controller.zoomIn(origin);
   }
 }

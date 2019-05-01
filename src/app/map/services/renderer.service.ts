@@ -2,19 +2,18 @@ import { Injectable } from '@angular/core';
 import { combineLatest } from 'rxjs';
 
 import { MapCanvas } from './canvas.service';
+import { MapController } from './controller.service';
 import { MapGrid } from './grid.service';
-import { Map } from './map.service';
-import { MapNavigator } from './navigator.service';
 
 @Injectable()
 export class MapRenderer {
-  constructor(private map: Map, private canvas: MapCanvas, private grid: MapGrid, private navigator: MapNavigator) {
+  constructor(private controller: MapController, private canvas: MapCanvas, private grid: MapGrid) {
     combineLatest(
-      navigator.pan$,
-      navigator.scale$,
+      controller.background$,
+      controller.pan$,
+      controller.scale$,
       canvas.element$,
       canvas.context$,
-      map.background$,
       grid.offset$,
       grid.size$
     ).subscribe(this.render.bind(this));
@@ -28,7 +27,7 @@ export class MapRenderer {
   }
 
   private renderBackground() {
-    const bg = this.map.background;
+    const bg = this.controller.background;
     if (!bg) { return; }
     this.canvas.context.drawImage(bg, this.panX(0), this.panY(0), this.scaleN(bg.width), this.scaleN(bg.height));
   }
@@ -52,12 +51,12 @@ export class MapRenderer {
     this.canvas.context.stroke(grid);
   }
 
-  private panX(x: number) { return x + this.navigator.pan.x; }
-  private panY(y: number) { return y + this.navigator.pan.y; }
-  private scaleN(n: number) { return n * this.navigator.scale; }
+  private panX(x: number) { return x + this.controller.pan.x; }
+  private panY(y: number) { return y + this.controller.pan.y; }
+  private scaleN(n: number) { return n * this.controller.scale; }
 
   private boundCoordinate(ord: number) {
-    const gridSize = this.grid.size * this.navigator.scale;
+    const gridSize = this.grid.size * this.controller.scale;
     if (ord > gridSize || ord < 0) {
       ord -= Math.ceil(ord / gridSize) * gridSize;
     }

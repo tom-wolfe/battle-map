@@ -7,9 +7,6 @@ export function mapReducer(state: MapState = initialState, action: Actions.MapAc
     case Actions.SetBackground.TYPE: {
       return { ...state, background: action.background };
     }
-    case Actions.SetCanvas.TYPE: {
-      return { ...state, canvas: action.canvas, context: action.canvas.getContext('2d') };
-    }
     default: return state;
   }
 }

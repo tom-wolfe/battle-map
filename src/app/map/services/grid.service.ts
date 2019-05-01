@@ -4,7 +4,7 @@ import * as Grid from '@bm/store/grid';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
 
-import { MapNavigator } from './navigator.service';
+import { MapController } from './controller.service';
 
 @Injectable()
 export class MapGrid {
@@ -14,7 +14,7 @@ export class MapGrid {
   public readonly size$ = this.store.pipe(select(Grid.size));
   public readonly offset$ = this.store.pipe(select(Grid.offset));
 
-  constructor(private navigator: MapNavigator, private store: Store<AppState>) {
+  constructor(private controller: MapController, private store: Store<AppState>) {
     this.size$.subscribe(s => this.size = s);
     this.offset$.subscribe(o => this.offset = o);
   }
@@ -23,10 +23,10 @@ export class MapGrid {
   setOffset(offset: Point) { this.store.dispatch(new Grid.SetOffset(offset)); }
 
   cellAt(point: Point): Point {
-    const gridSize = this.size * this.navigator.scale;
+    const gridSize = this.size * this.controller.scale;
     return {
-      x: Math.floor((point.x - this.navigator.pan.x - this.offset.x) / gridSize),
-      y: Math.floor((point.y - this.navigator.pan.y - this.offset.y) / gridSize)
+      x: Math.floor((point.x - this.controller.pan.x - this.offset.x) / gridSize),
+      y: Math.floor((point.y - this.controller.pan.y - this.offset.y) / gridSize)
     };
   }
 }

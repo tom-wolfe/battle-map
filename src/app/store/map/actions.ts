@@ -6,12 +6,4 @@ export class SetBackground implements Action {
   constructor(public background: ImageBitmap) { }
 }
 
-export class SetCanvas implements Action {
-  public static readonly TYPE = '[Map] Set Canvas';
-  readonly type = SetCanvas.TYPE;
-  constructor(public canvas: HTMLCanvasElement) { }
-}
-
-export type MapActions =
-  SetBackground |
-  SetCanvas;
+export type MapActions = SetBackground;

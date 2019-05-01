@@ -19,4 +19,8 @@ export class MapCanvas {
   setCanvas(canvas: HTMLCanvasElement) {
     this.store.dispatch(new Canvas.SetCanvas(canvas));
   }
+
+  setBackground(image: ImageBitmap) {
+    this.store.dispatch(new Canvas.SetBackground(image));
+  }
 }
