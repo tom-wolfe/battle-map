@@ -4,4 +4,5 @@ import { AppState } from '../state';
 
 const state = (s: AppState) => s.grid;
 
-export const grid = createSelector(state, s => s);
+export const offset = createSelector(state, s => s.offset);
+export const size = createSelector(state, s => s.size);

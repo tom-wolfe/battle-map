@@ -16,7 +16,9 @@ const DIRECTIVES = [
 
 const SERVICES = [
   Services.Map,
+  Services.MapCanvas,
   Services.MapCreatures,
+  Services.MapGrid,
   Services.MapNavigator,
   Services.MapRenderer,
 ];

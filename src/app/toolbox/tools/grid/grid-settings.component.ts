@@ -1,23 +1,25 @@
 import { Component } from '@angular/core';
-import { Map } from '@bm/map/services';
-import { GridState } from '@bm/store/grid';
+import { MapGrid } from '@bm/map/services';
+import { Point } from '@bm/models';
 
 @Component({
   selector: 'bm-grid-settings',
   templateUrl: './grid-settings.component.html'
 })
 export class GridSettingsComponent {
-  grid: GridState;
+  size: number;
+  offset: Point;
 
-  constructor(private map: Map) {
-    this.map.grid.subscribe(g => this.grid = g);
+  constructor(private grid: MapGrid) {
+    this.grid.size$.subscribe(s => this.size = s);
+    this.grid.offset$.subscribe(o => this.offset = o);
   }
 
   onSizeChange(e: Event) {
-    this.map.setGridSize(Number((e.target as HTMLInputElement).value));
+    this.grid.setSize(Number((e.target as HTMLInputElement).value));
   }
 
   onOffsetChange(x: string, y: string) {
-    this.map.setGridOffset({ x: Number(x), y: Number(y) });
+    this.grid.setOffset({ x: Number(x), y: Number(y) });
   }
 }

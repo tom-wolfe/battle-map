@@ -1,40 +1,39 @@
 import { Injector } from '@angular/core';
-import { Map, MapNavigator } from '@bm/map/services';
+import { MapGrid } from '@bm/map/services';
+import { MapCanvas } from '@bm/map/services/canvas.service';
 import { ToolHandler } from '@bm/toolbox';
 import { relativeMouse } from '@bm/utils';
 
 export class TokenHandler implements ToolHandler {
-  private map: Map;
-  private navigator: MapNavigator;
-  private canvas: HTMLCanvasElement;
+  private canvas: MapCanvas;
+  private grid: MapGrid;
 
   private onCanvasClick = this.canvasClick.bind(this);
 
   constructor(injector: Injector) {
-    this.map = injector.get(Map);
-    this.navigator = injector.get(MapNavigator);
-    this.map.canvas.subscribe(this.onCanvasChange.bind(this));
+    this.canvas = injector.get(MapCanvas);
+    this.grid = injector.get(MapGrid);
+    this.canvas.element$.subscribe(this.onCanvasChange.bind(this));
   }
 
-  onCanvasChange(canvas: HTMLCanvasElement) {
-    if (this.canvas) { this.removeEvents(); }
-    this.canvas = canvas;
+  onCanvasChange() {
+    if (this.canvas.element) { this.removeEvents(); }
     this.addEvents();
   }
 
   canvasClick(e: MouseEvent) {
-    const point = relativeMouse(e, this.canvas);
-    const cell = this.navigator.cellAt(point);
+    const point = relativeMouse(e, this.canvas.element);
+    const cell = this.grid.cellAt(point);
     console.log(cell);
   }
 
   destroy() { this.removeEvents(); }
 
   private addEvents() {
-    this.canvas.addEventListener('click', this.onCanvasClick);
+    this.canvas.element.addEventListener('click', this.onCanvasClick);
   }
 
   private removeEvents() {
-    this.canvas.removeEventListener('click', this.onCanvasClick);
+    this.canvas.element.removeEventListener('click', this.onCanvasClick);
   }
 }

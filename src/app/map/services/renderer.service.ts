@@ -1,71 +1,63 @@
 import { Injectable } from '@angular/core';
-import { GridState } from '@bm/store/grid';
-import * as Navigation from '@bm/store/navigation';
+import { combineLatest } from 'rxjs';
 
+import { MapCanvas } from './canvas.service';
+import { MapGrid } from './grid.service';
 import { Map } from './map.service';
 import { MapNavigator } from './navigator.service';
 
 @Injectable()
 export class MapRenderer {
-  canvas: HTMLCanvasElement;
-  background: ImageBitmap;
-  context: CanvasRenderingContext2D;
-  grid: GridState;
-  navigation: Navigation.NavigationState;
-
-  constructor(map: Map, navigator: MapNavigator) {
-    map.canvas.subscribe(this.onCanvasChange.bind(this));
-    map.context.subscribe(this.onContextChange.bind(this));
-    map.background.subscribe(this.onBackgroundChange.bind(this));
-    map.grid.subscribe(this.onGridChange.bind(this));
-    navigator.navigation.subscribe(this.onNavigationChange.bind(this));
+  constructor(private map: Map, private canvas: MapCanvas, private grid: MapGrid, private navigator: MapNavigator) {
+    combineLatest(
+      navigator.pan$,
+      navigator.scale$,
+      canvas.element$,
+      canvas.context$,
+      map.background$,
+      grid.offset$,
+      grid.size$
+    ).subscribe(this.render.bind(this));
   }
 
-  private onContextChange(context: CanvasRenderingContext2D) { this.context = context; this.render(); }
-  private onCanvasChange(c: HTMLCanvasElement) { this.canvas = c; this.render(); }
-  private onGridChange(g: GridState) { this.grid = g; this.render(); }
-  private onNavigationChange(n: Navigation.NavigationState) { this.navigation = n; this.render(); }
-  private onBackgroundChange(b: ImageBitmap) { this.background = b; this.render(); }
-
   render() {
-    if (!this.context) { return; }
-    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    if (!this.canvas.context) { return; }
+    this.canvas.context.clearRect(0, 0, this.canvas.element.width, this.canvas.element.height);
     this.renderBackground();
     this.renderGrid();
   }
 
   private renderBackground() {
-    const bg = this.background;
+    const bg = this.map.background;
     if (!bg) { return; }
-    this.context.drawImage(bg, this.panX(0), this.panY(0), this.scaleN(bg.width), this.scaleN(bg.height));
+    this.canvas.context.drawImage(bg, this.panX(0), this.panY(0), this.scaleN(bg.width), this.scaleN(bg.height));
   }
 
   private renderGrid() {
-    this.context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+    this.canvas.context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
 
     const gridSize = this.scaleN(this.grid.size);
-
     const startX = this.boundCoordinate(this.panX(this.scaleN(this.grid.offset.x) + gridSize));
     const startY = this.boundCoordinate(this.panY(this.scaleN(this.grid.offset.y) + gridSize));
 
     const grid = new Path2D();
-    for (let x = startX; x <= this.canvas.width; x += gridSize) {
+    for (let x = startX; x <= this.canvas.element.width; x += gridSize) {
       grid.moveTo(x, 0);
-      grid.lineTo(x, this.canvas.height);
+      grid.lineTo(x, this.canvas.element.height);
     }
-    for (let y = startY; y <= this.canvas.height; y += gridSize) {
+    for (let y = startY; y <= this.canvas.element.height; y += gridSize) {
       grid.moveTo(0, y);
-      grid.lineTo(this.canvas.width, y);
+      grid.lineTo(this.canvas.element.width, y);
     }
-    this.context.stroke(grid);
+    this.canvas.context.stroke(grid);
   }
 
-  private panX(x: number) { return x +  this.navigation.pan.x; }
-  private panY(y: number) { return y + this.navigation.pan.y; }
-  private scaleN(n: number) { return n * this.navigation.scale; }
+  private panX(x: number) { return x + this.navigator.pan.x; }
+  private panY(y: number) { return y + this.navigator.pan.y; }
+  private scaleN(n: number) { return n * this.navigator.scale; }
 
   private boundCoordinate(ord: number) {
-    const gridSize = this.scaleN(this.grid.size);
+    const gridSize = this.grid.size * this.navigator.scale;
     if (ord > gridSize || ord < 0) {
       ord -= Math.ceil(ord / gridSize) * gridSize;
     }
