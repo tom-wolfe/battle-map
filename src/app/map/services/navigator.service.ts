@@ -5,7 +5,6 @@ import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Navigation } from '@bm/store/map';
 
 const FIT_PADDING = 20;
 const ZOOM_SF_INCREMENT = 0.1;
@@ -14,6 +13,7 @@ const ZOOM_SF_INCREMENT = 0.1;
 export class MapNavigator {
   private canvas: HTMLCanvasElement;
   private background: ImageBitmap;
+  private grid: MapStore.Grid;
 
   private readonly tempPan = new BehaviorSubject<Point>({ x: 0, y: 0 });
   private readonly tempScale = new BehaviorSubject<number>(1);
@@ -27,8 +27,9 @@ export class MapNavigator {
   constructor(private store: Store<AppState>) {
     this.store.pipe(select(MapStore.pan)).subscribe(p => this.pan$.next(p));
     this.store.pipe(select(MapStore.scale)).subscribe(s => this.scale$.next(s));
-    this.store.pipe(select(MapStore.canvas)).subscribe(c => this.canvas = c);
     this.store.pipe(select(MapStore.background)).subscribe(b => this.background = b);
+    this.store.pipe(select(MapStore.canvas)).subscribe(c => this.canvas = c);
+    this.store.pipe(select(MapStore.grid)).subscribe(g => this.grid = g);
   }
 
   livePan(offset: Point) { this.tempPan.next(offset); }
@@ -76,14 +77,22 @@ export class MapNavigator {
     this.store.dispatch(new MapStore.SetPan(offset));
   }
 
-  centerImage(image: ImageBitmap, scale: number): Point {
+  cellAt(point: Point): Point {
+    const gridSize = this.grid.size * this.scale$.value;
+    return { 
+      x: Math.floor((point.x - this.pan$.value.x - this.grid.offset.x) / gridSize),
+      y: Math.floor((point.y - this.pan$.value.y - this.grid.offset.y) / gridSize)
+    };
+  }
+
+  private centerImage(image: ImageBitmap, scale: number): Point {
     return {
       x: this.canvas.width / 2 - image.width * scale / 2,
       y: this.canvas.height / 2 - image.height * scale / 2
     };
   }
 
-  scalePoint(origin: Point, scale: number): Point {
+  private scalePoint(origin: Point, scale: number): Point {
     const canvasOrigin: Point = {
       x: origin.x - this.pan$.value.x,
       y: origin.y - this.pan$.value.y

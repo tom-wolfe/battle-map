@@ -1,29 +1,30 @@
 import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
 import { MapNavigator, MapRenderer } from '@bm/map/services';
-import { Point } from '@bm/models';
+import { relativeMouse } from '@bm/utils';
 import * as Hammer from 'hammerjs';
 
 @Directive({
   selector: '[bmMapNavigation]',
 })
 export class MapNavigationDirective implements OnInit {
-  hammer: Hammer.HammerManager;
+  private el: HTMLCanvasElement;
+  private hammer: Hammer.HammerManager;
 
   constructor(
-    private elRef: ElementRef<HTMLCanvasElement>,
+    elRef: ElementRef<HTMLCanvasElement>,
     private navigator: MapNavigator,
     private renderer: MapRenderer
   ) {
-    this.hammer = new Hammer(this.elRef.nativeElement);
+    this.el = elRef.nativeElement;
+    this.hammer = new Hammer(this.el);
     this.hammer.get('pinch').set({ enable: true });
   }
 
   ngOnInit() { this.onResize(); }
 
   @HostListener('window:resize') onResize() {
-    const el = this.elRef.nativeElement;
-    el.width = el.parentElement.clientWidth;
-    el.height = el.parentElement.clientHeight;
+    this.el.width = this.el.parentElement.clientWidth;
+    this.el.height = this.el.parentElement.clientHeight;
     this.renderer.render();
   }
 
@@ -48,11 +49,7 @@ export class MapNavigationDirective implements OnInit {
   }
 
   @HostListener('wheel', ['$event']) onWheel(e: WheelEvent) {
-    const pOffset = this.elRef.nativeElement.getBoundingClientRect();
-    const origin: Point = {
-      x: e.clientX - pOffset.left,
-      y: e.clientY - pOffset.top
-    };
+    const origin = relativeMouse(e, this.el);
     e.deltaY > 0 ? this.navigator.zoomOut(origin) : this.navigator.zoomIn(origin);
   }
 }
