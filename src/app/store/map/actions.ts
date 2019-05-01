@@ -1,5 +1,4 @@
 import { Action } from '@ngrx/store';
-import { Point } from '@bm/models';
 
 export class SetActiveTool implements Action {
   public static readonly TYPE = '[Map] Set Active Tool';
@@ -19,21 +18,7 @@ export class SetCanvas implements Action {
   constructor(public canvas: HTMLCanvasElement) { }
 }
 
-export class SetGridOffset implements Action {
-  public static readonly TYPE = '[Map] Set Grid Offset';
-  readonly type = SetGridOffset.TYPE;
-  constructor(public offset: Point) { }
-}
-
-export class SetGridSize implements Action {
-  public static readonly TYPE = '[Map] Set Grid Size';
-  readonly type = SetGridSize.TYPE;
-  constructor(public size: number) { }
-}
-
 export type MapActions =
   SetActiveTool |
   SetBackground |
-  SetCanvas |
-  SetGridOffset |
-  SetGridSize;
+  SetCanvas;

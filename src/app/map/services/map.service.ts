@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Point } from '@bm/models';
 import * as MapStore from '@bm/store/map';
+import * as Grid from '@bm/store/grid';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
@@ -12,13 +13,13 @@ export class Map {
   public readonly canvas: Observable<HTMLCanvasElement>;
   public readonly context: Observable<CanvasRenderingContext2D>;
   public readonly background: Observable<ImageBitmap>;
-  public readonly grid: Observable<MapStore.Grid>;
+  public readonly grid: Observable<Grid.GridState>;
 
   constructor(private store: Store<AppState>, private navigator: MapNavigator) {
     this.canvas = this.store.pipe(select(MapStore.canvas));
     this.context = this.store.pipe(select(MapStore.context));
     this.background = this.store.pipe(select(MapStore.background));
-    this.grid = this.store.pipe(select(MapStore.grid));
+    this.grid = this.store.pipe(select(Grid.grid));
   }
 
   setCanvas(canvas: HTMLCanvasElement) {
@@ -31,10 +32,10 @@ export class Map {
   }
 
   setGridSize(size: number) {
-    this.store.dispatch(new MapStore.SetGridSize(size));
+    this.store.dispatch(new Grid.SetSize(size));
   }
 
   setGridOffset(offset: Point) {
-    this.store.dispatch(new MapStore.SetGridOffset(offset));
+    this.store.dispatch(new Grid.SetOffset(offset));
   }
 }

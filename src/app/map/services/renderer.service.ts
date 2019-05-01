@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Grid } from '@bm/store/map';
+import { GridState } from '@bm/store/grid';
 import * as Navigation from '@bm/store/navigation';
 
 import { Map } from './map.service';
@@ -10,7 +10,7 @@ export class MapRenderer {
   canvas: HTMLCanvasElement;
   background: ImageBitmap;
   context: CanvasRenderingContext2D;
-  grid: Grid;
+  grid: GridState;
   navigation: Navigation.NavigationState;
 
   constructor(map: Map, navigator: MapNavigator) {
@@ -23,7 +23,7 @@ export class MapRenderer {
 
   private onContextChange(context: CanvasRenderingContext2D) { this.context = context; this.render(); }
   private onCanvasChange(c: HTMLCanvasElement) { this.canvas = c; this.render(); }
-  private onGridChange(g: Grid) { this.grid = g; this.render(); }
+  private onGridChange(g: GridState) { this.grid = g; this.render(); }
   private onNavigationChange(n: Navigation.NavigationState) { this.navigation = n; this.render(); }
   private onBackgroundChange(b: ImageBitmap) { this.background = b; this.render(); }
 

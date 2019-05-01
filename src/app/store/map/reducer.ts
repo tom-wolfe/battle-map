@@ -13,12 +13,6 @@ export function mapReducer(state: MapState = initialMapState, action: Actions.Ma
     case Actions.SetCanvas.TYPE: {
       return { ...state, canvas: action.canvas, context: action.canvas.getContext('2d') };
     }
-    case Actions.SetGridOffset.TYPE: {
-      return { ...state, grid: { ...state.grid, offset: action.offset } };
-    }
-    case Actions.SetGridSize.TYPE: {
-      return { ...state, grid: { ...state.grid, size: action.size } };
-    }
     default: return state;
   }
 }

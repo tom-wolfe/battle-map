@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { Map } from '@bm/map/services';
-import { Grid } from '@bm/store/map';
+import { GridState } from '@bm/store/grid';
 
 @Component({
   selector: 'bm-grid-settings',
   templateUrl: './grid-settings.component.html'
 })
 export class GridSettingsComponent {
-  grid: Grid;
+  grid: GridState;
 
   constructor(private map: Map) {
     this.map.grid.subscribe(g => this.grid = g);

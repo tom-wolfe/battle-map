@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Point } from '@bm/models';
+import * as Grid from '@bm/store/grid';
 import * as MapStore from '@bm/store/map';
 import * as Navigation from '@bm/store/navigation';
 import { AppState } from '@bm/store/state';
@@ -14,7 +15,7 @@ const ZOOM_SF_INCREMENT = 0.1;
 export class MapNavigator {
   private canvas: HTMLCanvasElement;
   private background: ImageBitmap;
-  private grid: MapStore.Grid;
+  private grid: Grid.GridState;
 
   private readonly tempPan = new BehaviorSubject<Point>({ x: 0, y: 0 });
   private readonly tempScale = new BehaviorSubject<number>(1);
@@ -32,7 +33,7 @@ export class MapNavigator {
     this.store.pipe(select(Navigation.scale)).subscribe(s => this.scale$.next(s));
     this.store.pipe(select(MapStore.background)).subscribe(b => this.background = b);
     this.store.pipe(select(MapStore.canvas)).subscribe(c => this.canvas = c);
-    this.store.pipe(select(MapStore.grid)).subscribe(g => this.grid = g);
+    this.store.pipe(select(Grid.grid)).subscribe(g => this.grid = g);
   }
 
   livePan(offset: Point) { this.tempPan.next(offset); }
