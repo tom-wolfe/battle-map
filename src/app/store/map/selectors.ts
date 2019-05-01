@@ -10,8 +10,6 @@ export const background = createSelector(state, s => s.background);
 export const grid = createSelector(state, s => s.grid);
 export const canvas = createSelector(state, s => s.canvas);
 export const context = createSelector(state, s => s.context);
-export const pan = createSelector(state, s => s.navigation.pan);
-export const scale = createSelector(state, s => s.navigation.scale);
 
 export const saveMap = createSelector(state, s => {
   // TODO: Export background image.

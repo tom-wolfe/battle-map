@@ -1,5 +1,7 @@
-import { mapReducer } from './map/reducer';
+import { mapReducer } from './map';
+import { navigationReducer } from './navigation';
 
 export const reducers = {
-  map: mapReducer
+  map: mapReducer,
+  navigation: navigationReducer
 };

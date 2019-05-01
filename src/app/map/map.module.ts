@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ToolboxModule } from '@bm/toolbox';
 
 import { MapComponent } from './component/map.component';
-import * as Services from './services';
 import * as Directives from './directives';
-import { ToolboxModule } from '@bm/toolbox';
+import * as Services from './services';
 
 const COMPONENTS = [
   MapComponent
@@ -16,8 +16,9 @@ const DIRECTIVES = [
 
 const SERVICES = [
   Services.Map,
+  Services.MapCreatures,
   Services.MapNavigator,
-  Services.MapRenderer
+  Services.MapRenderer,
 ];
 
 @NgModule({

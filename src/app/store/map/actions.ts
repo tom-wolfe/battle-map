@@ -31,23 +31,9 @@ export class SetGridSize implements Action {
   constructor(public size: number) { }
 }
 
-export class SetPan implements Action {
-  public static readonly TYPE = '[Map] Set Pan';
-  readonly type = SetPan.TYPE;
-  constructor(public offset: Point) { }
-}
-
-export class SetScale implements Action {
-  public static readonly TYPE = '[Map] Set Scale';
-  readonly type = SetScale.TYPE;
-  constructor(public scale: number) { }
-}
-
 export type MapActions =
   SetActiveTool |
   SetBackground |
   SetCanvas |
   SetGridOffset |
-  SetGridSize |
-  SetPan |
-  SetScale;
+  SetGridSize;

@@ -19,12 +19,6 @@ export function mapReducer(state: MapState = initialMapState, action: Actions.Ma
     case Actions.SetGridSize.TYPE: {
       return { ...state, grid: { ...state.grid, size: action.size } };
     }
-    case Actions.SetPan.TYPE: {
-      return { ...state, navigation: { ...state.navigation, pan: action.offset } };
-    }
-    case Actions.SetScale.TYPE: {
-      return { ...state, navigation: { ...state.navigation, scale: action.scale } };
-    }
     default: return state;
   }
 }

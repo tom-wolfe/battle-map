@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Point } from '@bm/models';
 import * as MapStore from '@bm/store/map';
+import * as Navigation from '@bm/store/navigation';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest } from 'rxjs';
@@ -22,11 +23,13 @@ export class MapNavigator {
 
   public readonly pan = combineLatest(this.tempPan, this.pan$).pipe(map(([t, p]) => ({ x: p.x + t.x, y: p.y + t.y })));
   public readonly scale = combineLatest(this.tempScale, this.scale$).pipe(map(([t, s]) => s * t));
-  public readonly navigation = combineLatest(this.pan, this.scale).pipe(map(([pan, scale]) => ({ pan, scale } as MapStore.Navigation)));
+  public readonly navigation = combineLatest(this.pan, this.scale).pipe(
+    map(([pan, scale]) => ({ pan, scale } as Navigation.NavigationState))
+  );
 
   constructor(private store: Store<AppState>) {
-    this.store.pipe(select(MapStore.pan)).subscribe(p => this.pan$.next(p));
-    this.store.pipe(select(MapStore.scale)).subscribe(s => this.scale$.next(s));
+    this.store.pipe(select(Navigation.pan)).subscribe(p => this.pan$.next(p));
+    this.store.pipe(select(Navigation.scale)).subscribe(s => this.scale$.next(s));
     this.store.pipe(select(MapStore.background)).subscribe(b => this.background = b);
     this.store.pipe(select(MapStore.canvas)).subscribe(c => this.canvas = c);
     this.store.pipe(select(MapStore.grid)).subscribe(g => this.grid = g);
@@ -41,14 +44,14 @@ export class MapNavigator {
       x: this.pan$.value.x + offset.x,
       y: this.pan$.value.y + offset.y,
     };
-    this.store.dispatch(new MapStore.SetPan(absolute));
+    this.store.dispatch(new Navigation.SetPan(absolute));
     this.tempPan.next({ x: 0, y: 0 });
   }
 
   zoom(scale: number, origin: Point) {
     const pan = this.scalePoint(origin, scale);
-    this.store.dispatch(new MapStore.SetScale(scale));
-    this.store.dispatch(new MapStore.SetPan(pan));
+    this.store.dispatch(new Navigation.SetScale(scale));
+    this.store.dispatch(new Navigation.SetPan(pan));
     this.tempScale.next(1);
   }
 
@@ -73,13 +76,13 @@ export class MapNavigator {
     const scale = Math.min(xScale, yScale);
     const offset = this.centerImage(this.background, scale);
 
-    this.store.dispatch(new MapStore.SetScale(scale));
-    this.store.dispatch(new MapStore.SetPan(offset));
+    this.store.dispatch(new Navigation.SetScale(scale));
+    this.store.dispatch(new Navigation.SetPan(offset));
   }
 
   cellAt(point: Point): Point {
     const gridSize = this.grid.size * this.scale$.value;
-    return { 
+    return {
       x: Math.floor((point.x - this.pan$.value.x - this.grid.offset.x) / gridSize),
       y: Math.floor((point.y - this.pan$.value.y - this.grid.offset.y) / gridSize)
     };
