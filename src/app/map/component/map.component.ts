@@ -4,7 +4,7 @@ import { MapCanvas } from '../services/canvas.service';
 
 @Component({
   selector: 'bm-map',
-  template: '<canvas bmMapNavigation bmTool #canvas></canvas>',
+  template: '<canvas bmMapNavigation #canvas></canvas>',
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {

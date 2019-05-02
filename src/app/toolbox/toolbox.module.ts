@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
 import * as Components from './components';
-import * as Directives from './directives';
 import { Toolbox } from './toolbox';
 import * as Tools from './tools';
 
@@ -11,21 +10,27 @@ const COMPONENTS = [
   Components.ToolOptionsComponent
 ];
 
-const DIRECTIVES = [
-  Directives.ToolDirective
+const TOOLS = [
+  Tools.CreatureTool,
+  Tools.DistanceTool,
+  Tools.MapTool,
+  Tools.MoveTool,
+  Tools.PaintTool,
+  Tools.SpellEffectTool,
+  Tools.ZoomTool
 ];
 
-const TOOLS = [
+const TOOL_SETTINGS = [
   Tools.CreatureSettingsComponent,
   Tools.MapSettingsComponent,
   Tools.ZoomSettingsComponent,
 ];
 
 @NgModule({
-  declarations: [...COMPONENTS, ...TOOLS, ...DIRECTIVES],
+  declarations: [...COMPONENTS, ...TOOL_SETTINGS],
   imports: [CommonModule],
-  providers: [Toolbox],
-  exports: [...COMPONENTS, ...DIRECTIVES],
-  entryComponents: [...TOOLS]
+  providers: [Toolbox, ...TOOLS],
+  exports: [...COMPONENTS],
+  entryComponents: [...TOOL_SETTINGS]
 })
 export class ToolboxModule { }
