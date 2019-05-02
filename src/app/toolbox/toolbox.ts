@@ -54,8 +54,8 @@ export class Toolbox {
   }
 
   private onToolChange(tool: Tools.Tool) {
-    if (this.activeTool) { tool.deactivate(); }
+    if (this.activeTool) { this.activeTool.deactivate(); }
     this.activeTool = tool;
-    if (this.activeTool) { tool.activate(); }
+    if (this.activeTool) { this.activeTool.activate(); }
   }
 }
