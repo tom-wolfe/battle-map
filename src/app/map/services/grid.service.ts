@@ -33,8 +33,8 @@ export class MapGrid {
   cellPoint(cell: Point): Point {
     const gridSize = this.size * this.controller.scale;
     return {
-      x: cell.x * gridSize + this.controller.pan.x + this.offset.x,
-      y: cell.y * gridSize + this.controller.pan.y + this.offset.y,
+      x: cell.x * gridSize + this.controller.pan.x + this.offset.x * this.controller.scale,
+      y: cell.y * gridSize + this.controller.pan.y + this.offset.y * this.controller.scale,
     };
   }
 }

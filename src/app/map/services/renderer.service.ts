@@ -6,6 +6,8 @@ import { MapCanvas } from './canvas.service';
 import { MapController } from './controller.service';
 import { MapGrid } from './grid.service';
 
+export const CREATURE_PADDING = 4;
+
 @Injectable()
 export class MapRenderer {
   constructor(private controller: MapController, private canvas: MapCanvas, private grid: MapGrid, private battlefield: MapBattlefield) {
@@ -59,11 +61,12 @@ export class MapRenderer {
 
   private renderCreatures() {
     const gridSize = this.scaleN(this.grid.size);
-
+    const padding = 0; //this.scaleN(CREATURE_PADDING);
     this.battlefield.creatures.forEach(creature => {
       if (!creature.image) { return; }
       const point = this.grid.cellPoint(creature.location);
-      this.canvas.context.drawImage(creature.image, point.x, point.y, gridSize, gridSize);
+      const creatureSize = gridSize - padding * 2;
+      this.canvas.context.drawImage(creature.image, point.x + padding, point.y + padding, creatureSize, creatureSize);
     });
   }
 
