@@ -15,8 +15,7 @@ export class CreatureSettingsComponent {
     creature.tokens$.subscribe(t => this.tokens = t);
   }
 
-  onTokenChange(e: Event) {
-    // TODO: Make actual value.
-    this.creature.setActiveToken(0);
+  onTokenChange(id: string) {
+    this.creature.setActiveToken(Number(id));
   }
 }

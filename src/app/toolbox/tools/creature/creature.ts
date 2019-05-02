@@ -13,6 +13,8 @@ export class CreatureTool implements Tool {
   title = 'Creature';
   icon = 'fa-chess-knight';
 
+  private activeToken: number;
+
   public readonly activeToken$ = this.store.select(Toolbox.activeToken);
   public readonly tokens$ = this.tokens.tokens$;
 
@@ -24,7 +26,9 @@ export class CreatureTool implements Tool {
     private grid: MapGrid,
     private battlefield: MapBattlefield,
     private tokens: MapTokens,
-  ) { }
+  ) {
+    this.activeToken$.subscribe(t => this.activeToken = t);
+  }
 
   setActiveToken(tokenId: number) {
     this.store.dispatch(new Toolbox.SetActiveToken(tokenId));
@@ -33,7 +37,7 @@ export class CreatureTool implements Tool {
   canvasClick(e: MouseEvent) {
     const point = relativeMouse(e, this.canvas.element);
     const location = this.grid.cellAt(point);
-    const creature: Creature = { tokenId: 0, location };
+    const creature: Creature = { tokenId: this.activeToken, location };
     this.battlefield.addCreature(creature);
   }
 

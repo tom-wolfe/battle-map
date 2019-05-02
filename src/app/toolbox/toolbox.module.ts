@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import * as Components from './components';
 import { Toolbox } from './toolbox';
 import * as Tools from './tools';
+import { FormsModule } from '@angular/forms';
 
 const COMPONENTS = [
   Components.ToolbarComponent,
@@ -28,7 +29,10 @@ const TOOL_SETTINGS = [
 
 @NgModule({
   declarations: [...COMPONENTS, ...TOOL_SETTINGS],
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   providers: [Toolbox, ...TOOLS],
   exports: [...COMPONENTS],
   entryComponents: [...TOOL_SETTINGS]
