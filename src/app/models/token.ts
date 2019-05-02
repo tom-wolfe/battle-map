@@ -2,6 +2,7 @@ import { Size } from './size';
 
 export interface Token {
   id: number;
-  image: string;
-  size: Size;
+  name: string;
+  defaultSize: Size;
+  imageUrl: string;
 }

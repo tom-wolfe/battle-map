@@ -1,4 +1,8 @@
-export interface Size {
-  name: string;
-  cells: number;
+export enum Size {
+  Tiny = 'tiny',
+  Small = 'small',
+  Medium = 'medium',
+  Large = 'large',
+  Huge = 'huge',
+  Gargantuan = 'gargantuan'
 }

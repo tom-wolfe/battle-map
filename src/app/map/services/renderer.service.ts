@@ -61,11 +61,9 @@ export class MapRenderer {
     const gridSize = this.scaleN(this.grid.size);
 
     this.battlefield.creatures.forEach(creature => {
+      if (!creature.image) { return; }
       const point = this.grid.cellPoint(creature.location);
-
-      const img = new Image();
-      img.onload = () => this.canvas.context.drawImage(img, point.x, point.y, gridSize, gridSize);
-      img.src = 'https://vignette.wikia.nocookie.net/forgottenrealms/images/f/f3/Monster_Manual_5e_-_Kobold_-_p195.jpg';
+      this.canvas.context.drawImage(creature.image, point.x, point.y, gridSize, gridSize);
     });
   }
 

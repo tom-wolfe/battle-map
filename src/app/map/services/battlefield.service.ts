@@ -3,10 +3,11 @@ import { Creature } from '@bm/models';
 import * as Battlefield from '@bm/store/battlefield';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
+import { BattlefieldCreature } from '@bm/models/battlefield-creature';
 
 @Injectable()
 export class MapBattlefield {
-  public creatures: Creature[];
+  public creatures: BattlefieldCreature[];
 
   public readonly creatures$ = this.store.pipe(select(Battlefield.creatures));
 
