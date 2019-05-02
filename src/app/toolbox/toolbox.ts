@@ -23,6 +23,7 @@ export class Toolbox {
   constructor(
     private store: Store<AppState>,
     mapTool: Tools.MapTool,
+    selectTool: Tools.SelectTool,
     creature: Tools.CreatureTool,
     move: Tools.MoveTool,
     spellEffect: Tools.SpellEffectTool,
@@ -31,6 +32,7 @@ export class Toolbox {
     zoom: Tools.ZoomTool,
   ) {
     this.registerTool(mapTool, Tools.MapSettingsComponent);
+    this.registerTool(selectTool, undefined);
     this.registerTool(creature, Tools.CreatureSettingsComponent);
     this.registerTool(move, undefined);
     this.registerTool(spellEffect, undefined);

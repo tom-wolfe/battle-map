@@ -15,6 +15,8 @@ export class MapBattlefield {
   }
 
   addCreature(creature: Creature) {
+    const existing = this.creatures.find(c => c.location.x === creature.location.x && c.location.y === creature.location.y);
+    if (existing) { return; }
     this.store.dispatch(new Battlefield.AddCreature(creature));
   }
 }

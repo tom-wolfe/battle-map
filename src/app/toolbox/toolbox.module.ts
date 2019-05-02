@@ -19,6 +19,7 @@ const TOOLS = [
   Tools.MapTool,
   Tools.MoveTool,
   Tools.PaintTool,
+  Tools.SelectTool,
   Tools.SpellEffectTool,
   Tools.ZoomTool
 ];

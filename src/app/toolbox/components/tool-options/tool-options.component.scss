@@ -11,6 +11,7 @@
 
 .tool-name {
   font-weight: bold;
-  font-size: 0.9rem;
-  margin-right: 0.5rem;
+  font-size: 1rem;
+  padding: 0 1rem;
+  border-right: 2px solid $bg-toolbar-active;
 }

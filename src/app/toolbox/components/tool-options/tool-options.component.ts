@@ -8,7 +8,7 @@ import { Tool } from '@bm/toolbox/tools';
   styleUrls: ['./tool-options.component.scss']
 })
 export class ToolOptionsComponent implements AfterViewInit {
-  toolName: string;
+  tool: Tool;
 
   @ViewChild('toolHost', { read: ViewContainerRef }) toolHost: ViewContainerRef;
 
@@ -20,14 +20,13 @@ export class ToolOptionsComponent implements AfterViewInit {
 
   onActiveToolChange(tool: Tool) {
     setTimeout(() => {
-      this.toolHost.clear();
-      this.toolName = undefined;
-      if (!tool) { return; }
-      this.toolName = tool.title;
+      this.tool = tool;
       const settings = this.toolbox.getToolSettingsComponent(tool);
-      if (!settings) { return; }
-      const componentFactory = this.factoryResolver.resolveComponentFactory(settings);
-      this.toolHost.createComponent(componentFactory);
+      this.toolHost.clear();
+      if (settings) {
+        const componentFactory = this.factoryResolver.resolveComponentFactory(settings);
+        this.toolHost.createComponent(componentFactory);
+      }
     }, 0);
   }
 }

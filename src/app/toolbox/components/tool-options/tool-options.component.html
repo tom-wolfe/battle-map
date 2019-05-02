@@ -1,2 +1,5 @@
-<span class="tool-name">{{toolName}}</span>
+<ng-container *ngIf="tool">
+  <i class="fas" [ngClass]="tool.icon"></i>
+  <span class="tool-name">{{tool.title}}</span>
+</ng-container>
 <ng-container #toolHost></ng-container>

@@ -1,3 +1,4 @@
+<label>Token</label>
 <select [ngModel]="tokenId" (ngModelChange)="onTokenChange($event)">
   <option *ngFor="let token of tokens" [value]="token.id">{{token.name}}</option>
 </select>
