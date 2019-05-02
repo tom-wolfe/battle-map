@@ -21,9 +21,7 @@ export class MapController {
   public readonly pan$ = combineLatest(this.tempPan$, this.storePan$).pipe(map(([t, p]) => this.pan = { x: p.x + t.x, y: p.y + t.y }));
   public readonly scale$ = combineLatest(this.tempScale$, this.storeScale$).pipe(map(([t, s]) => this.scale = s * t));
 
-  constructor(private store: Store<AppState>) {
-    this.storePan$.subscribe()
-  }
+  constructor(private store: Store<AppState>) { }
 
   livePan(offset: Point) { this.tempPan$.next(offset); }
   liveZoom(scale: number) { this.tempScale$.next(scale); }

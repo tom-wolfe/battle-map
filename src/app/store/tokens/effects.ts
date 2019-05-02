@@ -5,7 +5,7 @@ import { map, switchMap, withLatestFrom } from 'rxjs/operators';
 
 import { AppState } from '../state';
 import * as TokensActions from './actions';
-import { tokens } from './selectors';
+import * as Selectors from './selectors';
 
 @Injectable()
 export class TokensEffects {
@@ -13,7 +13,7 @@ export class TokensEffects {
 
   @Effect() loadImage$ = this.action$.pipe(
     ofType<TokensActions.LoadImage>(TokensActions.LoadImage.TYPE),
-    withLatestFrom(this.store.pipe(select(tokens))),
+    withLatestFrom(this.store.pipe(select(Selectors.tokens))),
     switchMap(([action, tokens]) => {
       const token = tokens.find(t => t.id === action.tokenId);
       return new Promise<[string, ImageBitmap]>((resolve, reject) => {
