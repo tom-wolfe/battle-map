@@ -1,5 +1,8 @@
+import { Size } from '@bm/models';
+
 import { CreatureToolState } from './state';
 
 export const initialState: CreatureToolState = {
-  activeToken: 0
+  token: 0,
+  size: Size.Medium
 };

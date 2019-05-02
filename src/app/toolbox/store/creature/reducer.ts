@@ -4,7 +4,8 @@ import { CreatureToolState } from './state';
 
 export function creatureReducer(state: CreatureToolState = initialState, action: Actions.CreatureToolActions): CreatureToolState {
   switch (action.type) {
-    case Actions.SetActiveToken.TYPE: return { ...state, activeToken: action.tokenId };
+    case Actions.SetToken.TYPE: return { ...state, token: action.tokenId };
+    case Actions.SetSize.TYPE: return { ...state, size: action.size };
     default: return state;
   }
 }

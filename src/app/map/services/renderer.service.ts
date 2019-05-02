@@ -5,6 +5,7 @@ import { MapBattlefield } from './battlefield.service';
 import { MapCanvas } from './canvas.service';
 import { MapController } from './controller.service';
 import { MapGrid } from './grid.service';
+import { Sizes } from '@bm/models';
 
 export const CREATURE_PADDING = 4;
 
@@ -64,9 +65,19 @@ export class MapRenderer {
     const padding = this.scaleN(CREATURE_PADDING);
     this.battlefield.creatures.forEach(creature => {
       if (!creature.image) { return; }
+      const size = Sizes.find(s => s.id === creature.size);
       const point = this.grid.cellPoint(creature.location);
-      const creatureSize = gridSize - padding * 2;
-      this.canvas.context.drawImage(creature.image, point.x + padding, point.y + padding, creatureSize, creatureSize);
+      const creatureSize = (gridSize * size.scale) - padding * 2;
+
+      const halfSquare = gridSize * Math.max(1, size.scale) / 2;
+      const halfCreature = creatureSize / 2;
+
+      const drawPoint = {
+        x: point.x + halfSquare - halfCreature,
+        y: point.y + halfSquare - halfCreature,
+      };
+
+      this.canvas.context.drawImage(creature.image, drawPoint.x, drawPoint.y, creatureSize, creatureSize);
     });
   }
 

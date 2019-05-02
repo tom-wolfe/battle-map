@@ -3,4 +3,5 @@ import { createSelector } from '@ngrx/store';
 
 const state = (s: AppState) => s.toolbox.creature;
 
-export const activeToken = createSelector(state, s => s.activeToken);
+export const token = createSelector(state, s => s.token);
+export const size = createSelector(state, s => s.size);

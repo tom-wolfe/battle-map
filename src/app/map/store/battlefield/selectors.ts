@@ -12,6 +12,7 @@ export const creatures = createSelector(
     return {
       image: images[token.imageUrl],
       location: c.location,
+      size: c.size,
       token
     } as BattlefieldCreature;
   })

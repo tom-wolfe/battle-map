@@ -11,13 +11,17 @@ label {
   padding-right: 0.5rem;
 }
 
-input {
+select, input {
   color: $text-body;
   line-height: 1.5rem;
   padding-left: 0.5rem;
   background-color: $bg-body;
   border: 1px solid black;
   border-radius: $radius-small;
+}
+
+select {
+  padding: 0.25rem;
 }
 
 input[type=number] {

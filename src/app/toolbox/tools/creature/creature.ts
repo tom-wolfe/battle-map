@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MapBattlefield, MapCanvas, MapGrid, MapTokens } from '@bm/map/services';
-import { Creature } from '@bm/models';
+import { Creature, Size } from '@bm/models';
 import { AppState } from '@bm/store/state';
 import * as CreatureStore from '@bm/toolbox/store/creature';
 import { Tool } from '@bm/toolbox/tools/tool';
@@ -13,9 +13,11 @@ export class CreatureTool implements Tool {
   title = 'Creature';
   icon = 'fa-chess-knight';
 
-  private activeToken: number;
+  private token: number;
+  private size: Size;
 
-  public readonly activeToken$ = this.store.select(CreatureStore.activeToken);
+  public readonly token$ = this.store.select(CreatureStore.token);
+  public readonly size$ = this.store.select(CreatureStore.size);
   public readonly tokens$ = this.tokens.tokens$;
 
   private onCanvasClick = this.canvasClick.bind(this);
@@ -27,17 +29,17 @@ export class CreatureTool implements Tool {
     private battlefield: MapBattlefield,
     private tokens: MapTokens,
   ) {
-    this.activeToken$.subscribe(t => this.activeToken = t);
+    this.token$.subscribe(t => this.token = t);
+    this.size$.subscribe(s => this.size = s);
   }
 
-  setActiveToken(tokenId: number) {
-    this.store.dispatch(new CreatureStore.SetActiveToken(tokenId));
-  }
+  setToken(tokenId: number) { this.store.dispatch(new CreatureStore.SetToken(tokenId)); }
+  setSize(size: Size) { this.store.dispatch(new CreatureStore.SetSize(size)); }
 
   canvasClick(e: MouseEvent) {
     const point = relativeMouse(e, this.canvas.element);
     const location = this.grid.cellAt(point);
-    const creature: Creature = { tokenId: this.activeToken, location };
+    const creature: Creature = { tokenId: this.token, size: this.size, location };
     this.battlefield.addCreature(creature);
   }
 

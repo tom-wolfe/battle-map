@@ -1,5 +1,8 @@
-<div class="button-group">
-  <select [ngModel]="activeTokenId" (ngModelChange)="onTokenChange($event)">
-    <option *ngFor="let token of tokens" [value]="token.id">{{token.name}}</option>
-  </select>
-</div>
+<select [ngModel]="tokenId" (ngModelChange)="onTokenChange($event)">
+  <option *ngFor="let token of tokens" [value]="token.id">{{token.name}}</option>
+</select>
+
+<label>Size</label>
+<select [ngModel]="size" (ngModelChange)="onSizeChange($event)">
+  <option *ngFor="let size of Sizes" [value]="size.id">{{size.name}}</option>
+</select>

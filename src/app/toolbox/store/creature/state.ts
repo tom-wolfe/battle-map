@@ -1,3 +1,6 @@
+import { Size } from '@bm/models';
+
 export interface CreatureToolState {
-  activeToken: number;
+  token: number;
+  size: Size;
 }
