@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { StoreModule } from '@ngrx/store';
 
 import * as Components from './components';
+import { featureName, reducers } from './store/reducer';
 import { Toolbox } from './toolbox';
 import * as Tools from './tools';
-import { FormsModule } from '@angular/forms';
 
 const COMPONENTS = [
   Components.ToolbarComponent,
@@ -31,7 +33,8 @@ const TOOL_SETTINGS = [
   declarations: [...COMPONENTS, ...TOOL_SETTINGS],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    StoreModule.forFeature(featureName, reducers)
   ],
   providers: [Toolbox, ...TOOLS],
   exports: [...COMPONENTS],

@@ -1,10 +1,10 @@
 import { Injectable, Type } from '@angular/core';
 import { AppState } from '@bm/store/state';
-import * as ToolboxStore from '@bm/store/toolbox';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+import * as ToolboxStore from './store/active';
 import * as Tools from './tools';
 
 interface ToolRegister {

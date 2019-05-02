@@ -3,7 +3,7 @@ import { CanvasState } from './canvas';
 import { GridState } from './grid';
 import { NavigationState } from './navigation';
 import { TokensState } from './tokens';
-import { ToolboxState } from './toolbox';
+import { ToolboxState } from '@bm/toolbox/store/state';
 
 export interface AppState {
   battlefield: BattlefieldState;

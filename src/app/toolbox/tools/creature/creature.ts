@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MapBattlefield, MapCanvas, MapGrid, MapTokens } from '@bm/map/services';
 import { Creature } from '@bm/models';
 import { AppState } from '@bm/store/state';
-import * as Toolbox from '@bm/store/toolbox';
+import * as CreatureStore from '@bm/toolbox/store/creature';
 import { Tool } from '@bm/toolbox/tools/tool';
 import { relativeMouse } from '@bm/utils';
 import { Store } from '@ngrx/store';
@@ -15,7 +15,7 @@ export class CreatureTool implements Tool {
 
   private activeToken: number;
 
-  public readonly activeToken$ = this.store.select(Toolbox.activeToken);
+  public readonly activeToken$ = this.store.select(CreatureStore.activeToken);
   public readonly tokens$ = this.tokens.tokens$;
 
   private onCanvasClick = this.canvasClick.bind(this);
@@ -31,7 +31,7 @@ export class CreatureTool implements Tool {
   }
 
   setActiveToken(tokenId: number) {
-    this.store.dispatch(new Toolbox.SetActiveToken(tokenId));
+    this.store.dispatch(new CreatureStore.SetActiveToken(tokenId));
   }
 
   canvasClick(e: MouseEvent) {
