@@ -15,15 +15,17 @@ export class ToolOptionsComponent implements AfterViewInit {
   constructor(private factoryResolver: ComponentFactoryResolver, private tools: Toolbox) { }
 
   ngAfterViewInit() {
-    this.tools.activeTool.subscribe(this.onActiveToolChange.bind(this));
+    this.tools.activeTool$.subscribe(this.onActiveToolChange.bind(this));
   }
 
   onActiveToolChange(tool: Tool) {
-    this.toolHost.clear();
-    this.toolName = undefined;
-    if (!tool || !tool.settingsComponent) { return; }
-    this.toolName = tool.title;
-    const componentFactory = this.factoryResolver.resolveComponentFactory(tool.settingsComponent);
-    this.toolHost.createComponent(componentFactory);
+    setTimeout(() => {
+      this.toolHost.clear();
+      this.toolName = undefined;
+      if (!tool || !tool.settingsComponent) { return; }
+      this.toolName = tool.title;
+      const componentFactory = this.factoryResolver.resolveComponentFactory(tool.settingsComponent);
+      this.toolHost.createComponent(componentFactory);
+    }, 0);
   }
 }

@@ -10,7 +10,7 @@ export class ToolDirective {
   handler: ToolHandler;
 
   constructor(private toolbox: Toolbox, private injector: Injector) {
-    this.toolbox.activeTool.subscribe(this.onToolChange.bind(this));
+    this.toolbox.activeTool$.subscribe(this.onToolChange.bind(this));
   }
 
   onToolChange(tool: Tool) {
@@ -19,6 +19,7 @@ export class ToolDirective {
       this.handler.destroy();
       this.handler = undefined;
     }
+    if (!tool) { return; }
     if (tool.handler) {
       this.handler = new tool.handler(this.injector);
     }

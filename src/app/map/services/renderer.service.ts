@@ -61,7 +61,7 @@ export class MapRenderer {
 
   private renderCreatures() {
     const gridSize = this.scaleN(this.grid.size);
-    const padding = 0; //this.scaleN(CREATURE_PADDING);
+    const padding = this.scaleN(CREATURE_PADDING);
     this.battlefield.creatures.forEach(creature => {
       if (!creature.image) { return; }
       const point = this.grid.cellPoint(creature.location);

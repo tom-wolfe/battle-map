@@ -5,20 +5,18 @@ import { select, Store } from '@ngrx/store';
 import { Subject } from 'rxjs';
 
 import * as Tools from './tools';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class Toolbox {
   tools: Tools.Tool[] = [];
 
-  private readonly activeToolId$ = new Subject<number>();
-  public readonly activeToolId = this.activeToolId$.asObservable();
-  private readonly activeTool$ = new Subject<Tools.Tool>();
-  public readonly activeTool = this.activeTool$.asObservable();
+  public readonly activeToolId$ = this.store.pipe(select(ToolboxStore.activeTool));
+  public readonly activeTool$ = this.activeToolId$.pipe(map(id => this.tools.find(t => t.id === id)));
 
   constructor(private store: Store<AppState>) {
     this.tools = [
-      new Tools.GridTool(),
-      new Tools.BackgroundImageTool(),
+      new Tools.MapTool(),
       new Tools.CreatureTool(),
       new Tools.MoveTool(),
       new Tools.EffectTool(),
@@ -26,16 +24,9 @@ export class Toolbox {
       new Tools.DistanceTool(),
       new Tools.ZoomTool()
     ];
-    store.pipe(select(ToolboxStore.activeTool)).subscribe(this.onActiveToolIdChange.bind(this));
   }
 
   setTool(tool: Tools.Tool) {
     this.store.dispatch(new ToolboxStore.SetActiveTool(tool.id));
-  }
-
-  private onActiveToolIdChange(id: number) {
-    const active = this.tools.find(t => t.id === id);
-    this.activeToolId$.next(id);
-    this.activeTool$.next(active);
   }
 }

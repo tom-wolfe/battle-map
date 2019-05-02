@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
-import { Toolbox } from './toolbox';
-import * as Tools from './tools';
 import * as Components from './components';
 import * as Directives from './directives';
+import { Toolbox } from './toolbox';
+import * as Tools from './tools';
 
 const COMPONENTS = [
   Components.ToolbarComponent,
@@ -16,8 +16,7 @@ const DIRECTIVES = [
 ];
 
 const TOOLS = [
-  Tools.BackgroundSettingsComponent,
-  Tools.GridSettingsComponent,
+  Tools.MapSettingsComponent,
   Tools.ZoomSettingsComponent,
 ];
 
