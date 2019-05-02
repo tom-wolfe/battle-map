@@ -33,7 +33,11 @@ export class CreatureTool implements Tool {
     this.size$.subscribe(s => this.size = s);
   }
 
-  setToken(tokenId: number) { this.store.dispatch(new CreatureStore.SetToken(tokenId)); }
+  setToken(tokenId: number) {
+    const token = this.tokens.tokens.find(t => t.id === tokenId);
+    this.store.dispatch(new CreatureStore.SetToken(token.id));
+    this.setSize(token.defaultSize);
+  }
   setSize(size: Size) { this.store.dispatch(new CreatureStore.SetSize(size)); }
 
   canvasClick(e: MouseEvent) {

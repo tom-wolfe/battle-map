@@ -20,6 +20,8 @@ export class CreatureSettingsComponent {
     creature.tokens$.subscribe(t => this.tokens = t);
   }
 
-  onTokenChange(id: string) { this.creature.setToken(Number(id)); }
+  onTokenChange(id: string) {
+    this.creature.setToken(Number(id));
+  }
   onSizeChange(size: Size) { this.creature.setSize(size); }
 }
