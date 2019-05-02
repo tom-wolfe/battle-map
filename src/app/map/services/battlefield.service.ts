@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Creature } from '@bm/models';
+import { BattlefieldCreature, Creature } from '@bm/models';
 import * as Battlefield from '@bm/store/battlefield';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
-import { BattlefieldCreature } from '@bm/models/battlefield-creature';
 
 @Injectable()
 export class MapBattlefield {

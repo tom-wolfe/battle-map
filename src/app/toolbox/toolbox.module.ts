@@ -16,6 +16,7 @@ const DIRECTIVES = [
 ];
 
 const TOOLS = [
+  Tools.CreatureSettingsComponent,
   Tools.MapSettingsComponent,
   Tools.ZoomSettingsComponent,
 ];

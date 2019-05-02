@@ -6,4 +6,10 @@ export class SetActiveTool implements Action {
   constructor(public toolId: number) { }
 }
 
-export type ToolboxActions = SetActiveTool;
+export class SetActiveToken implements Action {
+  public static readonly TYPE = '[Toolbox] Set Active Token';
+  readonly type = SetActiveToken.TYPE;
+  constructor(public tokenId: number) { }
+}
+
+export type ToolboxActions = SetActiveTool | SetActiveToken;

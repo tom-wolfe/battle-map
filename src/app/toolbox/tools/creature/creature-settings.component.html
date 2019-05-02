@@ -1,0 +1,5 @@
+<div class="button-group">
+  <select (change)="onTokenChange($event)">
+    <option *ngFor="let token of tokens.tokens$ | async" [value]="token.id">{{token.name}}</option>
+  </select>
+</div>

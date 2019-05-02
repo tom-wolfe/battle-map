@@ -1,5 +1,8 @@
 import { ToolboxState } from './state';
 
 export const initialState: ToolboxState = {
-  activeTool: 1,
+  activeTool: 0,
+  creature: {
+    activeToken: 0
+  }
 };

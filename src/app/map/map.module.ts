@@ -19,7 +19,8 @@ const SERVICES = [
   Services.MapCanvas,
   Services.MapController,
   Services.MapGrid,
-  Services.MapRenderer
+  Services.MapRenderer,
+  Services.MapTokens
 ];
 
 @NgModule({

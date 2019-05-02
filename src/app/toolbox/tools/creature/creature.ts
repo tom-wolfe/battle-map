@@ -1,11 +1,12 @@
 import { Tool } from '@bm/toolbox/tools/tool';
 
+import { CreatureSettingsComponent } from './creature-settings.component';
 import { CreatureHandler } from './handler';
 
 export class CreatureTool implements Tool {
-  id = 3;
+  id = 1;
   title = 'Creature';
   icon = 'fa-chess-knight';
-  settingsComponent = undefined;
+  settingsComponent = CreatureSettingsComponent;
   handler = CreatureHandler;
 }
