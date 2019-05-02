@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Point } from '@bm/models';
-import * as Grid from '@bm/store/grid';
+import * as Grid from '@bm/map/store/grid';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
 

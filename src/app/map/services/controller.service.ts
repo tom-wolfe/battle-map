@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Point } from '@bm/models';
-import * as Navigation from '@bm/store/navigation';
+import * as Navigation from '@bm/map/store/navigation';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
 import { BehaviorSubject, combineLatest } from 'rxjs';

@@ -1,10 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ToolboxModule } from '@bm/toolbox';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
 
 import { MapComponent } from './component/map.component';
 import * as Directives from './directives';
 import * as Services from './services';
+import { effects } from './store/effects';
+import { featureName, reducers } from './store/reducer';
 
 const COMPONENTS = [
   MapComponent
@@ -28,7 +32,12 @@ const SERVICES = [
     ...COMPONENTS,
     ...DIRECTIVES
   ],
-  imports: [CommonModule, ToolboxModule],
+  imports: [
+    CommonModule,
+    ToolboxModule,
+    StoreModule.forFeature(featureName, reducers),
+    EffectsModule.forFeature(effects),
+  ],
   exports: [...COMPONENTS],
   providers: [...SERVICES],
   entryComponents: [...COMPONENTS]

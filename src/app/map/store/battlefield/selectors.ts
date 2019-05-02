@@ -1,10 +1,9 @@
+import * as Tokens from '@bm/map/store/tokens';
+import { BattlefieldCreature } from '@bm/models';
+import { AppState } from '@bm/store/state';
 import { createSelector } from '@ngrx/store';
 
-import { AppState } from '../state';
-import * as Tokens from '@bm/store/tokens';
-import { BattlefieldCreature } from '@bm/models';
-
-const state = (s: AppState) => s.battlefield;
+const state = (s: AppState) => s.map.battlefield;
 
 export const creatures = createSelector(
   state, Tokens.tokens, Tokens.images,

@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import * as Tokens from '@bm/store/tokens';
+import * as Tokens from '@bm/map/store/tokens';
+import { AppState } from '@bm/store/state';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { AppState } from '../state';
 import * as BattlefieldActions from './actions';
 
 @Injectable()

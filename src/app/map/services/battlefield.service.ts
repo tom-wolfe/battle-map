@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import * as Battlefield from '@bm/map/store/battlefield';
 import { BattlefieldCreature, Creature } from '@bm/models';
-import * as Battlefield from '@bm/store/battlefield';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
 

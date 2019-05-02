@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import * as Canvas from '@bm/store/canvas';
+import * as Canvas from '@bm/map/store/canvas';
+import * as Navigation from '@bm/map/store/navigation';
+import { Point } from '@bm/models';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
-import { Point } from '@bm/models';
-import * as Navigation from '@bm/store/navigation';
 
 const FIT_PADDING = 20;
 

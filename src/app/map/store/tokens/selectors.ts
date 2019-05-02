@@ -1,9 +1,8 @@
+import { AppState } from '@bm/store/state';
 import { createSelector } from '@ngrx/store';
 import * as _ from 'lodash';
 
-import { AppState } from '../state';
-
-const state = (s: AppState) => s.tokens;
+const state = (s: AppState) => s.map.tokens;
 
 export const tokens = createSelector(state, s => _.sortBy(s.tokens, 'name'));
 export const images = createSelector(state, s => s.images);

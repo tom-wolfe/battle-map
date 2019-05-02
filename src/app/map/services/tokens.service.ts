@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AppState } from '@bm/store/state';
-import * as Tokens from '@bm/store/tokens';
+import * as Tokens from '@bm/map/store/tokens';
 import { select, Store } from '@ngrx/store';
 
 @Injectable()

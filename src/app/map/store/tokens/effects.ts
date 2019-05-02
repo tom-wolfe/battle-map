@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { AppState } from '@bm/store/state';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { map, switchMap, withLatestFrom } from 'rxjs/operators';
 
-import { AppState } from '../state';
 import * as TokensActions from './actions';
 import * as Selectors from './selectors';
 
