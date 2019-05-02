@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { Token } from '@bm/models';
-import * as _ from 'lodash';
 
 import { CreatureTool } from './creature';
 
@@ -13,7 +12,8 @@ export class CreatureSettingsComponent {
   tokens: Token[];
 
   constructor(private creature: CreatureTool) {
-    creature.tokens$.subscribe(t => this.tokens = _.sortBy(t, 'name'));
+    creature.activeToken$.subscribe(t => this.activeTokenId = t);
+    creature.tokens$.subscribe(t => this.tokens = t);
   }
 
   onTokenChange(id: string) {
