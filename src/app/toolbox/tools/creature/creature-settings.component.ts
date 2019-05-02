@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { MapTokens } from '@bm/map/services';
+import { Token } from '@bm/models';
+
+import { CreatureTool } from './creature';
 
 @Component({
   selector: 'bm-creature-settings',
@@ -7,12 +9,14 @@ import { MapTokens } from '@bm/map/services';
 })
 export class CreatureSettingsComponent {
   activeTokenId: number;
+  tokens: Token[];
 
-  constructor(public tokens: MapTokens) {
-    
+  constructor(private creature: CreatureTool) {
+    creature.tokens$.subscribe(t => this.tokens = t);
   }
 
-  onTokenChange() {
-
+  onTokenChange(e: Event) {
+    // TODO: Make actual value.
+    this.creature.setActiveToken(0);
   }
 }

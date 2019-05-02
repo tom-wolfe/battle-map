@@ -12,10 +12,10 @@ export class ToolOptionsComponent implements AfterViewInit {
 
   @ViewChild('toolHost', { read: ViewContainerRef }) toolHost: ViewContainerRef;
 
-  constructor(private factoryResolver: ComponentFactoryResolver, private tools: Toolbox) { }
+  constructor(private factoryResolver: ComponentFactoryResolver, private toolbox: Toolbox) { }
 
   ngAfterViewInit() {
-    this.tools.activeTool$.subscribe(this.onActiveToolChange.bind(this));
+    this.toolbox.activeTool$.subscribe(this.onActiveToolChange.bind(this));
   }
 
   onActiveToolChange(tool: Tool) {
@@ -24,8 +24,9 @@ export class ToolOptionsComponent implements AfterViewInit {
       this.toolName = undefined;
       if (!tool) { return; }
       this.toolName = tool.title;
-      if (!tool.settingsComponent) { return; }
-      const componentFactory = this.factoryResolver.resolveComponentFactory(tool.settingsComponent);
+      const settings = this.toolbox.getToolSettingsComponent(tool);
+      if (!settings) { return; }
+      const componentFactory = this.factoryResolver.resolveComponentFactory(settings);
       this.toolHost.createComponent(componentFactory);
     }, 0);
   }
