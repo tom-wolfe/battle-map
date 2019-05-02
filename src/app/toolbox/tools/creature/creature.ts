@@ -29,7 +29,6 @@ export class CreatureTool implements Tool {
   }
 
   activate() {
-    console.log('Activate?');
     this.canvas.element.addEventListener('click', this.onCanvasClick);
   }
 
