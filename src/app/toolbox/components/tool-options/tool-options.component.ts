@@ -22,8 +22,9 @@ export class ToolOptionsComponent implements AfterViewInit {
     setTimeout(() => {
       this.toolHost.clear();
       this.toolName = undefined;
-      if (!tool || !tool.settingsComponent) { return; }
+      if (!tool) { return; }
       this.toolName = tool.title;
+      if (!tool.settingsComponent) { return; }
       const componentFactory = this.factoryResolver.resolveComponentFactory(tool.settingsComponent);
       this.toolHost.createComponent(componentFactory);
     }, 0);
