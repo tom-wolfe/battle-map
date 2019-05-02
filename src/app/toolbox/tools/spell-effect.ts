@@ -1,8 +1,8 @@
 import { Tool } from './tool';
 
-export class EffectTool implements Tool {
+export class SpellEffectTool implements Tool {
   id = 6;
-  title = 'Effect';
+  title = 'Spell Effect';
   icon = 'fa-flask';
   settingsComponent = undefined;
 }

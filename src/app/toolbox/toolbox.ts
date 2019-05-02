@@ -19,7 +19,7 @@ export class Toolbox {
       new Tools.MapTool(),
       new Tools.CreatureTool(),
       new Tools.MoveTool(),
-      new Tools.EffectTool(),
+      new Tools.SpellEffectTool(),
       new Tools.PaintTool(),
       new Tools.DistanceTool(),
       new Tools.ZoomTool()
