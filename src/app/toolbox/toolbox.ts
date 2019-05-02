@@ -41,7 +41,7 @@ export class Toolbox {
     this.activeTool$.subscribe(this.onToolChange.bind(this));
   }
 
-  get tools(): Tools.Tool[] { return this.register.map(t => t.tool) }
+  get tools(): Tools.Tool[] { return this.register.map(t => t.tool); }
 
   registerTool(tool: Tools.Tool, settings: Type<{}>) {
     this.register.push({ tool, settings });
