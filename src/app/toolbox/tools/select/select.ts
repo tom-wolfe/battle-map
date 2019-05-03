@@ -51,6 +51,7 @@ export class SelectTool implements Tool {
       this.show();
     } else {
       this.hide();
+      this.settings.setCreature(undefined);
     }
   }
 
@@ -63,6 +64,7 @@ export class SelectTool implements Tool {
   canvasMouseUp() { this.controller.setEnabled(true); }
 
   show() {
+    if (this.overlayRef.hasAttached()) { return; }
     const userProfilePortal = new ComponentPortal(CreaturePanelComponent);
     this.overlayRef.attach(userProfilePortal);
   }

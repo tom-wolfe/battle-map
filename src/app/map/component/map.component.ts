@@ -1,5 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MapCanvas, MapRenderer } from '@bm/map/services';
+import { MapCanvas } from '@bm/map/services';
+import { MapRenderer } from '../services/renderer.service';
 
 @Component({
   selector: 'bm-map',

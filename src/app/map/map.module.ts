@@ -9,6 +9,7 @@ import * as Directives from './directives';
 import * as Services from './services';
 import { effects } from './store/effects';
 import { featureName, reducers } from './store/reducer';
+import { MapRenderer } from './services/renderer.service';
 
 const COMPONENTS = [
   MapComponent
@@ -23,8 +24,8 @@ const SERVICES = [
   Services.MapCanvas,
   Services.MapController,
   Services.MapGrid,
-  Services.MapRenderer,
-  Services.MapTokens
+  Services.MapTokens,
+  MapRenderer,
 ];
 
 @NgModule({

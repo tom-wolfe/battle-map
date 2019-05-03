@@ -6,12 +6,19 @@ import { MapCanvas } from './canvas.service';
 import { MapController } from './controller.service';
 import { MapGrid } from './grid.service';
 import { Sizes } from '@bm/models';
+import { SelectToolSettings } from '@bm/toolbox';
 
 export const CREATURE_PADDING = 4;
 
 @Injectable()
 export class MapRenderer {
-  constructor(private controller: MapController, private canvas: MapCanvas, private grid: MapGrid, private battlefield: MapBattlefield) {
+  constructor(
+    private controller: MapController,
+    private canvas: MapCanvas,
+    private grid: MapGrid,
+    private battlefield: MapBattlefield,
+    private selected: SelectToolSettings
+  ) {
     const render = this.render.bind(this);
     combineLatest(
       controller.pan$,
@@ -23,6 +30,7 @@ export class MapRenderer {
       grid.size$,
       battlefield.creatures$
     ).subscribe(render);
+    this.selected.creature$.subscribe(render);
     this.canvas.resize$.subscribe(render);
   }
 
@@ -81,7 +89,11 @@ export class MapRenderer {
         y: point.y + halfSquare - halfCreature,
       };
 
+      if (this.selected.creature === creature.id) {
+        this.canvas.context.filter = 'drop-shadow(0px 0px 10px white)';
+      }
       this.canvas.context.drawImage(creature.image, drawPoint.x, drawPoint.y, creatureSize, creatureSize);
+      this.canvas.context.filter = 'none';
     });
   }
 
