@@ -22,7 +22,7 @@ export class MapRenderer {
       grid.size$,
       battlefield.creatures$
     ).subscribe(this.render.bind(this));
-    this.canvas.resize.subscribe(() => this.render());
+    this.canvas.resize$.subscribe(() => this.render());
   }
 
   render() {

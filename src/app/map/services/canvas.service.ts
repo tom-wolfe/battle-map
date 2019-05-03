@@ -13,7 +13,7 @@ export class MapCanvas {
   public context: CanvasRenderingContext2D;
   public element: HTMLCanvasElement;
 
-  public readonly resize = new EventEmitter();
+  public readonly resize$ = new EventEmitter();
   public readonly background$ = this.store.pipe(select(Canvas.background));
   public readonly context$ = this.store.pipe(select(Canvas.context));
   public readonly element$ = this.store.pipe(select(Canvas.element));
@@ -53,7 +53,7 @@ export class MapCanvas {
     if (!this.element) { return; }
     this.element.width = this.element.parentElement.clientWidth;
     this.element.height = this.element.parentElement.clientHeight;
-    this.resize.next();
+    this.resize$.emit();
   }
 
   private centerImage(image: ImageBitmap, scale: number): Point {
