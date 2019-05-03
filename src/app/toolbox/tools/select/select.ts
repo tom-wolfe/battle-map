@@ -6,6 +6,7 @@ import { Tool } from '@bm/toolbox/tools/tool';
 
 import { CreaturePanelComponent } from './creature-panel.component';
 import { SelectToolSettings } from './settings';
+import { Creature } from '@bm/models';
 
 @Injectable()
 export class SelectTool implements Tool {
@@ -26,7 +27,11 @@ export class SelectTool implements Tool {
     private controller: MapController,
     private overlay: Overlay,
     private settings: SelectToolSettings
-  ) { }
+  ) {
+
+    this.settings.creature$.subscribe(this.onSelectedCreatureChange.bind(this));
+
+  }
 
   activate() {
     this.initializeOverlay();
@@ -45,14 +50,7 @@ export class SelectTool implements Tool {
   canvasClick(e: MouseEvent) {
     const cell = this.grid.cellFromMouse(e);
     const creature = this.battlefield.creatureAtCell(cell);
-    if (creature) {
-      this.controller.setEnabled(false);
-      this.settings.setCreature(creature.id);
-      this.show();
-    } else {
-      this.hide();
-      this.settings.setCreature(undefined);
-    }
+    this.settings.setCreature(creature);
   }
 
   canvasMouseDown(e: MouseEvent) {
@@ -70,7 +68,12 @@ export class SelectTool implements Tool {
   }
 
   hide() {
+    if (!this.overlayRef) { return; }
     this.overlayRef.detach();
+  }
+
+  onSelectedCreatureChange(c: Creature) {
+    c ? this.show() : this.hide();
   }
 
   private initializeOverlay() {

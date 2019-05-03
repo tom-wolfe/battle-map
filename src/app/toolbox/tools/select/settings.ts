@@ -22,7 +22,7 @@ export class SelectToolSettings {
     this.creature$.subscribe(c => this.creature = c);
   }
 
-  setCreature(creatureId: number) {
-    this.store.dispatch(new SelectStore.SetCreature(creatureId));
+  setCreature(creature: Creature) {
+    this.store.dispatch(new SelectStore.SetCreature(creature ? creature.id : null));
   }
 }

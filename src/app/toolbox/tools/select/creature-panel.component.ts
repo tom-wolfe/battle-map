@@ -12,5 +12,6 @@ export class CreaturePanelComponent {
 
   onDeleteClick() {
     this.battlefield.removeCreature(this.settings.creature);
+    this.settings.setCreature(undefined);
   }
 }
