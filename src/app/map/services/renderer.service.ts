@@ -12,6 +12,7 @@ export const CREATURE_PADDING = 4;
 @Injectable()
 export class MapRenderer {
   constructor(private controller: MapController, private canvas: MapCanvas, private grid: MapGrid, private battlefield: MapBattlefield) {
+    const render = this.render.bind(this);
     combineLatest(
       controller.pan$,
       controller.scale$,
@@ -21,8 +22,8 @@ export class MapRenderer {
       grid.offset$,
       grid.size$,
       battlefield.creatures$
-    ).subscribe(this.render.bind(this));
-    this.canvas.resize$.subscribe(() => this.render());
+    ).subscribe(render);
+    this.canvas.resize$.subscribe(render);
   }
 
   render() {
