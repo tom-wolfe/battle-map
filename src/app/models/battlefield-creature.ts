@@ -1,10 +1,7 @@
-import { Point } from './point';
-import { Size } from './size';
+import { Creature } from './creature';
 import { Token } from './token';
 
-export interface BattlefieldCreature {
+export interface BattlefieldCreature extends Creature {
   image: ImageBitmap;
   token: Token;
-  location: Point;
-  size: Size;
 }

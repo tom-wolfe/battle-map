@@ -10,6 +10,13 @@ export class MapNavigationDirective implements OnInit {
   private el: HTMLCanvasElement;
   private hammer: Hammer.HammerManager;
 
+  private panMoveBound = this.onPanMove.bind(this);
+  private pinchMoveBound = this.onPinchMove.bind(this);
+  private panEndBound = this.onPanEnd.bind(this);
+  private pinchBound = this.onPinch.bind(this);
+  private pinchEndBound = this.onPinchEnd.bind(this);
+  private wheelBound = this.onWheel.bind(this);
+
   constructor(
     elRef: ElementRef<HTMLCanvasElement>,
     private controller: MapController
@@ -22,13 +29,6 @@ export class MapNavigationDirective implements OnInit {
     this.hammer.get('pinch').set({ enable: true });
     this.controller.enabled$.subscribe(e => e ? this.addEvents() : this.removeEvents());
   }
-
-  panMoveBound = this.onPanMove.bind(this);
-  pinchMoveBound = this.onPinchMove.bind(this);
-  panEndBound = this.onPanEnd.bind(this);
-  pinchBound = this.onPinch.bind(this);
-  pinchEndBound = this.onPinchEnd.bind(this);
-  wheelBound = this.onWheel.bind(this);
 
   private addEvents() {
     this.hammer.on('panmove', this.panMoveBound);

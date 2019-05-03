@@ -29,7 +29,7 @@ export class Toolbox {
     this.tools = [mapTool, selectTool, creatureTool, moveTool, spellEffectTool, paintTool, distanceTool, zoomTool];
     this.activeTool$ = this.activeToolId$.pipe(map(id => this.tools.find(t => t.id === id)));
     this.activeTool$.subscribe(this.onToolChange.bind(this));
-  } 
+  }
 
   setTool(tool: Tools.Tool) { this.store.dispatch(new ToolboxStore.SetActiveTool(tool.id)); }
 

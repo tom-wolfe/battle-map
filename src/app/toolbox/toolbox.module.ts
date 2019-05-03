@@ -16,14 +16,15 @@ const COMPONENTS = [
 
 const TOOLS = [
   Tools.CreatureTool,
+  Tools.CreatureToolSettings,
   Tools.DistanceTool,
   Tools.MapTool,
   Tools.MoveTool,
   Tools.PaintTool,
   Tools.SelectTool,
+  Tools.SelectToolSettings,
   Tools.SpellEffectTool,
   Tools.ZoomTool,
-  Tools.CreatureToolSettings
 ];
 
 const TOOL_SETTINGS = [

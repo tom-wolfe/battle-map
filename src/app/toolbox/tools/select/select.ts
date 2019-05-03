@@ -1,10 +1,11 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ElementRef, Injectable } from '@angular/core';
-import { MapCanvas, MapController } from '@bm/map/services';
+import { MapBattlefield, MapCanvas, MapController, MapGrid } from '@bm/map/services';
 import { Tool } from '@bm/toolbox/tools/tool';
 
 import { CreaturePanelComponent } from './creature-panel.component';
+import { SelectToolSettings } from './settings';
 
 @Injectable()
 export class SelectTool implements Tool {
@@ -18,8 +19,11 @@ export class SelectTool implements Tool {
 
   constructor(
     private canvas: MapCanvas,
+    private grid: MapGrid,
+    private battlefield: MapBattlefield,
     private controller: MapController,
-    private overlay: Overlay
+    private overlay: Overlay,
+    private settings: SelectToolSettings
   ) { }
 
   activate() {
@@ -34,7 +38,14 @@ export class SelectTool implements Tool {
   }
 
   canvasClick(e: MouseEvent) {
-    this.overlayRef.hasAttached() ? this.hide() : this.show();
+    const cell = this.grid.cellFromMouse(e);
+    const creature = this.battlefield.creatureAtCell(cell);
+    if (creature) {
+      this.settings.setCreature(creature.id);
+      this.show();
+    } else {
+      this.hide();
+    }
   }
 
   show() {

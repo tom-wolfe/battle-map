@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { MapBattlefield, MapCanvas, MapGrid } from '@bm/map/services';
 import { Creature } from '@bm/models';
 import { Tool } from '@bm/toolbox/tools/tool';
-import { relativeMouse } from '@bm/utils';
 
 import { CreatureToolSettings } from './settings';
 import { CreatureSettingsComponent } from './settings.component';
@@ -24,9 +23,8 @@ export class CreatureTool implements Tool {
   ) { }
 
   canvasClick(e: MouseEvent) {
-    const point = relativeMouse(e, this.canvas.element);
-    const location = this.grid.cellAt(point);
-    const creature: Creature = { tokenId: this.settings.token, size: this.settings.size, location };
+    const location = this.grid.cellFromMouse(e);
+    const creature: Creature = { id: undefined, tokenId: this.settings.token, size: this.settings.size, location };
     this.battlefield.addCreature(creature);
   }
 
