@@ -28,6 +28,8 @@ export class MapRenderer {
 
   render() {
     if (!this.canvas.context) { return; }
+    this.canvas.context.imageSmoothingEnabled = true;
+    this.canvas.context.imageSmoothingQuality = 'high';
     this.canvas.context.clearRect(0, 0, this.canvas.element.width, this.canvas.element.height);
     this.renderBackground();
     this.renderGrid();
