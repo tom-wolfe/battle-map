@@ -1,5 +1,5 @@
-import { Directive, ElementRef, HostListener, OnInit } from '@angular/core';
-import { MapController, MapRenderer } from '@bm/map/services';
+import { Directive, ElementRef, OnInit } from '@angular/core';
+import { MapController } from '@bm/map/services';
 import { relativeMouse } from '@bm/utils';
 import * as Hammer from 'hammerjs';
 
@@ -12,8 +12,7 @@ export class MapNavigationDirective implements OnInit {
 
   constructor(
     elRef: ElementRef<HTMLCanvasElement>,
-    private controller: MapController,
-    private renderer: MapRenderer
+    private controller: MapController
   ) {
     this.el = elRef.nativeElement;
   }
@@ -21,7 +20,6 @@ export class MapNavigationDirective implements OnInit {
   ngOnInit() {
     this.hammer = new Hammer(this.el);
     this.hammer.get('pinch').set({ enable: true });
-    this.onResize();
     this.controller.enabled$.subscribe(e => e ? this.addEvents() : this.removeEvents());
   }
 
@@ -48,12 +46,6 @@ export class MapNavigationDirective implements OnInit {
     this.hammer.off('pinch', this.pinchBound);
     this.hammer.off('pinchend', this.pinchEndBound);
     this.el.removeEventListener('wheel', this.wheelBound);
-  }
-
-  @HostListener('window:resize') onResize() {
-    this.el.width = this.el.parentElement.clientWidth;
-    this.el.height = this.el.parentElement.clientHeight;
-    this.renderer.render();
   }
 
   private onPanMove(e: any) { this.controller.livePan({ x: e.deltaX, y: e.deltaY }); }

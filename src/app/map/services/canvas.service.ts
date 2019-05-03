@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import * as Canvas from '@bm/map/store/canvas';
 import * as Navigation from '@bm/map/store/navigation';
 import { Point } from '@bm/models';
@@ -13,6 +13,7 @@ export class MapCanvas {
   public context: CanvasRenderingContext2D;
   public element: HTMLCanvasElement;
 
+  public readonly resize = new EventEmitter();
   public readonly background$ = this.store.pipe(select(Canvas.background));
   public readonly context$ = this.store.pipe(select(Canvas.context));
   public readonly element$ = this.store.pipe(select(Canvas.element));
@@ -20,7 +21,8 @@ export class MapCanvas {
   constructor(private store: Store<AppState>) {
     this.background$.subscribe(b => this.background = b);
     this.context$.subscribe(c => this.context = c);
-    this.element$.subscribe(e => this.element = e);
+    this.element$.subscribe(this.onElementChange.bind(this));
+    window.addEventListener('resize', this.onWindowResize.bind(this));
   }
 
   setCanvas(canvas: HTMLCanvasElement) {
@@ -40,6 +42,18 @@ export class MapCanvas {
 
     this.store.dispatch(new Navigation.SetScale(scale));
     this.store.dispatch(new Navigation.SetPan(offset));
+  }
+
+  private onElementChange(e: HTMLCanvasElement) {
+    this.element = e;
+    this.onWindowResize();
+  }
+
+  private onWindowResize() {
+    if (!this.element) { return; }
+    this.element.width = this.element.parentElement.clientWidth;
+    this.element.height = this.element.parentElement.clientHeight;
+    this.resize.next();
   }
 
   private centerImage(image: ImageBitmap, scale: number): Point {

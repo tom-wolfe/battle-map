@@ -1,6 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-
-import { MapCanvas } from '../services/canvas.service';
+import { MapCanvas, MapRenderer } from '@bm/map/services';
 
 @Component({
   selector: 'bm-map',
@@ -9,6 +8,6 @@ import { MapCanvas } from '../services/canvas.service';
 })
 export class MapComponent implements OnInit {
   @ViewChild('canvas') canvasEl: ElementRef<HTMLCanvasElement>;
-  constructor(private canvas: MapCanvas) { }
+  constructor(private renderer: MapRenderer, private canvas: MapCanvas) { }
   ngOnInit() { this.canvas.setCanvas(this.canvasEl.nativeElement); }
 }
