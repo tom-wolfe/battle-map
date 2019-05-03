@@ -31,7 +31,7 @@ export class MapNavigationDirective implements OnInit {
   wheelBound = this.onWheel.bind(this);
 
   private addEvents() {
-    this.hammer.on('panmove', e => this.onPanMove(e));
+    this.hammer.on('panmove', this.panMoveBound);
     this.hammer.on('pinchmove', this.pinchMoveBound);
     this.hammer.on('panend', this.panEndBound);
     this.hammer.on('pinch', this.pinchBound);

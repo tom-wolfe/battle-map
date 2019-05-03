@@ -1,3 +1,4 @@
+import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -28,6 +29,7 @@ const TOOL_SETTINGS = [
   Tools.CreatureSettingsComponent,
   Tools.MapSettingsComponent,
   Tools.ZoomSettingsComponent,
+  Tools.CreaturePanelComponent
 ];
 
 @NgModule({
@@ -35,6 +37,7 @@ const TOOL_SETTINGS = [
   imports: [
     CommonModule,
     FormsModule,
+    OverlayModule,
     StoreModule.forFeature(featureName, reducers)
   ],
   providers: [Toolbox, ...TOOLS],
