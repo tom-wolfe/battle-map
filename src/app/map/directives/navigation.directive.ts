@@ -8,6 +8,7 @@ import * as Hammer from 'hammerjs';
 })
 export class MapNavigationDirective implements OnInit {
   private el: HTMLCanvasElement;
+  private enabled: boolean;
   private hammer: Hammer.HammerManager;
 
   private panMoveBound = this.onPanMove.bind(this);
@@ -27,7 +28,7 @@ export class MapNavigationDirective implements OnInit {
   ngOnInit() {
     this.hammer = new Hammer(this.el);
     this.hammer.get('pinch').set({ enable: true });
-    this.controller.enabled$.subscribe(e => e ? this.addEvents() : this.removeEvents());
+    this.controller.enabled$.subscribe(e => (this.enabled = e) ? this.addEvents() : this.removeEvents());
   }
 
   private addEvents() {
@@ -48,12 +49,13 @@ export class MapNavigationDirective implements OnInit {
     this.el.removeEventListener('wheel', this.wheelBound);
   }
 
-  private onPanMove(e: any) { this.controller.livePan({ x: e.deltaX, y: e.deltaY }); }
-  private onPinchMove(e: any) { this.controller.livePan({ x: e.deltaX, y: e.deltaY }); }
-  private onPanEnd(e: any) { this.controller.endPan(); }
-  private onPinch(e: any) { this.controller.liveZoom(e.scale); }
-  private onPinchEnd(e: any) { this.controller.zoomTo(e.scale, e.center); }
+  private onPanMove(e: any) { if (!this.enabled) { return; } this.controller.livePan({ x: e.deltaX, y: e.deltaY }); }
+  private onPinchMove(e: any) { if (!this.enabled) { return; } this.controller.livePan({ x: e.deltaX, y: e.deltaY }); }
+  private onPanEnd(e: any) { if (!this.enabled) { return; } this.controller.endPan(); }
+  private onPinch(e: any) { if (!this.enabled) { return; } this.controller.liveZoom(e.scale); }
+  private onPinchEnd(e: any) { if (!this.enabled) { return; } this.controller.zoomTo(e.scale, e.center); }
   private onWheel(e: WheelEvent) {
+    if (!this.enabled) { return; }
     const origin = relativeMouse(e, this.el);
     e.deltaY > 0 ? this.controller.zoomOut(origin) : this.controller.zoomIn(origin);
   }

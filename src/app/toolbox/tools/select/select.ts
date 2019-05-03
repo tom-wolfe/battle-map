@@ -15,7 +15,9 @@ export class SelectTool implements Tool {
 
   private overlayRef: OverlayRef;
 
+  private onCanvasMouseDown = this.canvasMouseDown.bind(this);
   private onCanvasClick = this.canvasClick.bind(this);
+  private onCanvasMouseUp = this.canvasMouseUp.bind(this);
 
   constructor(
     private canvas: MapCanvas,
@@ -28,12 +30,15 @@ export class SelectTool implements Tool {
 
   activate() {
     this.initializeOverlay();
-    this.controller.setEnabled(false);
+    this.canvas.element.addEventListener('mousedown', this.onCanvasMouseDown);
     this.canvas.element.addEventListener('click', this.onCanvasClick);
+    this.canvas.element.addEventListener('mouseup', this.onCanvasMouseUp);
   }
 
   deactivate() {
+    this.canvas.element.removeEventListener('mousedown', this.onCanvasMouseDown);
     this.canvas.element.removeEventListener('click', this.onCanvasClick);
+    this.canvas.element.removeEventListener('mouseup', this.onCanvasMouseUp);
     this.controller.setEnabled(true);
   }
 
@@ -41,12 +46,21 @@ export class SelectTool implements Tool {
     const cell = this.grid.cellFromMouse(e);
     const creature = this.battlefield.creatureAtCell(cell);
     if (creature) {
+      this.controller.setEnabled(false);
       this.settings.setCreature(creature.id);
       this.show();
     } else {
       this.hide();
     }
   }
+
+  canvasMouseDown(e: MouseEvent) {
+    const cell = this.grid.cellFromMouse(e);
+    const creature = this.battlefield.creatureAtCell(cell);
+    if (creature) { this.controller.setEnabled(false); }
+  }
+
+  canvasMouseUp() { this.controller.setEnabled(true); }
 
   show() {
     const userProfilePortal = new ComponentPortal(CreaturePanelComponent);
