@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Tool } from '@bm/toolbox/tools/tool';
+import { MapController, MapCanvas } from '@bm/map/services';
 
 @Injectable()
 export class SelectTool implements Tool {
@@ -7,8 +8,16 @@ export class SelectTool implements Tool {
   title = 'Select Object';
   icon = 'fa-mouse-pointer';
 
-  constructor( ) { }
+  constructor(
+    private canvas: MapCanvas,
+    private controller: MapController
+  ) { }
 
-  activate() { }
-  deactivate() { }
+  activate() {
+    this.controller.setEnabled(false);
+  }
+
+  deactivate() {
+    this.controller.setEnabled(true);
+  }
 }

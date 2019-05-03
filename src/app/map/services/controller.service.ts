@@ -14,14 +14,18 @@ export class MapController {
   private readonly storeScale$ = this.store.pipe(select(Navigation.scale));
   private readonly tempPan$ = new BehaviorSubject<Point>({ x: 0, y: 0 });
   private readonly tempScale$ = new BehaviorSubject<number>(1);
+  private readonly enabledValue$ = new BehaviorSubject<boolean>(true);
 
   public pan: Point;
   public scale: number;
 
+  public readonly enabled$ = this.enabledValue$.asObservable();
   public readonly pan$ = combineLatest(this.tempPan$, this.storePan$).pipe(map(([t, p]) => this.pan = { x: p.x + t.x, y: p.y + t.y }));
   public readonly scale$ = combineLatest(this.tempScale$, this.storeScale$).pipe(map(([t, s]) => this.scale = s * t));
 
   constructor(private store: Store<AppState>) { }
+
+  setEnabled(enabled: boolean) { this.enabledValue$.next(enabled); }
 
   livePan(offset: Point) { this.tempPan$.next(offset); }
   liveZoom(scale: number) { this.tempScale$.next(scale); }
