@@ -10,6 +10,17 @@ button {
     background-color: $bg-toolbar-hover;
     color: $text-hover;
   }
+
+  &.block {
+    display: block;  
+    width: 100%;
+  }
+
+  &.large {
+    font-size: 1rem;
+    line-height: auto;
+    padding: 0.5rem;
+  }
 }
 
 .button-group {
@@ -22,3 +33,5 @@ button {
     }
   }
 }
+
+
