@@ -21,7 +21,6 @@ export class MapBattlefield {
   creatureAtCell(cell: Point): Creature {
     // TODO: Make this work for larger creatures.
     return this.creatures.find(c => c.location.x === cell.x && c.location.y === cell.y);
-    // TODO: Implement.
   }
 
   addCreature(creature: Creature) {
@@ -30,5 +29,9 @@ export class MapBattlefield {
     if (existing) { return; }
     creature.id = this.lastCreatureId + 1;
     this.store.dispatch(new Battlefield.AddCreature(creature));
+  }
+
+  removeCreature(creature: Creature) {
+    this.store.dispatch(new Battlefield.RemoveCreature(creature));
   }
 }

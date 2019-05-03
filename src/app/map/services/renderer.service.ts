@@ -89,7 +89,7 @@ export class MapRenderer {
         y: point.y + halfSquare - halfCreature,
       };
 
-      if (this.selected.creature === creature.id) {
+      if (this.selected.creatureId === creature.id) {
         this.canvas.context.filter = 'drop-shadow(0px 0px 10px white)';
       }
       this.canvas.context.drawImage(creature.image, drawPoint.x, drawPoint.y, creatureSize, creatureSize);

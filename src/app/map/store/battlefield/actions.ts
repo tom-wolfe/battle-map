@@ -7,4 +7,10 @@ export class AddCreature implements Action {
   constructor(public creature: Creature) { }
 }
 
-export type BattlefieldActions = AddCreature;
+export class RemoveCreature implements Action {
+  public static readonly TYPE = '[Battlefield] Remove Creature';
+  readonly type = RemoveCreature.TYPE;
+  constructor(public creature: Creature) { }
+}
+
+export type BattlefieldActions = AddCreature | RemoveCreature;
