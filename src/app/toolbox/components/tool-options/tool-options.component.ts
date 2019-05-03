@@ -21,10 +21,9 @@ export class ToolOptionsComponent implements AfterViewInit {
   onActiveToolChange(tool: Tool) {
     setTimeout(() => {
       this.tool = tool;
-      const settings = this.toolbox.getToolSettingsComponent(tool);
       this.toolHost.clear();
-      if (settings) {
-        const componentFactory = this.factoryResolver.resolveComponentFactory(settings);
+      if (this.tool.settingsComponent) {
+        const componentFactory = this.factoryResolver.resolveComponentFactory(this.tool.settingsComponent);
         this.toolHost.createComponent(componentFactory);
       }
     }, 0);

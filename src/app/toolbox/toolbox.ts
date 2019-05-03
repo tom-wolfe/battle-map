@@ -7,53 +7,31 @@ import { map } from 'rxjs/operators';
 import * as ToolboxStore from './store/active';
 import * as Tools from './tools';
 
-interface ToolRegister {
-  tool: Tools.Tool;
-  settings: Type<{}>;
-}
-
 @Injectable()
 export class Toolbox {
   public readonly activeToolId$ = this.store.pipe(select(ToolboxStore.activeTool));
   public readonly activeTool$: Observable<Tools.Tool>;
 
   public activeTool: Tools.Tool;
-  public register: ToolRegister[] = [];
+  public tools: Tools.Tool[] = [];
 
   constructor(
     private store: Store<AppState>,
     mapTool: Tools.MapTool,
     selectTool: Tools.SelectTool,
-    creature: Tools.CreatureTool,
-    move: Tools.MoveTool,
-    spellEffect: Tools.SpellEffectTool,
-    paint: Tools.PaintTool,
-    distance: Tools.DistanceTool,
-    zoom: Tools.ZoomTool,
+    creatureTool: Tools.CreatureTool,
+    moveTool: Tools.MoveTool,
+    spellEffectTool: Tools.SpellEffectTool,
+    paintTool: Tools.PaintTool,
+    distanceTool: Tools.DistanceTool,
+    zoomTool: Tools.ZoomTool,
   ) {
-    this.registerTool(mapTool, Tools.MapSettingsComponent);
-    this.registerTool(selectTool, undefined);
-    this.registerTool(creature, Tools.CreatureSettingsComponent);
-    this.registerTool(move, undefined);
-    this.registerTool(spellEffect, undefined);
-    this.registerTool(paint, undefined);
-    this.registerTool(distance, undefined);
-    this.registerTool(zoom, Tools.ZoomSettingsComponent);
+    this.tools = [mapTool, selectTool, creatureTool, moveTool, spellEffectTool, paintTool, distanceTool, zoomTool];
     this.activeTool$ = this.activeToolId$.pipe(map(id => this.tools.find(t => t.id === id)));
     this.activeTool$.subscribe(this.onToolChange.bind(this));
-  }
-
-  get tools(): Tools.Tool[] { return this.register.map(t => t.tool); }
-
-  registerTool(tool: Tools.Tool, settings: Type<{}>) {
-    this.register.push({ tool, settings });
-  }
+  } 
 
   setTool(tool: Tools.Tool) { this.store.dispatch(new ToolboxStore.SetActiveTool(tool.id)); }
-
-  getToolSettingsComponent(tool: Tools.Tool): Type<{}> {
-    return this.register.find(t => t.tool === tool).settings;
-  }
 
   private onToolChange(tool: Tools.Tool) {
     if (this.activeTool) { this.activeTool.deactivate(); }

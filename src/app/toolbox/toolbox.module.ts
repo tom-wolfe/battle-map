@@ -22,7 +22,8 @@ const TOOLS = [
   Tools.PaintTool,
   Tools.SelectTool,
   Tools.SpellEffectTool,
-  Tools.ZoomTool
+  Tools.ZoomTool,
+  Tools.CreatureToolSettings
 ];
 
 const TOOL_SETTINGS = [

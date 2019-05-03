@@ -1,2 +1,3 @@
 export * from './creature';
-export * from './creature-settings.component';
+export * from './settings.component';
+export * from './settings';

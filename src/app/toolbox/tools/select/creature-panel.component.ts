@@ -8,7 +8,7 @@ import { SelectTool } from './select';
   styleUrls: ['./creature-panel.component.scss']
 })
 export class CreaturePanelComponent {
-  constructor(private select: SelectTool) {
+  constructor() {
 
   }
 }

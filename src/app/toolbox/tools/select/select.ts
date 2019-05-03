@@ -34,11 +34,7 @@ export class SelectTool implements Tool {
   }
 
   canvasClick(e: MouseEvent) {
-    if (this.overlayRef.hasAttached()) {
-      this.hide();
-    } else {
-      this.show();
-    }
+    this.overlayRef.hasAttached() ? this.hide() : this.show();
   }
 
   show() {
