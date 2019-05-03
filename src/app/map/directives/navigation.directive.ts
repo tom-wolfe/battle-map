@@ -21,7 +21,6 @@ export class MapNavigationDirective implements OnInit {
   ngOnInit() {
     this.hammer = new Hammer(this.el);
     this.hammer.get('pinch').set({ enable: true });
-    this.hammer.get('pan').set({ enable: true });
     this.onResize();
     this.controller.enabled$.subscribe(e => e ? this.addEvents() : this.removeEvents());
   }
