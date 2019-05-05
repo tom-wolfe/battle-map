@@ -7,7 +7,13 @@ export enum Size {
   Gargantuan = 'gargantuan'
 }
 
-export const Sizes = [
+export interface SizeInfo {
+  id: Size;
+  name: string;
+  scale: number;
+}
+
+export const Sizes: SizeInfo[] = [
   { id: Size.Tiny, name: 'Tiny', scale: 0.5 },
   { id: Size.Small, name: 'Small', scale: 0.75 },
   { id: Size.Medium, name: 'Medium', scale: 1 },
