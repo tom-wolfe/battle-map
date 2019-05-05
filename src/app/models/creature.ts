@@ -4,6 +4,6 @@ import { Size } from './size';
 export interface Creature {
   id: number;
   tokenId: number;
-  location: Point;
+  cell: Point;
   size: Size;
 }

@@ -78,7 +78,7 @@ export class MapRenderer {
     this.battlefield.creatures.forEach(creature => {
       if (!creature.image) { return; }
       const size = Sizes.find(s => s.id === creature.size);
-      const point = this.grid.pointFromCell(creature.location);
+      const point = this.grid.pointFromCell(creature.cell);
       const creatureSize = (gridSize * size.scale) - padding * 2;
 
       const halfSquare = gridSize * Math.max(1, size.scale) / 2;

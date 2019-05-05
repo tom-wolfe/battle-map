@@ -23,8 +23,8 @@ export class CreatureTool implements Tool {
   ) { }
 
   canvasClick(e: MouseEvent) {
-    const location = this.grid.cellFromMouse(e);
-    const creature: Creature = { id: undefined, tokenId: this.settings.token, size: this.settings.size, location };
+    const cell = this.grid.cellFromMouse(e);
+    const creature: Creature = { id: undefined, tokenId: this.settings.token, size: this.settings.size, cell };
     this.battlefield.addCreature(creature);
   }
 

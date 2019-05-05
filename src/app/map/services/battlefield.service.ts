@@ -20,12 +20,11 @@ export class MapBattlefield {
 
   creatureAtCell(cell: Point): Creature {
     // TODO: Make this work for larger creatures.
-    return this.creatures.find(c => c.location.x === cell.x && c.location.y === cell.y);
+    return this.creatures.find(c => c.cell.x === cell.x && c.cell.y === cell.y);
   }
 
   addCreature(creature: Creature) {
-    const existing = this.creatures.find(c => c.location.x === creature.location.x && c.location.y === creature.location.y);
-    // TODO: Figure out if size overlaps too.
+    const existing = this.creatureAtCell(creature.cell);
     if (existing) { return; }
     creature.id = this.lastCreatureId + 1;
     this.store.dispatch(new Battlefield.AddCreature(creature));
