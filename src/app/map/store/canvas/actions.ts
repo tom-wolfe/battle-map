@@ -9,7 +9,7 @@ export class SetCanvas implements Action {
 export class SetBackground implements Action {
   public static readonly TYPE = '[Canvas] Set Background';
   readonly type = SetBackground.TYPE;
-  constructor(public background: ImageBitmap) { }
+  constructor(public background: HTMLImageElement) { }
 }
 
 export type CanvasActions = SetCanvas | SetBackground;

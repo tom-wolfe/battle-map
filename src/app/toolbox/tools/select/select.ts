@@ -14,6 +14,7 @@ export class SelectTool implements Tool {
   title = 'Select Object';
   icon = 'fa-mouse-pointer';
 
+  private hammer: HammerManager;
   private overlayRef: OverlayRef;
 
   private onCanvasMouseDown = this.canvasMouseDown.bind(this);
@@ -34,21 +35,22 @@ export class SelectTool implements Tool {
   }
 
   activate() {
+    this.hammer = new Hammer(this.canvas.element);
     this.initializeOverlay();
+    this.hammer.on('tap', this.onCanvasClick);
     this.canvas.element.addEventListener('mousedown', this.onCanvasMouseDown);
-    this.canvas.element.addEventListener('click', this.onCanvasClick);
     this.canvas.element.addEventListener('mouseup', this.onCanvasMouseUp);
   }
 
   deactivate() {
+    this.hammer.off('tap', this.onCanvasClick);
     this.canvas.element.removeEventListener('mousedown', this.onCanvasMouseDown);
-    this.canvas.element.removeEventListener('click', this.onCanvasClick);
     this.canvas.element.removeEventListener('mouseup', this.onCanvasMouseUp);
     this.controller.setEnabled(true);
   }
 
-  canvasClick(e: MouseEvent) {
-    const cell = this.grid.cellFromMouse(e);
+  canvasClick(e: HammerInput) {
+    const cell = this.grid.cellFromHammer(e);
     const creature = this.battlefield.creatureAtCell(cell);
     this.settings.setCreature(creature);
   }

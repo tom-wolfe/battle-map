@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { MapGrid, MapCanvas } from '@bm/map/services';
+import { MapCanvas, MapGrid } from '@bm/map/services';
 import { Point } from '@bm/models';
+import { fetchImage } from '@bm/utils';
 
 @Component({
   selector: 'bm-map-settings',
@@ -34,6 +35,7 @@ export class MapSettingsComponent {
 
   private onBackgroundChange(e: Event) {
     const file = (e.target as HTMLInputElement).files[0];
-    createImageBitmap(file).then(image => this.canvas.setBackground(image));
+    const url = URL.createObjectURL(file);
+    fetchImage(url).then(image => this.canvas.setBackground(image));
   }
 }

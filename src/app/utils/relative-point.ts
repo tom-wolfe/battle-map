@@ -8,3 +8,7 @@ export function relativePoint(point: Point, el: HTMLElement): Point {
 export function relativeMouse(e: MouseEvent, el: HTMLElement): Point {
   return relativePoint({ x: e.clientX, y: e.clientY }, el);
 }
+
+export function relativeHammer(e: HammerInput, el: HTMLElement): Point {
+  return relativePoint({ x: e.center.x, y: e.center.y }, el);
+}

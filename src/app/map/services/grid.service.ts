@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as Grid from '@bm/map/store/grid';
 import { Point } from '@bm/models';
 import { AppState } from '@bm/store/state';
-import { relativeMouse } from '@bm/utils';
+import { relativeHammer, relativeMouse } from '@bm/utils';
 import { select, Store } from '@ngrx/store';
 
 import { MapCanvas } from './canvas.service';
@@ -26,6 +26,11 @@ export class MapGrid {
 
   cellFromMouse(e: MouseEvent): Point {
     const point = relativeMouse(e, this.canvas.element);
+    return this.cellFromCanvasPoint(point);
+  }
+
+  cellFromHammer(e: HammerInput): Point {
+    const point = relativeHammer(e, this.canvas.element);
     return this.cellFromCanvasPoint(point);
   }
 

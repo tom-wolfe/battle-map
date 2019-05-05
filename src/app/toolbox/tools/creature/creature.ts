@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MapBattlefield, MapCanvas, MapGrid } from '@bm/map/services';
 import { Creature } from '@bm/models';
 import { Tool } from '@bm/toolbox/tools/tool';
-
+import Hammer from 'hammerjs';
 import { CreatureToolSettings } from './settings';
 import { CreatureSettingsComponent } from './settings.component';
 
@@ -13,6 +13,8 @@ export class CreatureTool implements Tool {
   icon = 'fa-chess-knight';
   settingsComponent = CreatureSettingsComponent;
 
+  private hammer: HammerManager;
+
   private onCanvasClick = this.canvasClick.bind(this);
 
   constructor(
@@ -22,17 +24,18 @@ export class CreatureTool implements Tool {
     private settings: CreatureToolSettings
   ) { }
 
-  canvasClick(e: MouseEvent) {
-    const cell = this.grid.cellFromMouse(e);
+  canvasClick(e: HammerInput) {
+    const cell = this.grid.cellFromHammer(e);
     const creature: Creature = { id: undefined, tokenId: this.settings.token, size: this.settings.size, cell };
     this.battlefield.addCreature(creature);
   }
 
   activate() {
-    this.canvas.element.addEventListener('click', this.onCanvasClick);
+    this.hammer = new Hammer(this.canvas.element);
+    this.hammer.on('tap', this.onCanvasClick);
   }
 
   deactivate() {
-    this.canvas.element.removeEventListener('click', this.onCanvasClick);
+    this.hammer.off('tap', this.onCanvasClick);
   }
 }

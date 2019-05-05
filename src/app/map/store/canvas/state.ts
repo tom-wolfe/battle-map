@@ -1,5 +1,5 @@
 export interface CanvasState {
-  background: ImageBitmap;
+  background: HTMLImageElement;
   context: CanvasRenderingContext2D;
   element: HTMLCanvasElement;
 }

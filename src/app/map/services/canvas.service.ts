@@ -9,7 +9,7 @@ const FIT_PADDING = 20;
 
 @Injectable()
 export class MapCanvas {
-  public background: ImageBitmap;
+  public background: HTMLImageElement;
   public context: CanvasRenderingContext2D;
   public element: HTMLCanvasElement;
 
@@ -29,7 +29,7 @@ export class MapCanvas {
     this.store.dispatch(new Canvas.SetCanvas(canvas));
   }
 
-  setBackground(image: ImageBitmap) {
+  setBackground(image: HTMLImageElement) {
     this.store.dispatch(new Canvas.SetBackground(image));
     this.fitToScreen();
   }
@@ -56,7 +56,7 @@ export class MapCanvas {
     this.resize$.emit();
   }
 
-  private centerImage(image: ImageBitmap, scale: number): Point {
+  private centerImage(image: HTMLImageElement, scale: number): Point {
     return {
       x: this.element.width / 2 - image.width * scale / 2,
       y: this.element.height / 2 - image.height * scale / 2

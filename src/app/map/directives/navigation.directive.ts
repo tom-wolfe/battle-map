@@ -1,7 +1,7 @@
 import { Directive, ElementRef, OnInit } from '@angular/core';
 import { MapController } from '@bm/map/services';
-import { relativeMouse } from '@bm/utils';
-import * as Hammer from 'hammerjs';
+import { relativeMouse, relativePoint } from '@bm/utils';
+import Hammer from 'hammerjs';
 
 @Directive({
   selector: '[bmMapNavigation]',
@@ -9,7 +9,7 @@ import * as Hammer from 'hammerjs';
 export class MapNavigationDirective implements OnInit {
   private el: HTMLCanvasElement;
   private enabled: boolean;
-  private hammer: Hammer.HammerManager;
+  private hammer: HammerManager;
 
   private panMoveBound = this.onPanMove.bind(this);
   private pinchMoveBound = this.onPinchMove.bind(this);
@@ -30,7 +30,7 @@ export class MapNavigationDirective implements OnInit {
     this.hammer.get('pinch').set({ enable: true });
     this.controller.enabled$.subscribe(e => {
       this.enabled = e;
-      this.enabled ? this.addEvents() : this.removeEvents()
+      this.enabled ? this.addEvents() : this.removeEvents();
     });
   }
 
@@ -59,7 +59,7 @@ export class MapNavigationDirective implements OnInit {
   private onPinchEnd(e: any) { if (!this.enabled) { return; } this.controller.zoomTo(e.scale, e.center); }
   private onWheel(e: WheelEvent) {
     if (!this.enabled) { return; }
-    const origin = relativeMouse(e, this.el);
+    const origin = relativePoint({ x: e.clientX, y: e.clientY }, this.el);
     e.deltaY > 0 ? this.controller.zoomOut(origin) : this.controller.zoomIn(origin);
   }
 }

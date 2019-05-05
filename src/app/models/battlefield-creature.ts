@@ -3,7 +3,7 @@ import { SizeInfo } from './size';
 import { Token } from './token';
 
 export interface BattlefieldCreature extends Creature {
-  image: ImageBitmap;
+  image: HTMLImageElement;
   token: Token;
   sizeInfo: SizeInfo;
 }

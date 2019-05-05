@@ -9,7 +9,7 @@ export class LoadImage implements Action {
 export class SetImage implements Action {
   public static readonly TYPE = '[Tokens] Set Image';
   readonly type = SetImage.TYPE;
-  constructor(public url: string, public image: ImageBitmap) { }
+  constructor(public url: string, public image: HTMLImageElement) { }
 }
 
 export type TokensActions = LoadImage | SetImage;

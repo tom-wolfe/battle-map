@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
+import { Sizes } from '@bm/models';
+import { SelectToolSettings } from '@bm/toolbox';
 import { combineLatest } from 'rxjs';
 
 import { MapBattlefield } from './battlefield.service';
 import { MapCanvas } from './canvas.service';
 import { MapController } from './controller.service';
 import { MapGrid } from './grid.service';
-import { Sizes } from '@bm/models';
-import { SelectToolSettings } from '@bm/toolbox';
 
 export const CREATURE_PADDING = 4;
 
@@ -47,6 +47,7 @@ export class MapRenderer {
   private renderBackground() {
     const bg = this.canvas.background;
     if (!bg) { return; }
+
     this.canvas.context.drawImage(bg, this.panX(0), this.panY(0), this.scaleN(bg.width), this.scaleN(bg.height));
   }
 
