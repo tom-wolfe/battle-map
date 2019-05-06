@@ -12,7 +12,7 @@ import { SelectToolSettings } from './settings';
 @Injectable()
 export class SelectTool implements Tool {
   id = 7;
-  title = 'Select Object';
+  title = 'Select Creature';
   icon = 'fa-mouse-pointer';
 
   private overlayRef: OverlayRef;

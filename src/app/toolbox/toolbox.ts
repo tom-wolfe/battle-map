@@ -26,7 +26,7 @@ export class Toolbox {
     distanceTool: Tools.DistanceTool,
     zoomTool: Tools.ZoomTool,
   ) {
-    this.tools = [mapTool, selectTool, creatureTool, moveTool, spellEffectTool, paintTool, distanceTool, zoomTool];
+    this.tools = [mapTool, selectTool, creatureTool, moveTool, /*spellEffectTool, paintTool, distanceTool,*/ zoomTool];
     this.activeTool$ = this.activeToolId$.pipe(map(id => this.tools.find(t => t.id === id)));
     this.activeTool$.subscribe(this.onToolChange.bind(this));
   }
