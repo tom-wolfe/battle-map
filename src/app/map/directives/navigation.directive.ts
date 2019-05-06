@@ -1,15 +1,12 @@
-import { Directive, ElementRef, OnInit } from '@angular/core';
-import { MapController } from '@bm/map/services';
-import { relativeMouse, relativePoint } from '@bm/utils';
-import Hammer from 'hammerjs';
+import { Directive, OnInit } from '@angular/core';
+import { MapCanvas, MapController } from '@bm/map/services';
+import { relativePoint } from '@bm/utils';
 
 @Directive({
   selector: '[bmMapNavigation]',
 })
 export class MapNavigationDirective implements OnInit {
-  private el: HTMLCanvasElement;
   private enabled: boolean;
-  private hammer: HammerManager;
 
   private panMoveBound = this.onPanMove.bind(this);
   private pinchMoveBound = this.onPinchMove.bind(this);
@@ -19,15 +16,11 @@ export class MapNavigationDirective implements OnInit {
   private wheelBound = this.onWheel.bind(this);
 
   constructor(
-    elRef: ElementRef<HTMLCanvasElement>,
+    private canvas: MapCanvas,
     private controller: MapController
-  ) {
-    this.el = elRef.nativeElement;
-  }
+  ) { }
 
   ngOnInit() {
-    this.hammer = new Hammer(this.el);
-    this.hammer.get('pinch').set({ enable: true });
     this.controller.enabled$.subscribe(e => {
       this.enabled = e;
       this.enabled ? this.addEvents() : this.removeEvents();
@@ -35,21 +28,21 @@ export class MapNavigationDirective implements OnInit {
   }
 
   private addEvents() {
-    this.hammer.on('panmove', this.panMoveBound);
-    this.hammer.on('pinchmove', this.pinchMoveBound);
-    this.hammer.on('panend', this.panEndBound);
-    this.hammer.on('pinch', this.pinchBound);
-    this.hammer.on('pinchend', this.pinchEndBound);
-    this.el.addEventListener('wheel', this.wheelBound);
+    this.canvas.hammer.on('panmove', this.panMoveBound);
+    this.canvas.hammer.on('pinchmove', this.pinchMoveBound);
+    this.canvas.hammer.on('panend', this.panEndBound);
+    this.canvas.hammer.on('pinch', this.pinchBound);
+    this.canvas.hammer.on('pinchend', this.pinchEndBound);
+    this.canvas.element.addEventListener('wheel', this.wheelBound);
   }
 
   private removeEvents() {
-    this.hammer.off('panmove', this.panMoveBound);
-    this.hammer.off('pinchmove', this.pinchMoveBound);
-    this.hammer.off('panend', this.panEndBound);
-    this.hammer.off('pinch', this.pinchBound);
-    this.hammer.off('pinchend', this.pinchEndBound);
-    this.el.removeEventListener('wheel', this.wheelBound);
+    this.canvas.hammer.off('panmove', this.panMoveBound);
+    this.canvas.hammer.off('pinchmove', this.pinchMoveBound);
+    this.canvas.hammer.off('panend', this.panEndBound);
+    this.canvas.hammer.off('pinch', this.pinchBound);
+    this.canvas.hammer.off('pinchend', this.pinchEndBound);
+    this.canvas.element.removeEventListener('wheel', this.wheelBound);
   }
 
   private onPanMove(e: any) { if (!this.enabled) { return; } this.controller.livePan({ x: e.deltaX, y: e.deltaY }); }
@@ -59,7 +52,7 @@ export class MapNavigationDirective implements OnInit {
   private onPinchEnd(e: any) { if (!this.enabled) { return; } this.controller.zoomTo(e.scale, e.center); }
   private onWheel(e: WheelEvent) {
     if (!this.enabled) { return; }
-    const origin = relativePoint({ x: e.clientX, y: e.clientY }, this.el);
+    const origin = relativePoint({ x: e.clientX, y: e.clientY }, this.canvas.element);
     e.deltaY > 0 ? this.controller.zoomOut(origin) : this.controller.zoomIn(origin);
   }
 }

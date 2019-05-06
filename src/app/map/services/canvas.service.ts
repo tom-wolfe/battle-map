@@ -4,8 +4,9 @@ import * as Navigation from '@bm/map/store/navigation';
 import { Point } from '@bm/models';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
+import Hammer from 'hammerjs';
+import { Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import { BehaviorSubject, Subject } from 'rxjs';
 
 const FIT_PADDING = 20;
 
@@ -13,6 +14,7 @@ const FIT_PADDING = 20;
 export class MapCanvas {
   public background: HTMLImageElement;
   public element: HTMLCanvasElement;
+  public hammer: HammerManager;
 
   public readonly resize$ = new EventEmitter();
 
@@ -46,6 +48,8 @@ export class MapCanvas {
   private onElementChange(e: HTMLCanvasElement) {
     if (!e) { return; }
     this.element = e;
+    this.hammer = new Hammer(this.element);
+    this.hammer.get('pinch').set({ enable: true });
     this.element$.next(e);
     this.onWindowResize();
   }
