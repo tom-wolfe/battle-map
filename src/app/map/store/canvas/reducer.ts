@@ -8,7 +8,7 @@ export function canvasReducer(state: CanvasState = initialState, action: Actions
       return { ...state, background: action.background };
     }
     case Actions.SetCanvas.TYPE: {
-      return { ...state, element: action.element, context: action.element.getContext('2d') };
+      return { ...state, element: action.element };
     }
     default: return state;
   }

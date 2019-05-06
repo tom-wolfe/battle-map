@@ -12,6 +12,8 @@ export const CREATURE_PADDING = 4;
 
 @Injectable()
 export class MapRenderer {
+  private context: CanvasRenderingContext2D;
+
   constructor(
     private controller: MapController,
     private canvas: MapCanvas,
@@ -20,25 +22,28 @@ export class MapRenderer {
     private selected: SelectToolSettings
   ) {
     const render = this.render.bind(this);
+    canvas.element$.subscribe(this.onCanvasChange.bind(this));
     combineLatest(
       controller.pan$,
       controller.scale$,
       canvas.background$,
-      canvas.element$,
-      canvas.context$,
+      canvas.resize$,
       grid.offset$,
       grid.size$,
-      battlefield.creatures$
+      battlefield.creatures$,
+      selected.creature$
     ).subscribe(render);
-    this.selected.creature$.subscribe(render);
-    this.canvas.resize$.subscribe(render);
+  }
+
+  private onCanvasChange(canvas: HTMLCanvasElement) {
+    this.context = canvas.getContext('2d'); 
+    this.context.imageSmoothingEnabled = true;
+    this.context.imageSmoothingQuality = 'high';
+    this.render();
   }
 
   render() {
-    if (!this.canvas.context) { return; }
-    this.canvas.context.imageSmoothingEnabled = true;
-    this.canvas.context.imageSmoothingQuality = 'high';
-    this.canvas.context.clearRect(0, 0, this.canvas.element.width, this.canvas.element.height);
+    this.context.clearRect(0, 0, this.canvas.element.width, this.canvas.element.height);
     this.renderBackground();
     this.renderGrid();
     this.renderCreatures();
@@ -48,11 +53,11 @@ export class MapRenderer {
     const bg = this.canvas.background;
     if (!bg) { return; }
 
-    this.canvas.context.drawImage(bg, this.panX(0), this.panY(0), this.scaleN(bg.width), this.scaleN(bg.height));
+    this.context.drawImage(bg, this.panX(0), this.panY(0), this.scaleN(bg.width), this.scaleN(bg.height));
   }
 
   private renderGrid() {
-    this.canvas.context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
+    this.context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
 
     const gridSize = this.scaleN(this.grid.size);
 
@@ -70,7 +75,7 @@ export class MapRenderer {
       grid.moveTo(0, y);
       grid.lineTo(this.canvas.element.width, y);
     }
-    this.canvas.context.stroke(grid);
+    this.context.stroke(grid);
   }
 
   private renderCreatures() {
@@ -91,10 +96,10 @@ export class MapRenderer {
       };
 
       if (this.selected.creatureId === creature.id) {
-        this.canvas.context.filter = 'drop-shadow(0px 0px 10px white)';
+        this.context.filter = 'drop-shadow(0px 0px 10px white)';
       }
-      this.canvas.context.drawImage(creature.image, drawPoint.x, drawPoint.y, creatureSize, creatureSize);
-      this.canvas.context.filter = 'none';
+      this.context.drawImage(creature.image, drawPoint.x, drawPoint.y, creatureSize, creatureSize);
+      this.context.filter = 'none';
     });
   }
 

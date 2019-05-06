@@ -4,25 +4,24 @@ import * as Navigation from '@bm/map/store/navigation';
 import { Point } from '@bm/models';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
+import { tap } from 'rxjs/operators';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 const FIT_PADDING = 20;
 
 @Injectable()
 export class MapCanvas {
   public background: HTMLImageElement;
-  public context: CanvasRenderingContext2D;
   public element: HTMLCanvasElement;
 
   public readonly resize$ = new EventEmitter();
-  public readonly background$ = this.store.pipe(select(Canvas.background));
-  public readonly context$ = this.store.pipe(select(Canvas.context));
-  public readonly element$ = this.store.pipe(select(Canvas.element));
+
+  public readonly background$ = this.store.pipe(select(Canvas.background), tap(b => this.background = b));
+  public readonly element$ = new Subject<HTMLCanvasElement>();
 
   constructor(private store: Store<AppState>) {
-    this.background$.subscribe(b => this.background = b);
-    this.context$.subscribe(c => this.context = c);
-    this.element$.subscribe(this.onElementChange.bind(this));
     window.addEventListener('resize', this.onWindowResize.bind(this));
+    store.pipe(select(Canvas.element)).subscribe(this.onElementChange.bind(this));
   }
 
   setCanvas(canvas: HTMLCanvasElement) {
@@ -45,12 +44,13 @@ export class MapCanvas {
   }
 
   private onElementChange(e: HTMLCanvasElement) {
+    if (!e) { return; }
     this.element = e;
+    this.element$.next(e);
     this.onWindowResize();
   }
 
   private onWindowResize() {
-    if (!this.element) { return; }
     this.element.width = this.element.parentElement.clientWidth;
     this.element.height = this.element.parentElement.clientHeight;
     this.resize$.emit();
