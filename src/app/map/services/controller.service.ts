@@ -18,14 +18,20 @@ export class MapController {
   private readonly enabledValue$ = new Subject<boolean>();
 
   public pan: Point;
+  private storeScale: number;
   public scale: number;
 
   public readonly enabled$ = this.enabledValue$.asObservable();
-  public readonly pan$ = combineLatest(this.tempPan$, this.storePan$).pipe(map(([t, p]) => this.pan = { x: p.x + t.x, y: p.y + t.y }));
-  public readonly scale$ = combineLatest(this.tempScale$, this.storeScale$).pipe(map(([t, s]) => this.scale = s * t));
+  public readonly pan$ = combineLatest(this.tempPan$, this.storePan$);
+  public readonly scale$ = combineLatest(this.tempScale$, this.storeScale$);
 
   constructor(private store: Store<AppState>, private canvas: MapCanvas) {
     this.canvas.element$.subscribe(e => this.setEnabled(true));
+    this.scale$.subscribe(([t, s]) => {
+      this.storeScale = s;
+      this.scale = s * t;
+    });
+    this.pan$.subscribe(([t, p]) => this.pan = { x: p.x + t.x, y: p.y + t.y });
   }
 
   setEnabled(enabled: boolean) { this.enabledValue$.next(enabled); }
@@ -47,8 +53,12 @@ export class MapController {
   }
 
   zoomTo(scale: number, origin: Point) {
-    const newScale = this.scale * scale;
-    this.zoom(newScale, origin);
+    scale = scale * this.storeScale;
+    const pan = this.scalePoint(origin, scale);
+    this.store.dispatch(new Navigation.SetScale(scale));
+    this.store.dispatch(new Navigation.SetPan(pan));
+    this.tempPan$.next({x: 0, y: 0});
+    this.tempScale$.next(1);
   }
 
   zoomIn(origin?: Point) {
