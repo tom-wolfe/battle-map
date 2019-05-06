@@ -1,5 +1,5 @@
+import { Creature, Point, Size } from '@bm/models';
 import { Action } from '@ngrx/store';
-import { Creature, Point } from '@bm/models';
 
 export class AddCreature implements Action {
   public static readonly TYPE = '[Battlefield] Add Creature';
@@ -19,4 +19,22 @@ export class MoveCreature implements Action {
   constructor(public creature: Creature, public cell: Point) { }
 }
 
-export type BattlefieldActions = AddCreature | RemoveCreature | MoveCreature;
+export class SetCreatureName implements Action {
+  public static readonly TYPE = '[Battlefield] Set Creature Name';
+  readonly type = SetCreatureName.TYPE;
+  constructor(public creature: Creature, public name: string) { }
+}
+
+export class SetCreatureSize implements Action {
+  public static readonly TYPE = '[Battlefield] Set Creature Size';
+  readonly type = SetCreatureSize.TYPE;
+  constructor(public creature: Creature, public size: Size) { }
+}
+
+export class SetCreatureToken implements Action {
+  public static readonly TYPE = '[Battlefield] Set Creature Token';
+  readonly type = SetCreatureToken.TYPE;
+  constructor(public creature: Creature, public tokenId: number) { }
+}
+
+export type BattlefieldActions = AddCreature | RemoveCreature | MoveCreature | SetCreatureName | SetCreatureSize | SetCreatureToken;

@@ -11,7 +11,7 @@ import * as BattlefieldActions from './actions';
 export class BattlefieldEffects {
   constructor(private action$: Actions, private store: Store<AppState>) { }
 
-  @Effect() loadCreatureImages$ = this.action$.pipe(
+  @Effect() loadImageNewCreature$ = this.action$.pipe(
     ofType<BattlefieldActions.AddCreature>(BattlefieldActions.AddCreature.TYPE),
     withLatestFrom(
       this.store.pipe(select(Tokens.tokens)),
@@ -19,6 +19,18 @@ export class BattlefieldEffects {
     ),
     switchMap(([action, tokens, images]) => {
       const token = tokens.find(t => t.id === action.creature.tokenId);
+      return images[token.imageUrl] ? [] : [new Tokens.LoadImage(token.id)];
+    }),
+  );
+
+  @Effect() loadImageChangeToken$ = this.action$.pipe(
+    ofType<BattlefieldActions.SetCreatureToken>(BattlefieldActions.SetCreatureToken.TYPE),
+    withLatestFrom(
+      this.store.pipe(select(Tokens.tokens)),
+      this.store.pipe(select(Tokens.images))
+    ),
+    switchMap(([action, tokens, images]) => {
+      const token = tokens.find(t => t.id === action.tokenId);
       return images[token.imageUrl] ? [] : [new Tokens.LoadImage(token.id)];
     }),
   );

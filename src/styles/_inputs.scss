@@ -18,6 +18,7 @@ select, input {
   background-color: $bg-body;
   border: 1px solid black;
   border-radius: $radius-small;
+  box-sizing: border-box;
 }
 
 select {
@@ -26,4 +27,21 @@ select {
 
 input[type=number] {
   width: 70px;
+}
+
+.form.vertical {
+  label, select, input {
+    display: block;
+    width: 100%;
+  }
+
+  label {
+    padding: 0;
+  }
+
+  .group {
+    display: block;
+    margin-top: 1rem;
+    padding: 0;
+  }
 }

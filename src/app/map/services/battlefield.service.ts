@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import * as Battlefield from '@bm/map/store/battlefield';
-import { BattlefieldCreature, Creature, Point } from '@bm/models';
+import { BattlefieldCreature, Creature, Point, Size } from '@bm/models';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
 
@@ -38,5 +38,18 @@ export class MapBattlefield {
 
   removeCreature(creature: Creature) {
     this.store.dispatch(new Battlefield.RemoveCreature(creature));
+  }
+
+  setCreatureName(creature: Creature, name: string) {
+    this.store.dispatch(new Battlefield.SetCreatureName(creature, name));
+  }
+
+
+  setCreatureSize(creature: Creature, size: Size) {
+    this.store.dispatch(new Battlefield.SetCreatureSize(creature, size));
+  }
+
+  setCreatureToken(creature: Creature, tokenId: number) {
+    this.store.dispatch(new Battlefield.SetCreatureToken(creature, tokenId));
   }
 }
