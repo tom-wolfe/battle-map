@@ -41,7 +41,6 @@ export class MoveTool implements Tool {
     const cell = this.grid.cellFromHammer(e);
     this.creature = this.battlefield.creatureAtCell(cell);
     if (!this.creature) { return; }
-    console.log('set creature');
     this.controller.setEnabled(false);
     // TODO: Set dragging creature.
   }
