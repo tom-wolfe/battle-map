@@ -3,21 +3,30 @@ import { relativePoint } from '@bm/utils';
 
 import { MapCanvas } from './canvas.service';
 import { MapController } from './controller.service';
+import { MapBinding } from './binding.service';
+import { EventBindings } from '@bm/models';
 
 @Injectable()
 export class MapNavigator {
   private enabled: boolean;
 
-  private panMoveBound = this.onPanMove.bind(this);
-  private pinchMoveBound = this.onPinchMove.bind(this);
-  private panEndBound = this.onPanEnd.bind(this);
-  private pinchBound = this.onPinch.bind(this);
-  private pinchEndBound = this.onPinchEnd.bind(this);
-  private wheelBound = this.onWheel.bind(this);
+  private readonly bindings: EventBindings = {
+    hammer: {
+      panmove: this.onPanMove.bind(this),
+      pinchmove: this.onPinchMove.bind(this),
+      panend: this.onPanEnd.bind(this),
+      pinch: this.onPinch.bind(this),
+      pinchend: this.onPinchEnd.bind(this),
+    },
+    element: {
+      wheel: this.onWheel.bind(this)
+    }
+  }
 
   constructor(
     private canvas: MapCanvas,
-    private controller: MapController
+    private controller: MapController,
+    private binding: MapBinding
   ) {
     this.controller.enabled$.subscribe(e => {
       this.enabled = e;
@@ -26,21 +35,11 @@ export class MapNavigator {
   }
 
   private addEvents() {
-    this.canvas.hammer.on('panmove', this.panMoveBound);
-    this.canvas.hammer.on('pinchmove', this.pinchMoveBound);
-    this.canvas.hammer.on('panend', this.panEndBound);
-    this.canvas.hammer.on('pinch', this.pinchBound);
-    this.canvas.hammer.on('pinchend', this.pinchEndBound);
-    this.canvas.element.addEventListener('wheel', this.wheelBound);
+    this.binding.bind(this.bindings);
   }
 
   private removeEvents() {
-    this.canvas.hammer.off('panmove', this.panMoveBound);
-    this.canvas.hammer.off('pinchmove', this.pinchMoveBound);
-    this.canvas.hammer.off('panend', this.panEndBound);
-    this.canvas.hammer.off('pinch', this.pinchBound);
-    this.canvas.hammer.off('pinchend', this.pinchEndBound);
-    this.canvas.element.removeEventListener('wheel', this.wheelBound);
+    this.binding.unbind(this.bindings);
   }
 
   private onPanMove(e: any) { if (!this.enabled) { return; } this.controller.livePan({ x: e.deltaX, y: e.deltaY }); }

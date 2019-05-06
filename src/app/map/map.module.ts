@@ -16,6 +16,7 @@ const COMPONENTS = [
 
 const SERVICES = [
   Services.MapBattlefield,
+  Services.MapBinding,
   Services.MapCanvas,
   Services.MapController,
   Services.MapGrid,

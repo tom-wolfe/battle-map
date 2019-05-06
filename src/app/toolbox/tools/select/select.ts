@@ -1,12 +1,12 @@
 import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ElementRef, Injectable } from '@angular/core';
-import { MapBattlefield, MapCanvas, MapController, MapGrid } from '@bm/map/services';
+import { MapBattlefield, MapBinding, MapCanvas, MapController, MapGrid } from '@bm/map/services';
+import { Creature, EventBindings } from '@bm/models';
 import { Tool } from '@bm/toolbox/tools/tool';
 
 import { CreaturePanelComponent } from './creature-panel.component';
 import { SelectToolSettings } from './settings';
-import { Creature } from '@bm/models';
 
 @Injectable()
 export class SelectTool implements Tool {
@@ -16,9 +16,15 @@ export class SelectTool implements Tool {
 
   private overlayRef: OverlayRef;
 
-  private onCanvasMouseDown = this.canvasMouseDown.bind(this);
-  private onCanvasClick = this.canvasClick.bind(this);
-  private onCanvasMouseUp = this.canvasMouseUp.bind(this);
+  private readonly bindings: EventBindings = {
+    hammer: {
+      tap: this.canvasClick.bind(this)
+    },
+    element: {
+      mousedown: this.canvasMouseDown.bind(this),
+      mouseup: this.canvasMouseUp.bind(this)
+    }
+  };
 
   constructor(
     private canvas: MapCanvas,
@@ -26,22 +32,19 @@ export class SelectTool implements Tool {
     private battlefield: MapBattlefield,
     private controller: MapController,
     private overlay: Overlay,
-    private settings: SelectToolSettings
+    private settings: SelectToolSettings,
+    private binding: MapBinding
   ) {
     this.settings.creature$.subscribe(this.onSelectedCreatureChange.bind(this));
   }
 
   activate() {
     this.initializeOverlay();
-    this.canvas.hammer.on('tap', this.onCanvasClick);
-    this.canvas.element.addEventListener('mousedown', this.onCanvasMouseDown);
-    this.canvas.element.addEventListener('mouseup', this.onCanvasMouseUp);
+    this.binding.bind(this.bindings);
   }
 
   deactivate() {
-    this.canvas.hammer.off('tap', this.onCanvasClick);
-    this.canvas.element.removeEventListener('mousedown', this.onCanvasMouseDown);
-    this.canvas.element.removeEventListener('mouseup', this.onCanvasMouseUp);
+    this.binding.unbind(this.bindings);
     this.controller.setEnabled(true);
   }
 

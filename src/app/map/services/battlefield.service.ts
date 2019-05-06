@@ -19,7 +19,6 @@ export class MapBattlefield {
   }
 
   creatureAtCell(cell: Point): Creature {
-    // TODO: Make this work for larger creatures.
     return this.creatures.find(c =>
       (cell.x >= c.cell.x && cell.x < c.cell.x + c.sizeInfo.scale) &&
       (cell.y >= c.cell.y && cell.y < c.cell.y + c.sizeInfo.scale)
