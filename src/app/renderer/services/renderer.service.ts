@@ -56,11 +56,29 @@ export class MapRenderer {
   }
 
   private renderCreatures() {
-    this.data.creatures().forEach(creature => {
+    const creatureData = this.data.creatures();
+    creatureData.forEach(creature => {
       if (!creature.image.draw) { return; }
       if (creature.selected) this.context.filter = 'drop-shadow(0px 0px 10px white)';
       this.drawImage(creature.image);
       this.context.filter = 'none';
+    });
+
+    this.context.fillStyle = 'white';
+    this.context.textAlign = 'center';
+    this.context.font = `bold 16px 'Source Sans Pro'`;
+
+    creatureData.forEach(creature => {
+      const x = creature.image.x + creature.image.width / 2;
+      const y = creature.image.y + creature.image.height - 2;
+
+      this.context.lineWidth = 5;
+      this.context.strokeStyle = 'black';
+      this.context.strokeText(creature.name, x, y, creature.image.width);
+
+      this.context.fillStyle = 'white';
+      this.context.fillText(creature.name, x, y, creature.image.width);
+      this.context.lineWidth = 1;
     });
   }
 
