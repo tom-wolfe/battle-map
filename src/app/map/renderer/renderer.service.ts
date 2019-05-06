@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { MapBattlefield, MapCanvas, MapController, MapGrid } from '@bm/map/services';
 import { Sizes } from '@bm/models';
 import { SelectToolSettings } from '@bm/toolbox';
-import { combineLatest } from 'rxjs';
+
+import { RenderData } from './data.service';
 import { RenderTrigger } from './trigger.service';
 
 export const CREATURE_PADDING = 4;
@@ -17,7 +18,8 @@ export class MapRenderer {
     private grid: MapGrid,
     private battlefield: MapBattlefield,
     private selected: SelectToolSettings,
-    private trigger: RenderTrigger
+    private trigger: RenderTrigger,
+    private data: RenderData
   ) {
     this.trigger.render.subscribe(this.render.bind(this));
     canvas.element$.subscribe(this.onCanvasChange.bind(this));
@@ -38,10 +40,9 @@ export class MapRenderer {
   }
 
   private renderBackground() {
-    const bg = this.canvas.background;
-    if (!bg) { return; }
-
-    this.context.drawImage(bg, this.panX(0), this.panY(0), this.scaleN(bg.width), this.scaleN(bg.height));
+    const data = this.data.background();
+    if (!data.draw) { return; }
+    this.context.drawImage(data.image, data.x, data.y, data.width, data.height);
   }
 
   private renderGrid() {
@@ -91,9 +92,9 @@ export class MapRenderer {
     });
   }
 
-  private panX(x: number) { return x + this.controller.pan.x; }
-  private panY(y: number) { return y + this.controller.pan.y; }
-  private scaleN(n: number) { return n * this.controller.scale; }
+  private panX(x: number): number { return x + this.controller.pan.x; }
+  private panY(y: number): number { return y + this.controller.pan.y; }
+  private scaleN(n: number): number { return n * this.controller.scale; }
 
   private boundCoordinate(ord: number) {
     const gridSize = this.scaleN(this.grid.size);

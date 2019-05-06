@@ -23,7 +23,9 @@ const SERVICES = [
   Services.MapNavigator,
   Services.MapTokens,
   Renderer.MapRenderer,
-  Renderer.RenderTrigger
+  Renderer.RenderData,
+  Renderer.RenderMiddleware,
+  Renderer.RenderTrigger,
 ];
 
 @NgModule({
