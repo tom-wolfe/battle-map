@@ -45,7 +45,7 @@ export class MapNavigator {
   private onPanMove(e: any) { if (!this.enabled) { return; } this.controller.livePan({ x: e.deltaX, y: e.deltaY }); }
   private onPinchMove(e: any) { if (!this.enabled) { return; } this.controller.livePan({ x: e.deltaX, y: e.deltaY }); }
   private onPanEnd(e: any) { if (!this.enabled) { return; } this.controller.endPan(); }
-  private onPinch(e: any) { if (!this.enabled) { return; } this.controller.liveZoom(e.scale, e.center); }
+  private onPinch(e: any) { if (!this.enabled) { return; } this.controller.liveZoom(e.scale); }
   private onPinchEnd(e: any) { if (!this.enabled) { return; } this.controller.zoomTo(e.scale, e.center); }
   private onWheel(e: WheelEvent) {
     if (!this.enabled) { return; }
