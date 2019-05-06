@@ -6,7 +6,6 @@ import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
 import Hammer from 'hammerjs';
 import { Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
 
 const FIT_PADDING = 20;
 
@@ -25,7 +24,6 @@ export class MapCanvas {
     this.background$.subscribe(b => this.background = b);
     window.addEventListener('resize', this.onWindowResize.bind(this));
     store.pipe(select(Canvas.element)).subscribe(this.onElementChange.bind(this));
-    
   }
 
   setCanvas(canvas: HTMLCanvasElement) {
@@ -38,10 +36,15 @@ export class MapCanvas {
   }
 
   fitToScreen() {
-    const xScale = (this.element.width - FIT_PADDING) / this.background.width;
-    const yScale = (this.element.height - FIT_PADDING) / this.background.height;
-    const scale = Math.min(xScale, yScale);
-    const offset = this.centerImage(this.background, scale);
+    let scale = 1;
+    let offset = { x: 0, y: 0 };
+
+    if (this.background) {
+      const xScale = (this.element.width - FIT_PADDING) / this.background.width;
+      const yScale = (this.element.height - FIT_PADDING) / this.background.height;
+      scale = Math.min(xScale, yScale);
+      offset = this.centerImage(this.background, scale);
+    }
 
     this.store.dispatch(new Navigation.SetScale(scale));
     this.store.dispatch(new Navigation.SetPan(offset));

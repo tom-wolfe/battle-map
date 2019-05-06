@@ -26,7 +26,7 @@ export class MapController {
 
   constructor(private store: Store<AppState>, private canvas: MapCanvas) {
     this.canvas.element$.subscribe(e => this.setEnabled(true));
-   }
+  }
 
   setEnabled(enabled: boolean) { this.enabledValue$.next(enabled); }
 
@@ -38,7 +38,8 @@ export class MapController {
     this.tempPan$.next({ x: 0, y: 0 });
   }
 
-  zoom(scale: number, origin: Point) {
+  zoom(scale: number, origin?: Point) {
+    origin = origin || ({ x: this.canvas.element.width / 2, y: this.canvas.element.height / 2 });
     const pan = this.scalePoint(origin, scale);
     this.store.dispatch(new Navigation.SetScale(scale));
     this.store.dispatch(new Navigation.SetPan(pan));
