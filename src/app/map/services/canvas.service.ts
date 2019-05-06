@@ -18,12 +18,14 @@ export class MapCanvas {
 
   public readonly resize$ = new EventEmitter();
 
-  public readonly background$ = this.store.pipe(select(Canvas.background), tap(b => this.background = b));
+  public readonly background$ = this.store.pipe(select(Canvas.background));
   public readonly element$ = new Subject<HTMLCanvasElement>();
 
   constructor(private store: Store<AppState>) {
+    this.background$.subscribe(b => this.background = b);
     window.addEventListener('resize', this.onWindowResize.bind(this));
     store.pipe(select(Canvas.element)).subscribe(this.onElementChange.bind(this));
+    
   }
 
   setCanvas(canvas: HTMLCanvasElement) {

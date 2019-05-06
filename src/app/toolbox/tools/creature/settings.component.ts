@@ -16,7 +16,7 @@ export class CreatureSettingsComponent {
 
   constructor(private settings: CreatureToolSettings) {
     settings.size$.subscribe(s => this.size = s);
-    settings.token$.subscribe(t => this.tokenId = t);
+    settings.tokenId$.subscribe(t => this.tokenId = t);
     settings.tokens$.subscribe(t => this.tokens = t);
   }
 

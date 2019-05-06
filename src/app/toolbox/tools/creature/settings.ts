@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
 import { MapTokens } from '@bm/map/services';
-import { Size } from '@bm/models';
+import { Size, Token } from '@bm/models';
 import { AppState } from '@bm/store/state';
 import * as CreatureStore from '@bm/toolbox/store/creature';
 import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class CreatureToolSettings {
-  public token: number;
+  public tokenId: number;
+  public token: Token;
   public size: Size;
 
-  public readonly token$ = this.store.select(CreatureStore.token);
+  public readonly tokenId$ = this.store.select(CreatureStore.token);
+  public readonly token$ = this.tokenId$.pipe(map(id => this.tokens.tokens.find(t => t.id === id)));
   public readonly size$ = this.store.select(CreatureStore.size);
   public readonly tokens$ = this.tokens.tokens$;
 
@@ -18,7 +21,7 @@ export class CreatureToolSettings {
     private store: Store<AppState>,
     private tokens: MapTokens,
   ) {
-    this.token$.subscribe(t => this.token = t);
+    this.token$.subscribe(t => { this.tokenId = t.id; this.token = t; });
     this.size$.subscribe(s => this.size = s);
   }
 

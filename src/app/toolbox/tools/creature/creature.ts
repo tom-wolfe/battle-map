@@ -24,7 +24,8 @@ export class CreatureTool implements Tool {
 
   canvasClick(e: HammerInput) {
     const cell = this.grid.cellFromHammer(e);
-    const creature: Creature = { id: undefined, tokenId: this.settings.token, size: this.settings.size, cell };
+    const token = this.settings.token;
+    const creature: Creature = { id: undefined, name: token.name, tokenId: token.id, size: this.settings.size, cell };
     this.battlefield.addCreature(creature);
   }
 
