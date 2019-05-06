@@ -3,6 +3,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { ElementRef, Injectable } from '@angular/core';
 import { MapBattlefield, MapBinding, MapCanvas, MapController, MapGrid } from '@bm/map/services';
 import { Creature, EventBindings } from '@bm/models';
+import { CreatureRenderData, RenderMiddleware } from '@bm/renderer';
 import { Tool } from '@bm/toolbox/tools/tool';
 
 import { CreaturePanelComponent } from './creature-panel.component';
@@ -33,9 +34,11 @@ export class SelectTool implements Tool {
     private controller: MapController,
     private overlay: Overlay,
     private settings: SelectToolSettings,
-    private binding: MapBinding
+    private binding: MapBinding,
+    private middleware: RenderMiddleware
   ) {
     this.settings.creature$.subscribe(this.onSelectedCreatureChange.bind(this));
+    this.middleware.creaturesMiddleware.push(this.onRenderCreatures.bind(this));
   }
 
   activate() {
@@ -45,6 +48,7 @@ export class SelectTool implements Tool {
 
   deactivate() {
     this.binding.unbind(this.bindings);
+    this.settings.setCreature(undefined);
     this.controller.setEnabled(true);
   }
 
@@ -75,6 +79,15 @@ export class SelectTool implements Tool {
 
   onSelectedCreatureChange(c: Creature) {
     c ? this.show() : this.hide();
+  }
+
+  onRenderCreatures(creatures: CreatureRenderData[]) {
+    if (!this.settings.creature) { return; }
+    creatures.forEach(c => {
+      if (c.id === this.settings.creature.id) {
+        c.selected = true;
+      }
+    })
   }
 
   private initializeOverlay() {

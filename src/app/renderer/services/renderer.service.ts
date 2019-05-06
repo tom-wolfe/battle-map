@@ -58,8 +58,9 @@ export class MapRenderer {
   private renderCreatures() {
     this.data.creatures().forEach(creature => {
       if (!creature.image.draw) { return; }
-      this.context.filter = creature.selected ? 'drop-shadow(0px 0px 10px white)' : 'none';
+      if (creature.selected) this.context.filter = 'drop-shadow(0px 0px 10px white)';
       this.drawImage(creature.image);
+      this.context.filter = 'none';
     });
   }
 

@@ -2,11 +2,10 @@ import { Injectable } from '@angular/core';
 import { MapBattlefield, MapCanvas, MapController, MapGrid } from '@bm/map/services';
 import { Sizes } from '@bm/models';
 import { CreatureRenderData, GridRenderData, ImageRenderData } from '@bm/renderer/models';
-import { SelectToolSettings } from '@bm/toolbox';
 
 const CREATURE_PADDING = 4;
 const NO_IMAGE: ImageRenderData = { image: undefined, x: 0, y: 0, width: 0, height: 0, draw: false };
-const NO_CREATURE: CreatureRenderData = { image: NO_IMAGE, selected: false };
+const NO_CREATURE: CreatureRenderData = { id: undefined, image: NO_IMAGE, selected: false };
 
 @Injectable()
 export class RenderCore {
@@ -14,8 +13,7 @@ export class RenderCore {
     private canvas: MapCanvas,
     private controller: MapController,
     private battlefield: MapBattlefield,
-    private mapGrid: MapGrid,
-    private selected: SelectToolSettings
+    private mapGrid: MapGrid
   ) { }
 
   background(): ImageRenderData {
@@ -54,6 +52,7 @@ export class RenderCore {
       const halfCreature = creatureSize / 2;
 
       return {
+        id: creature.id,
         image: {
           image: creature.image,
           x: point.x + halfSquare - halfCreature,
@@ -62,7 +61,7 @@ export class RenderCore {
           height: creatureSize,
           draw: true,
         },
-        selected: this.selected.creatureId === creature.id
+        selected: false
       };
     });
   }

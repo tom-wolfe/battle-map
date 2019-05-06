@@ -1,6 +1,5 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { MapBattlefield, MapCanvas, MapController, MapGrid } from '@bm/map/services';
-import { SelectToolSettings } from '@bm/toolbox';
 import { combineLatest } from 'rxjs';
 
 @Injectable()
@@ -11,8 +10,7 @@ export class RenderTrigger {
     controller: MapController,
     canvas: MapCanvas,
     grid: MapGrid,
-    battlefield: MapBattlefield,
-    selected: SelectToolSettings
+    battlefield: MapBattlefield
   ) {
     combineLatest(
       controller.pan$,
@@ -22,8 +20,7 @@ export class RenderTrigger {
       canvas.resize$,
       grid.offset$,
       grid.size$,
-      battlefield.creatures$,
-      selected.creature$
+      battlefield.creatures$
     ).subscribe(() => this.render.emit());
   }
 
