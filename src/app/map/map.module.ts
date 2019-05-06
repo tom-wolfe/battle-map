@@ -5,8 +5,8 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 import { MapComponent } from './component/map.component';
-import * as Services from './services';
 import * as Renderer from './renderer';
+import * as Services from './services';
 import { effects } from './store/effects';
 import { featureName, reducers } from './store/reducer';
 
@@ -23,6 +23,7 @@ const SERVICES = [
   Services.MapNavigator,
   Services.MapTokens,
   Renderer.MapRenderer,
+  Renderer.RenderTrigger
 ];
 
 @NgModule({

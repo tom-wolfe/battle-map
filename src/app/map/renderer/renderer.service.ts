@@ -3,6 +3,7 @@ import { MapBattlefield, MapCanvas, MapController, MapGrid } from '@bm/map/servi
 import { Sizes } from '@bm/models';
 import { SelectToolSettings } from '@bm/toolbox';
 import { combineLatest } from 'rxjs';
+import { RenderTrigger } from './trigger.service';
 
 export const CREATURE_PADDING = 4;
 
@@ -15,20 +16,11 @@ export class MapRenderer {
     private canvas: MapCanvas,
     private grid: MapGrid,
     private battlefield: MapBattlefield,
-    private selected: SelectToolSettings
+    private selected: SelectToolSettings,
+    private trigger: RenderTrigger
   ) {
-    const render = this.render.bind(this);
+    this.trigger.render.subscribe(this.render.bind(this));
     canvas.element$.subscribe(this.onCanvasChange.bind(this));
-    combineLatest(
-      controller.pan$,
-      controller.scale$,
-      canvas.background$,
-      canvas.resize$,
-      grid.offset$,
-      grid.size$,
-      battlefield.creatures$,
-      selected.creature$
-    ).subscribe(render);
   }
 
   private onCanvasChange(canvas: HTMLCanvasElement) {
