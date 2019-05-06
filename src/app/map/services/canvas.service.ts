@@ -49,6 +49,7 @@ export class MapCanvas {
     if (!e) { return; }
     this.element = e;
     this.hammer = new Hammer(this.element);
+    this.hammer.get('pan').set({ direction: Hammer.DIRECTION_ALL });
     this.hammer.get('pinch').set({ enable: true });
     this.element$.next(e);
     this.onWindowResize();

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MapBattlefield, MapBinding, MapController, MapGrid } from '@bm/map/services';
-import { Creature, EventBindings } from '@bm/models';
+import { Creature, EventBindings, Point } from '@bm/models';
+import { CreatureRenderData, RenderMiddleware, RenderTrigger } from '@bm/renderer';
 
 import { Tool } from './tool';
 
@@ -12,6 +13,7 @@ export class MoveTool implements Tool {
   settingsComponent = undefined;
 
   creature: Creature;
+  livePan: Point = { x: 0, y: 0 };
 
   private readonly bindings: EventBindings = {
     hammer: {
@@ -25,8 +27,12 @@ export class MoveTool implements Tool {
     private grid: MapGrid,
     private battlefield: MapBattlefield,
     private controller: MapController,
-    private binding: MapBinding
-  ) { }
+    private binding: MapBinding,
+    private middleware: RenderMiddleware,
+    private render: RenderTrigger
+  ) {
+    this.middleware.creaturesMiddleware.push(this.onRenderCreatures.bind(this));
+  }
 
   activate() {
     this.binding.bind(this.bindings);
@@ -40,16 +46,38 @@ export class MoveTool implements Tool {
   onPanStart(e: HammerInput) {
     const cell = this.grid.cellFromHammer(e);
     this.creature = this.battlefield.creatureAtCell(cell);
+    this.render.trigger();
     if (!this.creature) { return; }
     this.controller.setEnabled(false);
     // TODO: Set dragging creature.
   }
-  onPanMove(e: HammerInput) { }
+  onPanMove(e: HammerInput) {
+    if (!this.creature) { return; }
+    this.livePan = { x: e.deltaX, y: e.deltaY };
+    this.render.trigger();
+  }
   onPanEnd(e: HammerInput) {
     if (!this.creature) { return; }
+    this.livePan = { x: 0, y: 0 };
     const cell = this.grid.cellFromHammer(e);
     this.battlefield.moveCreature(this.creature, cell);
     this.creature = undefined;
     this.controller.setEnabled(true);
+    this.render.trigger();
+  }
+
+  onRenderCreatures(creatures: CreatureRenderData[]) {
+    if (!this.creature) { return; }
+    creatures.forEach(c => {
+      if (c.id === this.creature.id) {
+        c.image.x -= 10;
+        c.image.y -= 10;
+        c.image.width += 20;
+        c.image.height += 20;
+
+        c.image.x += this.livePan.x;
+        c.image.y += this.livePan.y;
+      }
+    })
   }
 }
