@@ -49,17 +49,26 @@ export class MoveTool implements Tool {
     this.render.trigger();
     if (!this.creature) { return; }
     this.controller.setEnabled(false);
-    // TODO: Set dragging creature.
   }
+
   onPanMove(e: HammerInput) {
     if (!this.creature) { return; }
     this.livePan = { x: e.deltaX, y: e.deltaY };
     this.render.trigger();
   }
+  
   onPanEnd(e: HammerInput) {
     if (!this.creature) { return; }
+
+    const creatureOrigin = this.grid.pointFromCell(this.creature.cell);
+    const newPoint: Point = {
+      x: creatureOrigin.x + e.deltaX,
+      y: creatureOrigin.y + e.deltaY
+    };
+
+    const cell = this.grid.nearestCell(newPoint);
+
     this.livePan = { x: 0, y: 0 };
-    const cell = this.grid.cellFromHammer(e);
     this.battlefield.moveCreature(this.creature, cell);
     this.creature = undefined;
     this.controller.setEnabled(true);

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as Grid from '@bm/map/store/grid';
 import { Point } from '@bm/models';
 import { AppState } from '@bm/store/state';
-import { relativeHammer, relativeMouse } from '@bm/utils';
+import { relativeHammer, relativeMouse, relativePoint } from '@bm/utils';
 import { select, Store } from '@ngrx/store';
 
 import { MapCanvas } from './canvas.service';
@@ -29,6 +29,11 @@ export class MapGrid {
     return this.cellFromCanvasPoint(point);
   }
 
+  cellFromPoint(e: Point): Point {
+    const point = relativePoint(e, this.canvas.element);
+    return this.cellFromCanvasPoint(point);
+  }
+
   cellFromHammer(e: HammerInput): Point {
     const point = relativeHammer(e, this.canvas.element);
     return this.cellFromCanvasPoint(point);
@@ -47,6 +52,16 @@ export class MapGrid {
     return {
       x: cell.x * gridSize + this.controller.pan.x + this.offset.x * this.controller.scale,
       y: cell.y * gridSize + this.controller.pan.y + this.offset.y * this.controller.scale,
+    };
+  }
+
+  nearestCell(point: Point): Point {
+    const gridSize = this.size * this.controller.scale;
+    const curCell = this.cellFromCanvasPoint(point);
+    const topLeft = this.pointFromCell(curCell);
+    return {
+      x: (point.x - topLeft.x < (topLeft.x + gridSize) - point.x) ? curCell.x : curCell.x + 1,
+      y: (point.y - topLeft.y < (topLeft.y + gridSize) - point.y) ? curCell.y : curCell.y + 1
     };
   }
 }
