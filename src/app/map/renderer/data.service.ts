@@ -1,22 +1,25 @@
 import { Injectable } from '@angular/core';
-import { MapCanvas, MapController } from '@bm/map/services';
+import { MapBattlefield, MapCanvas, MapController, MapGrid } from '@bm/map/services';
+import { Sizes } from '@bm/models';
+import { SelectToolSettings } from '@bm/toolbox';
 
 import { RenderMiddleware } from './middleware.service';
-import { ImageRenderData } from './models';
+import { CreatureRenderData, ImageRenderData, GridRenderData } from './models';
 
-// export const CREATURE_PADDING = 4;
-
+const CREATURE_PADDING = 4;
 const NO_IMAGE: ImageRenderData = { image: undefined, x: 0, y: 0, width: 0, height: 0, draw: false };
+const NO_CREATURE: CreatureRenderData = { image: NO_IMAGE, selected: false };
 
 @Injectable()
 export class RenderData {
   constructor(
     private canvas: MapCanvas,
     private controller: MapController,
+    private battlefield: MapBattlefield,
+    private mapGrid: MapGrid,
+    private selected: SelectToolSettings,
     private middleware: RenderMiddleware
-  ) {
-
-  }
+  ) { }
 
   background(): ImageRenderData {
     const image = this.canvas.background;
@@ -31,7 +34,50 @@ export class RenderData {
     };
   }
 
+  grid(): GridRenderData {
+    const size = this.scaleN(this.mapGrid.size);
+    const start = {
+      x: this.boundCoordinate(this.panX(this.scaleN(this.mapGrid.offset.x) + size)),
+      y: this.boundCoordinate(this.panY(this.scaleN(this.mapGrid.offset.y) + size)),
+    }
+    return { start, size }
+  }
+
+  creatures(): CreatureRenderData[] {
+    const gridSize = this.scaleN(this.mapGrid.size);
+    const padding = this.scaleN(CREATURE_PADDING);
+    return this.battlefield.creatures.map(creature => {
+      if (!creature.image) { return NO_CREATURE; }
+
+      const size = Sizes.find(s => s.id === creature.size);
+      const point = this.mapGrid.pointFromCell(creature.cell);
+      const creatureSize = (gridSize * size.scale) - padding * 2;
+
+      const halfSquare = gridSize * Math.max(1, size.scale) / 2;
+      const halfCreature = creatureSize / 2;
+
+      return {
+        image: {
+          image: creature.image,
+          x: point.x + halfSquare - halfCreature,
+          y: point.y + halfSquare - halfCreature,
+          width: creatureSize,
+          height: creatureSize,
+          draw: true,
+        },
+        selected: this.selected.creatureId === creature.id
+      };
+    });
+  }
+
   private panX(x: number): number { return x + this.controller.pan.x; }
   private panY(y: number): number { return y + this.controller.pan.y; }
   private scaleN(n: number): number { return n * this.controller.scale; }
+  private boundCoordinate(ord: number) {
+    const gridSize = this.scaleN(this.mapGrid.size);
+    if (ord > gridSize || ord < 0) {
+      ord -= Math.ceil(ord / gridSize) * gridSize;
+    }
+    return ord;
+  }
 }

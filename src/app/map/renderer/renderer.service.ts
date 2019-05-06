@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { MapBattlefield, MapCanvas, MapController, MapGrid } from '@bm/map/services';
-import { Sizes } from '@bm/models';
-import { SelectToolSettings } from '@bm/toolbox';
+import { MapCanvas } from '@bm/map/services';
 
 import { RenderData } from './data.service';
+import { ImageRenderData } from './models';
 import { RenderTrigger } from './trigger.service';
 
 export const CREATURE_PADDING = 4;
@@ -13,11 +12,7 @@ export class MapRenderer {
   private context: CanvasRenderingContext2D;
 
   constructor(
-    private controller: MapController,
     private canvas: MapCanvas,
-    private grid: MapGrid,
-    private battlefield: MapBattlefield,
-    private selected: SelectToolSettings,
     private trigger: RenderTrigger,
     private data: RenderData
   ) {
@@ -40,67 +35,35 @@ export class MapRenderer {
   }
 
   private renderBackground() {
-    const data = this.data.background();
-    if (!data.draw) { return; }
-    this.context.drawImage(data.image, data.x, data.y, data.width, data.height);
+    const background = this.data.background();
+    if (!background.draw) { return; }
+    this.drawImage(background);
   }
 
   private renderGrid() {
+    const grid = this.data.grid();
     this.context.strokeStyle = 'rgba(0, 0, 0, 0.5)';
-
-    const gridSize = this.scaleN(this.grid.size);
-
-    const startX = this.boundCoordinate(this.panX(this.scaleN(this.grid.offset.x) + gridSize));
-    const startY = this.boundCoordinate(this.panY(this.scaleN(this.grid.offset.y) + gridSize));
-
-    const grid = new Path2D();
-    // Vertical lines.
-    for (let x = startX; x <= this.canvas.element.width; x += gridSize) {
-      grid.moveTo(x, 0);
-      grid.lineTo(x, this.canvas.element.height);
+    const path = new Path2D();
+    for (let x = grid.start.x; x <= this.canvas.element.width; x += grid.size) {
+      path.moveTo(x, 0);
+      path.lineTo(x, this.canvas.element.height);
     }
-    // Horizontal lines
-    for (let y = startY; y <= this.canvas.element.height; y += gridSize) {
-      grid.moveTo(0, y);
-      grid.lineTo(this.canvas.element.width, y);
+    for (let y = grid.start.y; y <= this.canvas.element.height; y += grid.size) {
+      path.moveTo(0, y);
+      path.lineTo(this.canvas.element.width, y);
     }
-    this.context.stroke(grid);
+    this.context.stroke(path);
   }
 
   private renderCreatures() {
-    const gridSize = this.scaleN(this.grid.size);
-    const padding = this.scaleN(CREATURE_PADDING);
-    this.battlefield.creatures.forEach(creature => {
-      if (!creature.image) { return; }
-      const size = Sizes.find(s => s.id === creature.size);
-      const point = this.grid.pointFromCell(creature.cell);
-      const creatureSize = (gridSize * size.scale) - padding * 2;
-
-      const halfSquare = gridSize * Math.max(1, size.scale) / 2;
-      const halfCreature = creatureSize / 2;
-
-      const drawPoint = {
-        x: point.x + halfSquare - halfCreature,
-        y: point.y + halfSquare - halfCreature,
-      };
-
-      if (this.selected.creatureId === creature.id) {
-        this.context.filter = 'drop-shadow(0px 0px 10px white)';
-      }
-      this.context.drawImage(creature.image, drawPoint.x, drawPoint.y, creatureSize, creatureSize);
-      this.context.filter = 'none';
+    this.data.creatures().forEach(creature => {
+      if (!creature.image.draw) { return; }
+      this.context.filter = creature.selected ? 'drop-shadow(0px 0px 10px white)' : 'none';
+      this.drawImage(creature.image);
     });
   }
 
-  private panX(x: number): number { return x + this.controller.pan.x; }
-  private panY(y: number): number { return y + this.controller.pan.y; }
-  private scaleN(n: number): number { return n * this.controller.scale; }
-
-  private boundCoordinate(ord: number) {
-    const gridSize = this.scaleN(this.grid.size);
-    if (ord > gridSize || ord < 0) {
-      ord -= Math.ceil(ord / gridSize) * gridSize;
-    }
-    return ord;
+  private drawImage(data: ImageRenderData) {
+    this.context.drawImage(data.image, data.x, data.y, data.width, data.height);
   }
 }
