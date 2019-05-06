@@ -21,7 +21,7 @@ export class MapNavigator {
     element: {
       wheel: this.onWheel.bind(this)
     }
-  }
+  };
 
   constructor(
     private canvas: MapCanvas,
