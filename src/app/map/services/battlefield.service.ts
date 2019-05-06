@@ -32,6 +32,10 @@ export class MapBattlefield {
     this.store.dispatch(new Battlefield.AddCreature(creature));
   }
 
+  moveCreature(creature: Creature, cell: Point) {
+    this.store.dispatch(new Battlefield.MoveCreature(creature, cell));
+  }
+
   removeCreature(creature: Creature) {
     this.store.dispatch(new Battlefield.RemoveCreature(creature));
   }

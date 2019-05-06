@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { MapBinding, MapCanvas, MapController } from '@bm/map/services';
-import { EventBindings } from '@bm/models';
+import { MapBattlefield, MapBinding, MapController, MapGrid } from '@bm/map/services';
+import { Creature, EventBindings } from '@bm/models';
 
 import { Tool } from './tool';
 
@@ -11,16 +11,19 @@ export class MoveTool implements Tool {
   icon = 'fa-shoe-prints';
   settingsComponent = undefined;
 
+  creature: Creature;
+
   private readonly bindings: EventBindings = {
     hammer: {
       panstart: this.onPanStart.bind(this),
       panmove: this.onPanMove.bind(this),
       panend: this.onPanEnd.bind(this)
     }
-  }
+  };
 
   constructor(
-    private canvas: MapCanvas,
+    private grid: MapGrid,
+    private battlefield: MapBattlefield,
     private controller: MapController,
     private binding: MapBinding
   ) { }
@@ -34,7 +37,20 @@ export class MoveTool implements Tool {
     this.controller.setEnabled(true);
   }
 
-  onPanStart(e: HammerInput) { }
+  onPanStart(e: HammerInput) {
+    const cell = this.grid.cellFromHammer(e);
+    this.creature = this.battlefield.creatureAtCell(cell);
+    if (!this.creature) { return; }
+    console.log('set creature');
+    this.controller.setEnabled(false);
+    // TODO: Set dragging creature.
+  }
   onPanMove(e: HammerInput) { }
-  onPanEnd(e: HammerInput) { }
+  onPanEnd(e: HammerInput) {
+    if (!this.creature) { return; }
+    const cell = this.grid.cellFromHammer(e);
+    this.battlefield.moveCreature(this.creature, cell);
+    this.creature = undefined;
+    this.controller.setEnabled(true);
+  }
 }

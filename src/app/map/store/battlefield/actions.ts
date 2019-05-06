@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { Creature } from '@bm/models';
+import { Creature, Point } from '@bm/models';
 
 export class AddCreature implements Action {
   public static readonly TYPE = '[Battlefield] Add Creature';
@@ -13,4 +13,10 @@ export class RemoveCreature implements Action {
   constructor(public creature: Creature) { }
 }
 
-export type BattlefieldActions = AddCreature | RemoveCreature;
+export class MoveCreature implements Action {
+  public static readonly TYPE = '[Battlefield] Move Creature';
+  readonly type = MoveCreature.TYPE;
+  constructor(public creature: Creature, public cell: Point) { }
+}
+
+export type BattlefieldActions = AddCreature | RemoveCreature | MoveCreature;
