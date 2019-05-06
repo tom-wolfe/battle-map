@@ -3,8 +3,9 @@ import { Point } from '@bm/models';
 import * as Navigation from '@bm/map/store/navigation';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { BehaviorSubject, combineLatest, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { MapCanvas } from './canvas.service';
 
 const ZOOM_SF_INCREMENT = 0.1;
 
@@ -14,7 +15,7 @@ export class MapController {
   private readonly storeScale$ = this.store.pipe(select(Navigation.scale));
   private readonly tempPan$ = new BehaviorSubject<Point>({ x: 0, y: 0 });
   private readonly tempScale$ = new BehaviorSubject<number>(1);
-  private readonly enabledValue$ = new BehaviorSubject<boolean>(true);
+  private readonly enabledValue$ = new Subject<boolean>();
 
   public pan: Point;
   public scale: number;
@@ -23,7 +24,9 @@ export class MapController {
   public readonly pan$ = combineLatest(this.tempPan$, this.storePan$).pipe(map(([t, p]) => this.pan = { x: p.x + t.x, y: p.y + t.y }));
   public readonly scale$ = combineLatest(this.tempScale$, this.storeScale$).pipe(map(([t, s]) => this.scale = s * t));
 
-  constructor(private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>, private canvas: MapCanvas) {
+    this.canvas.element$.subscribe(e => this.setEnabled(true));
+   }
 
   setEnabled(enabled: boolean) { this.enabledValue$.next(enabled); }
 

@@ -5,18 +5,13 @@ import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
 
 import { MapComponent } from './component/map.component';
-import * as Directives from './directives';
 import * as Services from './services';
+import * as Renderer from './renderer';
 import { effects } from './store/effects';
 import { featureName, reducers } from './store/reducer';
-import { MapRenderer } from './services/renderer.service';
 
 const COMPONENTS = [
   MapComponent
-];
-
-const DIRECTIVES = [
-  Directives.MapNavigationDirective
 ];
 
 const SERVICES = [
@@ -24,15 +19,13 @@ const SERVICES = [
   Services.MapCanvas,
   Services.MapController,
   Services.MapGrid,
+  Services.MapNavigator,
   Services.MapTokens,
-  MapRenderer,
+  Renderer.MapRenderer,
 ];
 
 @NgModule({
-  declarations: [
-    ...COMPONENTS,
-    ...DIRECTIVES
-  ],
+  declarations: [...COMPONENTS],
   imports: [
     CommonModule,
     ToolboxModule,

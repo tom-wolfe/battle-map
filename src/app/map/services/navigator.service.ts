@@ -1,11 +1,11 @@
-import { Directive, OnInit } from '@angular/core';
-import { MapCanvas, MapController } from '@bm/map/services';
+import { Injectable } from '@angular/core';
 import { relativePoint } from '@bm/utils';
 
-@Directive({
-  selector: '[bmMapNavigation]',
-})
-export class MapNavigationDirective implements OnInit {
+import { MapCanvas } from './canvas.service';
+import { MapController } from './controller.service';
+
+@Injectable()
+export class MapNavigator {
   private enabled: boolean;
 
   private panMoveBound = this.onPanMove.bind(this);
@@ -18,9 +18,7 @@ export class MapNavigationDirective implements OnInit {
   constructor(
     private canvas: MapCanvas,
     private controller: MapController
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.controller.enabled$.subscribe(e => {
       this.enabled = e;
       this.enabled ? this.addEvents() : this.removeEvents();

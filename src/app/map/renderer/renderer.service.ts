@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
+import { MapBattlefield, MapCanvas, MapController, MapGrid } from '@bm/map/services';
 import { Sizes } from '@bm/models';
 import { SelectToolSettings } from '@bm/toolbox';
 import { combineLatest } from 'rxjs';
-
-import { MapBattlefield } from './battlefield.service';
-import { MapCanvas } from './canvas.service';
-import { MapController } from './controller.service';
-import { MapGrid } from './grid.service';
 
 export const CREATURE_PADDING = 4;
 
@@ -36,7 +32,7 @@ export class MapRenderer {
   }
 
   private onCanvasChange(canvas: HTMLCanvasElement) {
-    this.context = canvas.getContext('2d'); 
+    this.context = canvas.getContext('2d');
     this.context.imageSmoothingEnabled = true;
     this.context.imageSmoothingQuality = 'high';
     this.render();
