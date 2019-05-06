@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MapCanvas } from '@bm/map/services';
+import { ImageRenderData } from '@bm/renderer/models';
 
 import { RenderData } from './data.service';
-import { ImageRenderData } from './models';
 import { RenderTrigger } from './trigger.service';
 
 export const CREATURE_PADDING = 4;

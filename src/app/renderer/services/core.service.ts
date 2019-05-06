@@ -1,24 +1,21 @@
 import { Injectable } from '@angular/core';
 import { MapBattlefield, MapCanvas, MapController, MapGrid } from '@bm/map/services';
 import { Sizes } from '@bm/models';
+import { CreatureRenderData, GridRenderData, ImageRenderData } from '@bm/renderer/models';
 import { SelectToolSettings } from '@bm/toolbox';
-
-import { RenderMiddleware } from './middleware.service';
-import { CreatureRenderData, ImageRenderData, GridRenderData } from './models';
 
 const CREATURE_PADDING = 4;
 const NO_IMAGE: ImageRenderData = { image: undefined, x: 0, y: 0, width: 0, height: 0, draw: false };
 const NO_CREATURE: CreatureRenderData = { image: NO_IMAGE, selected: false };
 
 @Injectable()
-export class RenderData {
+export class RenderCore {
   constructor(
     private canvas: MapCanvas,
     private controller: MapController,
     private battlefield: MapBattlefield,
     private mapGrid: MapGrid,
-    private selected: SelectToolSettings,
-    private middleware: RenderMiddleware
+    private selected: SelectToolSettings
   ) { }
 
   background(): ImageRenderData {
