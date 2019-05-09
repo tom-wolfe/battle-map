@@ -4,8 +4,10 @@ import { Sizes } from '@bm/models';
 import { CreatureRenderData, GridRenderData, ImageRenderData } from '@bm/renderer/models';
 
 const CREATURE_PADDING = 4;
+const MIN_TEXT_SIZE = 10;
+const DEFAULT_TEXT_SIZE = 16;
 const NO_IMAGE: ImageRenderData = { image: undefined, x: 0, y: 0, width: 0, height: 0, draw: false };
-const NO_CREATURE: CreatureRenderData = { id: undefined, name: undefined, image: NO_IMAGE, selected: false };
+const NO_CREATURE: CreatureRenderData = { id: undefined, name: undefined, image: NO_IMAGE, selected: false, text: { size: 16 } };
 
 @Injectable()
 export class RenderCore {
@@ -62,7 +64,10 @@ export class RenderCore {
           height: creatureSize,
           draw: true,
         },
-        selected: false
+        selected: false,
+        text: {
+          size: Math.max(MIN_TEXT_SIZE, this.scaleN(DEFAULT_TEXT_SIZE))
+        }
       };
     });
   }

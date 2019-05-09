@@ -4,6 +4,7 @@ import { Size, Token } from '@bm/models';
 import { AppState } from '@bm/store/state';
 import * as CreatureStore from '@bm/toolbox/store/creature';
 import { Store } from '@ngrx/store';
+import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Injectable()
@@ -13,16 +14,19 @@ export class CreatureToolSettings {
   public size: Size;
 
   public readonly tokenId$ = this.store.select(CreatureStore.token);
-  public readonly token$ = this.tokenId$.pipe(map(id => this.tokens.tokens.find(t => t.id === id)));
-  public readonly size$ = this.store.select(CreatureStore.size);
   public readonly tokens$ = this.tokens.tokens$;
+  public readonly token$ = combineLatest(this.tokenId$, this.tokens$).pipe(
+    map(([id, tokens]) => tokens.find(t => t.id === id))
+  );
+
+  public readonly size$ = this.store.select(CreatureStore.size);
 
   constructor(
     private store: Store<AppState>,
     private tokens: MapTokens,
   ) {
-    this.token$.subscribe(t => { this.tokenId = t ? t.id : undefined; this.token = t; });
     this.size$.subscribe(s => this.size = s);
+    this.token$.subscribe(t => { this.tokenId = t ? t.id : undefined; this.token = t; });
   }
 
   setToken(tokenId: number) {

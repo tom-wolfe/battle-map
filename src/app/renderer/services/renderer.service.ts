@@ -68,7 +68,7 @@ export class MapRenderer {
     creatureData.forEach(creature => {
       const x = creature.image.x + creature.image.width / 2;
       const y = creature.image.y + creature.image.height - 2;
-      this.drawText(creature.name, x, y, creature.image.width);
+      this.drawText(creature.name, x, y, creature.text.size, creature.image.width * 2);
     });
   }
 
@@ -76,12 +76,13 @@ export class MapRenderer {
     this.context.drawImage(data.image, data.x, data.y, data.width, data.height);
   }
 
-  private drawText(text: string, x: number, y: number, maxWidth: number) {
+  private drawText(text: string, x: number, y: number, size: number, maxWidth: number) {
     this.context.fillStyle = 'white';
     this.context.textAlign = 'center';
-    this.context.font = `bold 16px 'Source Sans Pro'`;
+
+    this.context.font = `bold ${size}px 'Source Sans Pro'`;
     
-    this.context.lineWidth = 5;
+    this.context.lineWidth = size / 3;
     this.context.strokeStyle = 'black';
     this.context.strokeText(text, x, y, maxWidth);
 
