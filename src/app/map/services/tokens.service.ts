@@ -3,6 +3,7 @@ import * as Tokens from '@bm/map/store/tokens';
 import { Token } from '@bm/models';
 import { AppState } from '@bm/store/state';
 import { select, Store } from '@ngrx/store';
+import { LoadTokens } from '@bm/map/store/tokens';
 
 @Injectable()
 export class MapTokens {
@@ -10,5 +11,9 @@ export class MapTokens {
   public tokens: Token[];
   constructor(private store: Store<AppState>) {
     this.tokens$.subscribe(t => this.tokens = t);
+  }
+
+  loadTokens() {
+    this.store.dispatch(new LoadTokens());
   }
 }

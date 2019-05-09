@@ -1,4 +1,17 @@
 import { Action } from '@ngrx/store';
+import { Token } from '@bm/models';
+
+export class LoadTokens implements Action {
+  public static readonly TYPE = '[Tokens] Load Tokens';
+  readonly type = LoadTokens.TYPE;
+  constructor() { }
+}
+
+export class SetTokens implements Action {
+  public static readonly TYPE = '[Tokens] Set Tokens';
+  readonly type = SetTokens.TYPE;
+  constructor(public tokens: Token[]) { }
+}
 
 export class LoadImage implements Action {
   public static readonly TYPE = '[Tokens] Load Image';
@@ -12,4 +25,4 @@ export class SetImage implements Action {
   constructor(public url: string, public image: HTMLImageElement) { }
 }
 
-export type TokensActions = LoadImage | SetImage;
+export type TokensActions = LoadTokens | SetTokens | LoadImage | SetImage;

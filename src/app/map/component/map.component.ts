@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { MapCanvas, MapNavigator } from '@bm/map/services';
+import { MapCanvas, MapNavigator, MapTokens } from '@bm/map/services';
 import { MapRenderer } from '@bm/renderer';
 
 @Component({
@@ -12,7 +12,12 @@ export class MapComponent implements OnInit {
   constructor(
     private renderer: MapRenderer,
     private navigator: MapNavigator,
-    private canvas: MapCanvas
+    private canvas: MapCanvas,
+    private tokens: MapTokens
   ) { }
-  ngOnInit() { this.canvas.setCanvas(this.canvasEl.nativeElement); }
+  
+  ngOnInit() {
+    this.canvas.setCanvas(this.canvasEl.nativeElement);
+    this.tokens.loadTokens();
+  }
 }

@@ -21,7 +21,7 @@ export class CreatureToolSettings {
     private store: Store<AppState>,
     private tokens: MapTokens,
   ) {
-    this.token$.subscribe(t => { this.tokenId = t.id; this.token = t; });
+    this.token$.subscribe(t => { this.tokenId = t ? t.id : undefined; this.token = t; });
     this.size$.subscribe(s => this.size = s);
   }
 

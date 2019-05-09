@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import * as Components from './components';
 import { MapModule } from './map/';
 import { ToolboxModule } from './toolbox';
+import { DataModule } from './data';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { ToolboxModule } from './toolbox';
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument(),
+    DataModule,
     ToolboxModule,
     MapModule
   ],

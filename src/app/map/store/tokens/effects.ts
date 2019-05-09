@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Monsters } from '@bm/data';
+import { Token } from '@bm/models';
 import { AppState } from '@bm/store/state';
 import { fetchImage } from '@bm/utils';
 import { Actions, Effect, ofType } from '@ngrx/effects';
@@ -10,7 +12,26 @@ import * as Selectors from './selectors';
 
 @Injectable()
 export class TokensEffects {
-  constructor(private action$: Actions, private store: Store<AppState>) { }
+  constructor(
+    private action$: Actions,
+    private store: Store<AppState>,
+    private monsters: Monsters
+  ) { }
+
+  @Effect() loadTokens$ = this.action$.pipe(
+    ofType<TokensActions.LoadTokens>(TokensActions.LoadTokens.TYPE),
+    switchMap(() => this.monsters.get()),
+    map(monsters => {
+      let id = 0;
+      return monsters.filter(m => m.image).map(m => ({
+        id: id++,
+        name: m.name,
+        imageUrl: this.monsters.resolveImage(m.image.url),
+        defaultSize: m.size
+      }) as Token);
+    }),
+    map(tokens => new TokensActions.SetTokens(tokens))
+  );
 
   @Effect() loadImage$ = this.action$.pipe(
     ofType<TokensActions.LoadImage>(TokensActions.LoadImage.TYPE),
