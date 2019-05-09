@@ -5,7 +5,7 @@ import { CreatureRenderData, GridRenderData, ImageRenderData } from '@bm/rendere
 
 const CREATURE_PADDING = 4;
 const MIN_TEXT_SIZE = 10;
-const DEFAULT_TEXT_SIZE = 16;
+const DEFAULT_TEXT_SIZE = 14;
 const NO_IMAGE: ImageRenderData = { image: undefined, x: 0, y: 0, width: 0, height: 0, draw: false };
 const NO_CREATURE: CreatureRenderData = { id: undefined, name: undefined, image: NO_IMAGE, selected: false, text: { size: 16 } };
 
