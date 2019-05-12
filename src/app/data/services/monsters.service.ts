@@ -13,7 +13,7 @@ export class Monsters {
   ) { }
 
   get(): Observable<Monster[]> {
-    const config = { 
+    const config = {
       headers: {
         'Access-Control-Allow-Origin': '*'
       }
@@ -22,6 +22,6 @@ export class Monsters {
   }
 
   resolveImage(url: string): string {
-    return this.baseUrl + url;
+    return this.baseUrl + url.replace('/monsters/', '/tokens/').replace('.jpeg', '.png');
   }
 }
