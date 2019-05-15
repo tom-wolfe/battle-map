@@ -5,6 +5,7 @@ button {
   color: $text-body;
   line-height: 1.5rem;
   border-radius: $radius-small;
+  box-sizing: content-box;
 
   &:hover {
     background-color: $bg-toolbar-hover;

@@ -2,6 +2,8 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 
 import * as Components from './components';
@@ -31,15 +33,18 @@ const TOOL_SETTINGS = [
   Tools.CreatureSettingsComponent,
   Tools.MapSettingsComponent,
   Tools.ZoomSettingsComponent,
-  Tools.CreaturePanelComponent
+  Tools.CreaturePanelComponent,
+  Components.TokenDialogComponent
 ];
 
 @NgModule({
   declarations: [...COMPONENTS, ...TOOL_SETTINGS],
   imports: [
     CommonModule,
+    BrowserAnimationsModule,
     FormsModule,
     OverlayModule,
+    MatDialogModule,
     StoreModule.forFeature(featureName, reducers)
   ],
   providers: [Toolbox, ...TOOLS],

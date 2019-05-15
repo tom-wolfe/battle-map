@@ -13,15 +13,10 @@ export class Monsters {
   ) { }
 
   get(): Observable<Monster[]> {
-    const config = {
-      headers: {
-        'Access-Control-Allow-Origin': '*'
-      }
-    };
-    return this.http.get<Monster[]>(this.baseUrl + 'data/monsters.json', config);
+    return this.http.get<Monster[]>(this.baseUrl + 'data/monsters.json');
   }
 
   resolveImage(url: string): string {
-    return this.baseUrl + url.replace('/monsters/', '/tokens/').replace('.jpeg', '.png');
+    return this.baseUrl + url.replace('/monsters/', '/tokens/').replace(/.jpe?g/, '.png').replace('\'', '-');
   }
 }

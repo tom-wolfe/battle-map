@@ -1,0 +1,17 @@
+<mat-dialog-content>
+  <h2>Tokens</h2>
+  <div class="search">
+    <input type="search" placeholder="Search tokens...">
+  </div>
+</mat-dialog-content>
+<mat-dialog-content>
+  <div class="tokens">
+    <button class="token" *ngFor="let token of tokens$ | async" (click)="onTokenClick(token)">
+      <img [src]="token.imageUrl" />
+      <span class="name">{{token.name}}</span>
+    </button>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button class="large" mat-dialog-close>Cancel</button>
+</mat-dialog-actions>
