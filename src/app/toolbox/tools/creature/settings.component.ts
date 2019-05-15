@@ -30,7 +30,6 @@ export class CreatureSettingsComponent {
       this.settings.setToken(result.id);
     });
   }
-
   
   onSizeChange(size: Size) { this.settings.setSize(size); }
 }
