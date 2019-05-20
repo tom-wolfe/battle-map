@@ -19,7 +19,9 @@ export class MapTokens {
   );
 
   public tokens: Token[];
-  constructor(private store: Store<AppState>) {
+  constructor(
+    private store: Store<AppState>
+  ) {
     this.tokens$.subscribe(t => this.tokens = t);
   }
 

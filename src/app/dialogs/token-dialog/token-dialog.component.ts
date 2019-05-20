@@ -36,7 +36,6 @@ export class TokenDialogComponent {
   }
 
   onTokenClick(token: Token) {
-    console.log('token');
     this.dialogRef.close(token);
   }
 }

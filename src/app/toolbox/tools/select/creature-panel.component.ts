@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
+import { Dialogs } from '@bm/dialogs';
 import { MapBattlefield, MapTokens } from '@bm/map/services';
-import { Creature, Sizes, Token, Size } from '@bm/models';
+import { Creature, Size, Sizes, Token } from '@bm/models';
 
 import { SelectToolSettings } from './settings';
 
@@ -14,10 +15,19 @@ export class CreaturePanelComponent {
 
   creature: Creature;
   tokens: Token[];
-  
-  constructor(private settings: SelectToolSettings, private battlefield: MapBattlefield, tokens: MapTokens) { 
+
+  constructor(
+    private battlefield: MapBattlefield,
+    private dialogs: Dialogs,
+    private settings: SelectToolSettings,
+    tokens: MapTokens
+  ) {
     settings.creature$.subscribe(c => this.creature = c);
     tokens.tokens$.subscribe(t => this.tokens = t);
+  }
+
+  get token(): Token {
+    return this.tokens.find(t => t.id === this.creature.tokenId);
   }
 
   onDeleteClick() {
@@ -29,8 +39,11 @@ export class CreaturePanelComponent {
     this.battlefield.setCreatureName(this.creature, name);
   }
 
-  onTokenChange(id: string) {
-    this.battlefield.setCreatureToken(this.creature, Number(id));
+  onTokenClick() {
+    this.dialogs.tokenDialog().afterClosed().subscribe((result: Token) => {
+      if (!result) { return; }
+      this.battlefield.setCreatureToken(this.creature, result.id);
+    });
   }
 
   onSizeChange(size: Size) {

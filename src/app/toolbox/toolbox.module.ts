@@ -10,6 +10,7 @@ import * as Components from './components';
 import { featureName, reducers } from './store/reducer';
 import { Toolbox } from './toolbox';
 import * as Tools from './tools';
+import { DialogsModule } from '@bm/dialogs';
 
 const COMPONENTS = [
   Components.ToolbarComponent,
@@ -33,8 +34,7 @@ const TOOL_SETTINGS = [
   Tools.CreatureSettingsComponent,
   Tools.MapSettingsComponent,
   Tools.ZoomSettingsComponent,
-  Tools.CreaturePanelComponent,
-  Components.TokenDialogComponent
+  Tools.CreaturePanelComponent
 ];
 
 @NgModule({
@@ -44,7 +44,7 @@ const TOOL_SETTINGS = [
     BrowserAnimationsModule,
     FormsModule,
     OverlayModule,
-    MatDialogModule,
+    DialogsModule,
     StoreModule.forFeature(featureName, reducers)
   ],
   providers: [Toolbox, ...TOOLS],

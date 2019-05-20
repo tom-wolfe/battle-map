@@ -5,7 +5,6 @@ button {
   color: $text-body;
   line-height: 1.5rem;
   border-radius: $radius-small;
-  box-sizing: content-box;
 
   &:hover {
     background-color: $bg-toolbar-hover;
@@ -35,4 +34,10 @@ button {
   }
 }
 
-
+button.danger {
+  background-color: $bg-danger;
+  &:hover {
+    background-color: $bg-danger-hover;
+    color: $text-active;
+  }
+}

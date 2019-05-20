@@ -6,9 +6,7 @@
   </div>
   <div class="group">
     <label>Token</label>
-    <select [ngModel]="creature.tokenId" (ngModelChange)="onTokenChange($event)">
-      <option *ngFor="let token of tokens" [value]="token.id">{{token.name}}</option>
-    </select>
+    <button class="large block" (click)="onTokenClick()">{{token.name}}</button>
   </div>
   <div class="group">
     <label>Size</label>
@@ -17,6 +15,6 @@
     </select>
   </div>
   <div class="group">
-    <button class="large block delete" (click)="onDeleteClick()">Delete</button>
+    <button class="large block danger" (click)="onDeleteClick()">Delete</button>
   </div>
 </div>
