@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { Size, Sizes, Token } from '@bm/models';
 import { TokenDialogComponent } from '@bm/toolbox/components/token-dialog';
 
@@ -24,12 +24,15 @@ export class CreatureSettingsComponent {
   }
 
   onTokenClick() {
-    const dRef = this.dialog.open(TokenDialogComponent);
+    const config: MatDialogConfig<any> = {
+      width: '1129px'
+    };
+    const dRef = this.dialog.open(TokenDialogComponent, config);
     dRef.afterClosed().subscribe((result: Token) => {
       if (!result) { return; }
       this.settings.setToken(result.id);
     });
   }
-  
+
   onSizeChange(size: Size) { this.settings.setSize(size); }
 }

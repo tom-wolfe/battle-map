@@ -1,17 +1,18 @@
-<mat-dialog-content>
-  <h2>Tokens</h2>
-  <div class="search">
-    <input type="search" placeholder="Search tokens...">
+<h2 mat-dialog-header>Tokens</h2>
+<mat-dialog-content class="search">
+  <input type="search" [(ngModel)]="searchText" placeholder="Search tokens...">
+</mat-dialog-content>
+<mat-dialog-content class="results">
+  <div class="group" *ngFor="let group of filteredTokenGroups; trackBy: groupName">
+    <div class="name">{{group.name | titlecase }}</div>
+    <div class="tokens">
+      <button class="token" *ngFor="let token of group.tokens; trackBy: tokenId" (click)="onTokenClick(token)">
+        <img [src]="token.imageUrl" />
+        <span class="name">{{token.name}}</span>
+      </button>
+    </div>
   </div>
 </mat-dialog-content>
-<mat-dialog-content>
-  <div class="tokens">
-    <button class="token" *ngFor="let token of tokens$ | async" (click)="onTokenClick(token)">
-      <img [src]="token.imageUrl" />
-      <span class="name">{{token.name}}</span>
-    </button>
-  </div>
-</mat-dialog-content>
-<mat-dialog-actions>
+<mat-dialog-actions class="buttons">
   <button class="large" mat-dialog-close>Cancel</button>
 </mat-dialog-actions>

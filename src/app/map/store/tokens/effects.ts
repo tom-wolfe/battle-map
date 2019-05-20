@@ -26,6 +26,9 @@ export class TokensEffects {
       return monsters.filter(m => m.image).map(m => ({
         id: id++,
         name: m.name,
+        type: m.type,
+        environments: m.environments,
+        tags: m.tags,
         imageUrl: this.monsters.resolveImage(m.image.url),
         defaultSize: m.size
       }) as Token);
