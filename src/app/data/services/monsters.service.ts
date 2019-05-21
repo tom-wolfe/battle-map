@@ -17,6 +17,6 @@ export class Monsters {
   }
 
   resolveImage(url: string): string {
-    return this.baseUrl + url.replace('/monsters/', '/tokens/').replace(/.jpe?g/, '.png').replace('\'', '-');
+    return this.baseUrl + 'images/tokens/' + url.replace(/.jpe?g/, '.png');
   }
 }
