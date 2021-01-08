@@ -4,7 +4,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 @Component({
   selector: 'bm-map',
-  template: '<canvas bmMapNavigation #canvas></canvas>',
+  template: '<canvas id="map" bmMapNavigation #canvas></canvas>',
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent implements OnInit {

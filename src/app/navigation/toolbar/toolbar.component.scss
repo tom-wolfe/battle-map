@@ -4,11 +4,11 @@
 :host {
     position: fixed;
     left: 0;
-    top: 48px;
+    top: $header-height;
     bottom: 0;
     overflow: auto;
 
-    width: 64px;
+    width: $toolbar-width;
 
     padding-top: 8px;
     background: $bg-grad-mid;
