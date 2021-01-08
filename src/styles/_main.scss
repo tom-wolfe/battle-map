@@ -1,16 +1,21 @@
+@import "variables";
+
+html {
+    background: $grey-900;
+}
+
 body {
-  margin: 0;
-  padding: 0;
-  background-color: $bg-body;
-  color: $text-body;
-
-  font-family: $font-body;
+    background: $bg-grad-dark;
+    color: $text-mid;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: $font-heading;
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track {
+    background: $scrollbar-track;
 }
-
-h2 {
-  margin-top: 0;
+::-webkit-scrollbar-thumb {
+    background: $scrollbar-thumb;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: $scrollbar-thumb-hover;
 }

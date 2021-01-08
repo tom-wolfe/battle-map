@@ -11,7 +11,8 @@ import { MapModule } from '@bm/map';
   declarations: [
     AppComponent,
     Components.HeaderComponent,
-    Components.MenuComponent
+    Components.MenuComponent,
+    Components.ToolbarComponent
   ],
   imports: [
     BrowserModule,

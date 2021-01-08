@@ -1,0 +1,115 @@
+@import "variables";
+
+body {
+    font-family: $font-body;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    color: $text-dark;
+}
+
+h1 {
+    font-weight: bold;
+
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
+    margin-left: 0.5rem;
+}
+
+h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    margin-left: 0.75rem;
+}
+
+h4 {
+    margin-bottom: 1rem;
+    margin-left: 1rem;
+}
+
+h5 {
+    margin-bottom: 1rem;
+    margin-left: 1.25rem;
+}
+
+h6 {
+    margin-bottom: 1rem;
+    margin-left: 1.5rem;
+}
+
+p {
+    line-height: 1.5rem;
+    margin-bottom: 2rem;
+    text-align: justify;
+}
+
+a {
+    color: $text-light;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+blockquote {
+    background: $bg-dark;
+    border-left: 6px solid $bg-light;
+    width: 80%;
+
+    color: $text-dark;
+    font-style: italic;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    
+    margin: 30px auto;
+    
+    padding: 1rem 30px;
+}
+
+blockquote:before {
+    color: $bg-mid;
+    content: "\201C";
+    font-size: 4rem;
+    font-family:Arial;
+}
+
+blockquote p {
+    display: inline;
+}
+
+ul li {
+    list-style: disc;
+    margin: 1rem 1.5rem;
+}
+
+ol li {
+    list-style-type:decimal;
+    margin: 1rem 1.5rem;
+}
+
+table {
+    background: darken($bg-dark, 2%);
+    width: 80%;
+    margin: 30px auto;
+
+    border: 1px solid darken($bg-dark, 7%);
+    color: $text-dark;
+
+    thead {
+        background: darken($bg-dark, 5%);
+        color: $text-mid;
+    }
+
+    th, td {
+        padding: 1rem;
+        border: 1px solid black;
+    }
+}

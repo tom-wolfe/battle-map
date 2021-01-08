@@ -1,0 +1,22 @@
+@import 'variables';
+
+$header-height: 48px;
+$free-padding: 16px;
+
+:host {
+    position: fixed;
+    z-index: 1001;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: $header-height;
+    padding-right: $free-padding;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: $bg-grad-dark;
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: 100vw 100vh;
+    box-shadow: 0 0px 6px 4px #000;
+}

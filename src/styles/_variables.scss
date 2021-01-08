@@ -1,18 +1,23 @@
-$bg-body: #252525;
-$bg-header: #1e1e1e;
-$bg-toolbar: #181818;
-$bg-toolbar-active: #333;
-$bg-toolbar-hover: #888;
+@import './colors.scss';
 
-$text-body: #c7c7c7;
-$text-hover: #ddd;
-$text-active: #fff;
+$primary: $indigo-700-a;
 
-$font-body: 'Source Sans Pro', sans-serif;
-$font-heading: 'Open Sans', sans-serif;
+$bg-dark: $grey-900;
+$bg-mid: $grey-800;
+$bg-light: $grey-700;
 
-$radius-small: 4px;
-$radius-large: 8px;
+$bg-mid-hover: $grey-800;
+$bg-mid-selected: lighten($grey-800, 7%);
 
-$bg-danger: #e12e1c;
-$bg-danger-hover: #e74c3c;
+$bg-grad-dark: radial-gradient(circle at 50% 70px, lighten($grey-900, 2%) 0%, darken($grey-900, 2%) 100%);
+$bg-grad-mid: radial-gradient(circle at 50% 70px, darken($grey-800, 7%) 0%, darken($grey-800, 12%) 100%);
+
+$text-dark: $grey-500;
+$text-mid: $grey-300;
+$text-light: $grey-100;
+
+$font-body: 'Open Sans', sans-serif;
+
+$scrollbar-track: $grey-900;
+$scrollbar-thumb: $grey-800;
+$scrollbar-thumb-hover: $bg-mid-selected;
