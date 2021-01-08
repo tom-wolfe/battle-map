@@ -1,1 +1,0 @@
-export const DND_BASE_URL: string = 'DND_BASE_URL';

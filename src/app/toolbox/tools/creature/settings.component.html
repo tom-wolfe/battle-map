@@ -1,7 +1,0 @@
-<label>Token</label>
-<button (click)="onTokenClick()">{{token.name}}</button>
-
-<label>Size</label>
-<select [ngModel]="size" (ngModelChange)="onSizeChange($event)">
-  <option *ngFor="let size of Sizes" [value]="size.id">{{size.name}}</option>
-</select>
