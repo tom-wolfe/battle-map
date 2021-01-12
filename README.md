@@ -1,6 +1,6 @@
 # BattleMap
 
-See it running [here](https://map.twolfe.co.uk).
+See it running [here](https://map.twolfe.dev).
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.8.
 
