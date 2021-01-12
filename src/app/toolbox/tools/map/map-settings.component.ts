@@ -29,7 +29,7 @@ export class MapSettingsComponent {
     this.grid.setSize(Number((e.target as HTMLInputElement).value));
   }
 
-  onOffsetChange(x: string, y: string) {
+  onOffsetChange(x: string | number, y: string | number) {
     this.grid.setOffset({ x: Number(x), y: Number(y) });
   }
 
