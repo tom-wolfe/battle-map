@@ -11,7 +11,7 @@ export class MapSettingsComponent {
   size: number;
   offset: Point;
 
-  constructor(private grid: MapGrid, private canvas: MapCanvas) {
+  constructor(public grid: MapGrid, private canvas: MapCanvas) {
     this.grid.size$.subscribe(s => this.size = s);
     this.grid.offset$.subscribe(o => this.offset = o);
   }

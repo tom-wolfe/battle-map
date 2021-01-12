@@ -10,7 +10,7 @@ import { Tool } from '@bm/toolbox/tools';
 export class ToolbarComponent implements AfterViewInit {
   activeTool: Tool;
 
-  constructor(private elRef: ElementRef, private tools: Toolbox) {
+  constructor(private elRef: ElementRef, public tools: Toolbox) {
     tools.activeTool$.subscribe(t => this.activeTool = t);
   }
 
