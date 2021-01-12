@@ -2,7 +2,6 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MatDialogModule } from '@angular/material/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { StoreModule } from '@ngrx/store';
 
@@ -22,7 +21,6 @@ const TOOLS = [
   Tools.CreatureToolSettings,
   Tools.DistanceTool,
   Tools.MapTool,
-  Tools.MoveTool,
   Tools.PaintTool,
   Tools.SelectTool,
   Tools.SelectToolSettings,

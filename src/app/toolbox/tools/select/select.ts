@@ -2,8 +2,8 @@ import { Overlay, OverlayConfig, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { ElementRef, Injectable } from '@angular/core';
 import { MapBattlefield, MapBinding, MapCanvas, MapController, MapGrid } from '@bm/map/services';
-import { Creature, EventBindings } from '@bm/models';
-import { CreatureRenderData, RenderMiddleware } from '@bm/renderer';
+import { Creature, EventBindings, Point } from '@bm/models';
+import { CreatureRenderData, RenderMiddleware, RenderTrigger } from '@bm/renderer';
 import { Tool } from '@bm/toolbox/tools/tool';
 
 import { CreaturePanelComponent } from './creature-panel.component';
@@ -12,20 +12,25 @@ import { SelectToolSettings } from './settings';
 @Injectable()
 export class SelectTool implements Tool {
   id = 7;
-  title = 'Select Creature';
+  title = 'Select/Move Creature';
   icon = 'fa-mouse-pointer';
 
-  private overlayRef: OverlayRef;
+  creature: Creature;
+  livePan: Point = { x: 0, y: 0 };
 
   private readonly bindings: EventBindings = {
     hammer: {
-      tap: this.canvasClick.bind(this)
+      tap: this.onCanvasClick.bind(this),
+      panstart: this.onPanStart.bind(this),
+      panmove: this.onPanMove.bind(this),
+      panend: this.onPanEnd.bind(this)
     },
     element: {
-      mousedown: this.canvasMouseDown.bind(this),
-      mouseup: this.canvasMouseUp.bind(this)
+      mousedown: this.onCanvasMouseDown.bind(this),
+      mouseup: this.onCanvasMouseUp.bind(this)
     }
   };
+  private overlayRef: OverlayRef;
 
   constructor(
     private canvas: MapCanvas,
@@ -35,7 +40,8 @@ export class SelectTool implements Tool {
     private overlay: Overlay,
     private settings: SelectToolSettings,
     private binding: MapBinding,
-    private middleware: RenderMiddleware
+    private middleware: RenderMiddleware,
+    private render: RenderTrigger
   ) {
     this.settings.creature$.subscribe(this.onSelectedCreatureChange.bind(this));
     this.middleware.creaturesMiddleware.push(this.onRenderCreatures.bind(this));
@@ -52,19 +58,51 @@ export class SelectTool implements Tool {
     this.controller.setEnabled(true);
   }
 
-  canvasClick(e: HammerInput) {
+  onCanvasClick(e: HammerInput) {
     const cell = this.grid.cellFromHammer(e);
     const creature = this.battlefield.creatureAtCell(cell);
     this.settings.setCreature(creature);
   }
 
-  canvasMouseDown(e: MouseEvent) {
+  onCanvasMouseDown(e: MouseEvent) {
     const cell = this.grid.cellFromMouse(e);
     const creature = this.battlefield.creatureAtCell(cell);
     if (creature) { this.controller.setEnabled(false); }
   }
 
-  canvasMouseUp() { this.controller.setEnabled(true); }
+  onCanvasMouseUp() { this.controller.setEnabled(true); }
+
+  onPanStart(e: HammerInput) {
+    const cell = this.grid.cellFromHammer(e);
+    this.creature = this.battlefield.creatureAtCell(cell);
+    this.render.trigger();
+    if (!this.creature) { return; }
+    this.controller.setEnabled(false);
+  }
+
+  onPanMove(e: HammerInput) {
+    if (!this.creature) { return; }
+    this.livePan = { x: e.deltaX, y: e.deltaY };
+    this.render.trigger();
+  }
+
+  onPanEnd(e: HammerInput) {
+    if (!this.creature) { return; }
+
+    const creatureOrigin = this.grid.pointFromCell(this.creature.cell);
+    const newPoint: Point = {
+      x: creatureOrigin.x + e.deltaX,
+      y: creatureOrigin.y + e.deltaY
+    };
+
+    const cell = this.grid.nearestCell(newPoint);
+
+    this.livePan = { x: 0, y: 0 };
+    this.battlefield.moveCreature(this.creature, cell);
+    this.creature = undefined;
+    this.controller.setEnabled(true);
+    this.render.trigger();
+  }
 
   show() {
     if (this.overlayRef.hasAttached()) { return; }
@@ -82,12 +120,27 @@ export class SelectTool implements Tool {
   }
 
   onRenderCreatures(creatures: CreatureRenderData[]) {
-    if (!this.settings.creature) { return; }
-    creatures.forEach(c => {
-      if (c.id === this.settings.creature.id) {
-        c.selected = true;
-      }
-    })
+    if (this.settings.creature) {
+      creatures.forEach(c => {
+        if (c.id === this.settings.creature.id) {
+          c.selected = true;
+        }
+      })
+    }
+
+    if (this.creature) {
+      creatures.forEach(c => {
+        if (c.id === this.creature.id) {
+          c.image.x -= 10;
+          c.image.y -= 10;
+          c.image.width += 20;
+          c.image.height += 20;
+
+          c.image.x += this.livePan.x;
+          c.image.y += this.livePan.y;
+        }
+      });
+    }
   }
 
   private initializeOverlay() {
